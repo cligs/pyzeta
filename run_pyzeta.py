@@ -1,73 +1,70 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# pyzeta.py
-# #cf
+# file: run_pyzeta.py
+# author: #cf
+# version: 0.1.0
 
 import pyzeta
 
 
-#=================================
+# =================================
 # Zeta Parameters
-#=================================
+# =================================
 
-SegLength = 2000
-Threshold = 10
-Mode = "tag"  # plain|tag|sel|posbigrams
-Pos = ["x"] #Nc|Np|Vv|Rg|Ag etc.
-Forms = "lemmas" # words|lemmas|pos
-Stoplist = ["De", "Et", "...", "qu'", "Qu'", "-là", "-ci", "C'est-à-dire", "c'est-à-dire", "Rome", "aux", "Aux"]
-Contrast = ["subgenre", "tragicomedie", "tragedie"] # Category, Label1, Label2
+seglength = 2000
+threshold = 10
+mode = "tag"  # plain|tag|sel|posbigrams
+pos = ["x"]  # Nc|Np|Vv|Rg|Ag etc.
+forms = "lemmas"  # words|lemmas|pos
+stoplist = ["De", "Et", "...", "qu'", "Qu'", "-là", "-ci", "C'est-à-dire", "c'est-à-dire", "Rome", "aux", "Aux", "l'"]
+contrast = ["subgenre", "tragicomedie", "comedie"]  # Category, Label1, Label2
 
 
-#=================================
+# =================================
 # Files and folders
-#=================================
-WorkDir = "/home/christof/Dropbox/2-Aktionen/1-Aktuell/2014_Scientia-Quantitatis/scientia/"
-InputFolder = WorkDir + "txt/"
-MetadataFile = WorkDir + "metadata.csv"
-DataFolder = WorkDir + "data/"
+# =================================
+workdir = "/media/christof/data/Dropbox/0-Analysen/2016/zeta/zeta2/"
+inputfolder = workdir + "txt/"
+metadatafile = workdir + "metadata.csv"
+datafolder = workdir + "data/"
 
-
-#=================================
+# =================================
 # Functions
-#=================================
+# =================================
 
 # Calculate Zeta for words in two text collections
-#pyzeta.zeta(WorkDir, InputFolder,
-#            MetadataFile, Contrast,
-#            DataFolder,
-#            SegLength, Threshold,
-#            Mode, Pos, Forms, Stoplist)
+#pyzeta.zeta(workdir, inputfolder, metadatafile, contrast, datafolder, seglength, threshold, mode, pos, forms,
+#stoplist)
 
 
 # Make a nice plot with some zeta data
-ZetaFile = DataFolder + Contrast[1]+"-"+Contrast[2]+"_zeta-scores_segs-of-"+str(SegLength)+"-"+Mode+"-"+Forms+"-"+str(Pos[0])+".csv"
-PlotFile = WorkDir + "zetas-scores_"+ Contrast[1]+"-"+Contrast[2]+"_segs-of-"+str(SegLength)+"-"+Mode+"-"+Forms+"-"+str(Pos[0])+".svg"
-NumWords = 25
-#pyzeta.plot_zeta(ZetaFile,
-#                 NumWords,
-#                 Contrast,
-#                 PlotFile)
+zetafile = (datafolder + contrast[1] + "-" + contrast[2] + "_zeta-scores_segs-of-" +
+            str(seglength) + "-" + mode + "-" + forms + "-" + str(pos[0]) + ".csv")
+plotfile = (workdir + "zeta_scoreplot_" + contrast[1] + "-" + contrast[2] + "_segs-of-" +
+            str(seglength) + "-" + mode + "-" + forms + "-" + str(pos[0]) + ".svg")
+numwords = 25
+#pyzeta.plot_zeta(zetafile, numwords, contrast, plotfile)
 
 
-# Three-way analysis
-nFeatures = 10
-
-pyzeta.test(ZetaFile, nFeatures)
-
-
-
-
+# Scatterplot of types
+numfeatures = 1000
+cutoff = 0.30
+scatterfile = (workdir + "zeta_type-scatterplot_" + contrast[1] + "-" + contrast[2] +
+               "_segs-of-" + str(seglength) + "-" + mode + "-" + forms + "-" + str(pos[0]) + ".svg")
+#pyzeta.plot_types(zetafile, numfeatures, cutoff, contrast, scatterfile)
 
 
+# Threeway comparison
+numfeatures = 20
+components = [1, 2]
+threecontrast = [["subgenre", "comedie", "tragedie", "tragicomedie"],
+                 ["comedie", "comedie", "other"],
+                 ["tragedie", "tragedie", "other"],
+                 ["tragicomedie", "tragicomedie", "other"]]
+pyzeta.threeway(datafolder, zetafile, numfeatures, components, inputfolder, metadatafile,
+                threecontrast, seglength, mode, pos, forms, stoplist)
 
-
-
-
-
-
-
-
-
-
-
+# TODOS
+# - Einmal TreeTagger laufen lassen, Ergebnis abspeichern, dann direkt darauf zugreifen
+# - Vielleicht doch anders strukturieren: erst term-document-matrix mit absoluten Häufigkeiten für die Segmente, abspeichern. #
+# - Dann binarisieren (vorhanden-nicht-vorhanden) und die Verhältnisse auszählen. Spart loops durch die Counter und Types.
