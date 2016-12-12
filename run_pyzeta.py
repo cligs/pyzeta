@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # file: run_pyzeta.py
 # author: #cf
-# version: 0.1.0
+# version: 0.2.0
 
 import pyzeta
 
@@ -11,18 +11,17 @@ import pyzeta
 # Zeta Parameters
 # =================================
 
-seglength = 2000
-threshold = 10
-pos = "Vv"  # Nc|Np|Vv|Rg|Ag etc., or "all" if no selection
+seglength = 1000
+pos = "all"  # Nc|Np|Vv|Rg|Ag etc., or "all" if no selection
 forms = "lemmata"  # words|lemmata|pos
-contrast = ["subgenre", "tragicomedie", "comedie"]  # Category, Label1, Label2
+contrast = ["subgenre", "tragedie", "comedie"]  # Category, Label1, Label2
 
 
 # =================================
 # Files and folders
 # =================================
 workdir = "/media/christof/data/Dropbox/0-Analysen/2016/zeta/zeta2/"
-plaintextfolder = workdir + "test/"
+plaintextfolder = workdir + "text/"
 taggedfolder = workdir + "tagged/"
 metadatafile = workdir + "metadata.csv"
 datafolder = workdir + "data/"
@@ -34,22 +33,18 @@ stoplistfile = workdir + "stoplist.txt"
 # Functions
 # =================================
 
-# Prepare texts: tag and save.
+# Prepare texts: tag and save (run once for a collection).
 # pyzeta.prepare(plaintextfolder, taggedfolder)
 
 
 # Calculate Zeta for words in two text collections
-pyzeta.zeta(workdir, taggedfolder, metadatafile, contrast, datafolder, resultsfolder,
-            seglength, threshold, pos, forms, stoplistfile)
+#pyzeta.zeta(taggedfolder, metadatafile, contrast, datafolder, resultsfolder,
+#            seglength, pos, forms, stoplistfile)
 
 
 # Make a nice plot with some zeta data
-zetafile = (datafolder + contrast[1] + "-" + contrast[2] + "_zeta-scores_segs-of-" +
-            str(seglength) + "-" + forms + "-" + str(pos[0]) + ".csv")
-plotfile = (workdir + "zeta_scoreplot_" + contrast[1] + "-" + contrast[2] + "_segs-of-" +
-            str(seglength) + "-" + forms + "-" + str(pos[0]) + ".svg")
 numwords = 25
-# pyzeta.plot_zeta(zetafile, numwords, contrast, plotfile)
+pyzeta.plot_zeta(numwords, contrast, seglength, pos, forms, resultsfolder)
 
 
 # Scatterplot of types
@@ -69,9 +64,3 @@ threecontrast = [["subgenre", "comedie", "tragedie", "tragicomedie"],
                  ["tragicomedie", "tragicomedie", "other"]]
 # pyzeta.threeway(datafolder, zetafile, numfeatures, components, plaintextfolder, metadatafile,
 #                threecontrast, seglength, mode, pos, forms, stoplist)
-
-
-# TODOS
-# - Einmal TreeTagger laufen lassen, Ergebnis abspeichern, dann direkt darauf zugreifen
-# - Vielleicht doch anders strukturieren: erst term-document-matrix mit absoluten Häufigkeiten für die Segmente, abspeichern. #
-# - Dann binarisieren (vorhanden-nicht-vorhanden) und die Verhältnisse auszählen. Spart loops durch die Counter und Types.

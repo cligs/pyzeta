@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# pyzeta.py
-# #cf
-
+# file: pyzeta.py
+# author: #cf
+# version: 0.2.0
 
 
 # =================================
@@ -14,6 +14,7 @@ import re
 import csv
 import glob
 import pandas as pd
+import numpy as np
 from collections import Counter
 import treetaggerwrapper
 import itertools
@@ -21,11 +22,10 @@ import shutil
 import pygal
 from sklearn.decomposition import PCA
 
-
-
 # =================================
-# Functions: prepare
+# Shared functions
 # =================================
+
 
 def get_filename(file):
     filename, ext = os.path.basename(file).split(".")
@@ -37,6 +37,22 @@ def read_plaintext(file):
     with open(file, "r") as infile:
         text = infile.read()
         return text
+
+
+def read_csvfile(filepath):
+    with open(filepath, "r", newline="\n") as csvfile:
+        content = csv.reader(csvfile, delimiter='\t')
+        alllines = [line for line in content]
+        return alllines
+
+def save_dataframe(allfeaturecounts, currentfile):
+    with open(currentfile, "w") as outfile:
+        allfeaturecounts.to_csv(outfile, sep="\t")
+
+
+# =================================
+# Functions: prepare
+# =================================
 
 
 def run_treetagger(text):
@@ -56,15 +72,14 @@ def save_tagged(taggedfolder, filename, tagged):
 
 def prepare(plaintextfolder, taggedfolder):
     print("--prepare")
+    if not os.path.exists(taggedfolder):
+        os.makedirs(taggedfolder)
     for file in glob.glob(plaintextfolder + "*.txt"):
         filename = get_filename(file)
         text = read_plaintext(file)
         tagged = run_treetagger(text)
         save_tagged(taggedfolder, filename, tagged)
     print("Done.")
-
-
-
 
 
 # =================================
@@ -77,6 +92,7 @@ def make_filelist(datafolder, metadatafile, contrast):
     Based on the metadata, create two lists of files, each from one group.
     The category to check and the two labels are found in Contrast.
     """
+    print("--make_filelist")
     with open(metadatafile, "r") as infile:
         metadata = pd.DataFrame.from_csv(infile, sep=";")
         onemetadata = metadata[metadata[contrast[0]].isin([contrast[1]])]
@@ -84,245 +100,108 @@ def make_filelist(datafolder, metadatafile, contrast):
         onelist = list(onemetadata.loc[:, "idno"])
         twolist = list(twometadata.loc[:, "idno"])
         # print(onelist, twolist)
-        print("---", len(onelist), len(twolist), "texts")
+        print("----number of texts: " + str(len(onelist)) + " and " + str(len(twolist)))
         return onelist, twolist
 
+
 def read_stoplistfile(stoplistfile):
+    print("--read_stoplistfile")
     with open(stoplistfile, "r") as infile:
         stoplist = infile.read()
         stoplist = list(re.split("\n", stoplist))
-        #print(stoplist)
+        # print(stoplist)
         return stoplist
 
 
-def create_featuretext(currentlist, taggedfolder, pos, forms, stoplist):
+def select_features(segment, pos, forms, stoplist):
     """
-    Reads the tagged files and builds one long list of features (words, lemmas or pos) from them.
-    Status: OK
+    Selects the desired features (words, lemmas or pos) from the lists of texts.
+    Turns the complete list into a set, then turns into a string for better saving.
     TODO: Add a replacement feature for words like "j'" or "-ils"
     """
-    print(currentlist)
-    allfeatures = []
-    for file in currentlist:
-        file = taggedfolder + file + ".csv"
-        if os.path.isfile(file):
-            with open(file, "r", newline="\n") as csvfile:
-                content = csv.reader(csvfile, delimiter='\t')
-                if pos == "all":
-                    if forms == "words":
-                        features = [line[0].lower() for line in content if len(line[0]) > 2 and line[0] not in stoplist]
-                        allfeatures.extend(features)
-                    if forms == "lemmata":
-                        features = [line[2].lower() for line in content if len(line[0]) > 2 and line[0] not in stoplist]
-                        allfeatures.extend(features)
-                    if forms == "pos":
-                        features = [line[1].lower() for line in content if len(line[0]) > 2 and line[0] not in stoplist]
-                        allfeatures.extend(features)
-                if pos != "all":
-                    if forms == "words":
-                        features = [line[0].lower() for line in content if len(line[0]) > 2 and line[0] not in stoplist and pos in line[1]]
-                        allfeatures.extend(features)
-                    if forms == "lemmata":
-                        features = [line[2].lower() for line in content if len(line[0]) > 2 and line[0] not in stoplist and pos in line[1]]
-                        allfeatures.extend(features)
-                    if forms == "pos":
-                        features = [line[1].lower() for line in content if len(line[0]) > 2 and line[0] not in stoplist and pos in line[1]]
-                        allfeatures.extend(features)
-    print(allfeatures[0:10])
-    return allfeatures
+    if pos == "all":
+        if forms == "words":
+            features = [line[0].lower() for line in segment if len(line) == 3 and len(line[0]) > 2 and line[0] not in stoplist]
+        if forms == "lemmata":
+            features = [line[2].lower() for line in segment if len(line) == 3 and len(line[0]) > 2 and line[0] not in stoplist]
+        if forms == "pos":
+            features = [line[1].lower() for line in segment if len(line) == 3 and len(line[0]) > 2 and line[0] not in stoplist]
+    if pos != "all":
+        if forms == "words":
+            features = [line[0].lower() for line in segment if len(line) == 3 and len(line[0]) > 2 and line[0] not in stoplist and pos in line[1]]
+        if forms == "lemmata":
+            features = [line[2].lower() for line in segment if len(line) == 3 and len(line[0]) > 2 and line[0] not in stoplist and pos in line[1]]
+        if forms == "pos":
+            features = [line[1].lower() for line in segment if len(line) == 3 and len(line[0]) > 2 and line[0] not in stoplist and pos in line[1]]
+    features = list(set(features))
+    return features
 
 
-def merge_text(DataFolder, List, File):
+def save_segment(features, segsfolder, segmentid):
+    segmentfile = segsfolder + segmentid + ".txt"
+    features = " ".join(features)
+    with open(segmentfile, "w") as outfile:
+        outfile.write(features)
+
+
+def count_features(segment, segmentid):
+    featurecount = Counter(segment)
+    featurecount = dict(featurecount)
+    featurecount = pd.Series(featurecount, name=segmentid)
+    #print(featurecount)
+    return featurecount
+
+
+def make_segments(taggedfolder, currentlist, seglength,
+                  segsfolder, pos, forms, stoplist, currentfile):
     """
-    Merge all texts from one group into one large text file.
-    Creates less loss when splitting.
+    Calls a function to load each complete tagged text.
+    Splits the whole text document into segments of fixed length; discards the rest.
+    Calls a function to select the desired features from each segment.
+    Calls a function to save each segment of selected features to disc.
     """
-    with open(File, 'wb') as OutFile:
-        PathList = [DataFolder + Item + ".txt" for Item in List]
-        for File in PathList:
-            try:
-                with open(File, 'rb') as ReadFile:
-                    shutil.copyfileobj(ReadFile, OutFile)
-            except:
-                print("exception.")
+    print("--make_segments")
+    allfeaturecounts = []
+    for filename in currentlist:
+        filepath = taggedfolder + filename + ".csv"
+        if os.path.isfile(filepath):
+            alllines = read_csvfile(filepath)
+            numsegs = int(len(alllines) / seglength)
+            for i in range(0, numsegs):
+                segmentid = filename + "-" + "{:04d}".format(i)
+                segment = alllines[i * seglength:(i + 1) * seglength]
+                features = select_features(segment, pos, forms, stoplist)
+                save_segment(features, segsfolder, segmentid)
+                featurecount = count_features(features, segmentid)
+                allfeaturecounts.append(featurecount)
+    allfeaturecounts = pd.concat(allfeaturecounts, axis=1)
+    allfeaturecounts = allfeaturecounts.fillna(0).astype(int)
+    save_dataframe(allfeaturecounts, currentfile)
+    #print(allfeaturecounts)
+    return allfeaturecounts
 
 
-def read_file(File):
+def calculate_zetas(allfeaturecountsone, allfeaturecountstwo):
     """
-    Read one text file per partition.
+    Perform the Zeta score calculation.
+    Zeta = proportion in group one + (1 - proportion in group two) -1
     """
-    FileName, Ext = os.path.basename(File).split(".")
-    with open(File, "r") as InFile:
-        Text = InFile.read()
-    # print(Text)
-    return Text, FileName
+    print("--calculate_zetas")
+    # Calculate the proportions by dividing the row-wise sums by the number of segments
+    allfeaturecountsone["docpropone"] = np.divide(np.sum(allfeaturecountsone, axis=1), len(allfeaturecountsone.columns))
+    allfeaturecountstwo["docproptwo"] = np.divide(np.sum(allfeaturecountstwo, axis=1), len(allfeaturecountstwo.columns))
+    zetascoredata = pd.concat([allfeaturecountsone.loc[:,"docpropone"],allfeaturecountstwo.loc[:,"docproptwo"]],
+                             axis=1, join="outer").fillna(0)
+    # The next line contains the actual zeta score calculation
+    zetascoredata["zetascores"] = zetascoredata.loc[:,"docpropone"] + (1 - zetascoredata.loc[:,"docproptwo"]) - 1
+    zetascoredata = zetascoredata.sort_values("zetascores", ascending=False)
+    print(zetascoredata.head(5))
+    print(zetascoredata.tail(5))
+    return zetascoredata
 
 
-def prepare_text(Text, Mode, Pos, Forms, Stoplist):
-    """
-    Takes a text in string format and transforms and filters it. 
-    Makes it lowercase, splits into tokens, discards tokens of length 1.
-    Alternatively, applies POS-tagging and selection of specific POS.
-    Returns a list. 
-    """
-    if Mode == "plain": 
-        Prepared = Text.lower()
-        Prepared = re.split("\W", Prepared)
-        Prepared = [Token for Token in Prepared if len(Token) > 1]    
-    if Mode == "tag": 
-        Tagger = treetaggerwrapper.TreeTagger(TAGLANG="fr")
-        print("---tagging")
-        Tagged = Tagger.tag_text(Text)
-        print("---done tagging")
-        Prepared = []
-        for Line in Tagged:
-            Line = re.split("\t", Line)
-            if len(Line) == 3: 
-            #print(len(Line), Line)
-                if Forms == "lemmas":
-                    Prepared.append(Line[2])
-                elif Forms == "words": 
-                    Prepared.append(Line[0])
-                elif Forms == "pos": 
-                    Prepared.append(Line[1])
-        Prepared = [Token for Token in Prepared if len(Token) > 1]    
-    if Mode == "sel": 
-        Tagger = treetaggerwrapper.TreeTagger(TAGLANG="fr")
-        print("---tagging")
-        Tagged = Tagger.tag_text(Text)
-        print("---done tagging")
-        Prepared = []
-        for Line in Tagged:
-            Line = re.split("\t", Line)
-            if len(Line) == 3: 
-            #print(len(Line), Line)
-                if Line[1][0:2] in Pos:
-                    if Forms == "lemmas":
-                        Prepared.append(Line[2])
-                    elif Forms == "words": 
-                        Prepared.append(Line[0])
-                    elif Forms == "pos": 
-                        Prepared.append(Line[1])
-    if Mode == "posbigrams": 
-        Tagger = treetaggerwrapper.TreeTagger(TAGLANG="fr")
-        print("---tagging")
-        Tagged = Tagger.tag_text(Text)
-        print("---done tagging")
-        Prepared = []
-        for i in range(0,len(Tagged)-1): 
-            Line = re.split("\t", Tagged[i])
-            NextLine = re.split("\t", Tagged[i+1])
-            Prepared.append(Line[1]+"-"+NextLine[1])
-    if Mode == "wordbigrams": 
-        Text = Text.lower()
-        Text = re.split("\W", Text)
-        Text = [Token for Token in Text if len(Token) > 1]    
-        Prepared = []
-        for i in range(0,len(Text)-1): 
-            Prepared.append(Text[i]+"-"+Text[i+1])
-    Prepared = [Item.lower() for Item in Prepared if Item not in Stoplist]
-    #print(Prepared[0:50])
-    return Prepared
-
-
-def save_seg(Seg, SegFile, SegsFolder):
-    """
-    Function to save one segment to disk for sequential reading.
-    """
-    with open(SegsFolder + SegFile, "w") as OutFile:
-        OutFile.write(Seg)
-
-
-def segment_text(Prepared, SegLength, Filename, SegsFolder):
-    """
-    Splits the whole text document into segments of fixed length; discards rest. 
-    Also, reduces each segment to the set of different words in the segment. 
-    """
-    NumSegs = int(len(Prepared) / SegLength)
-    # print("text length (prepared)", len(Prepared))
-    # print("number of segments", NumSegs)
-    for i in range(0, NumSegs):
-        Seg = Prepared[i * SegLength:(i + 1) * SegLength]
-        # print(len(Seg))
-        Seg = list(set(Seg))
-        # print(len(Seg))
-        Seg = "\t".join(Seg)
-        SegFile = Filename + "{:04d}".format(i) + ".txt"
-        save_seg(Seg, SegFile, SegsFolder)
-    return NumSegs
-
-
-def get_types(OnePrepared, TwoPrepared, Threshold):
-    """
-    Merges all prepared text and extracts the types with their frequency (Counter). 
-    Filters the list of types based on their frequency and length in chars.
-    A high frequency threshold may speed things up but information is lost. 
-    """
-    Types = Counter()
-    Types.update(OnePrepared)
-    Types.update(TwoPrepared)
-    # print(Types)
-    Types = {k: v for (k, v) in Types.items() if v > Threshold and len(k) > 1}
-    # print(Types)
-    # Set all values to zero.
-    Types = dict.fromkeys(Types, 0)
-    # print("number of types in collection (filtered)", len(list(Types.keys())))
-    # print(list(itertools.islice(Types.items(), 0, 5)))
-    return Types
-
-
-def check_types(SegsPath, Types, NumSegs):
-    """
-    For each text segment in one group: 
-    1. Read the file and split on the tab
-    2. For each Type in the list of all Types, check whether it exists in the file.
-    3. If it does, increase the value in the dict for this type by one.
-    At the end, divide all dict values by the number of segments. 
-    """
-    Types = dict.fromkeys(Types, 0)
-    for SegFile in glob.glob(SegsPath):  # TODO: this part is really slow ###
-        # print("SegFile:", SegFile)
-        with open(SegFile, "r") as InFile:
-            Seg = InFile.read()
-            Seg = re.split("\t", Seg)
-            for Type in Types:
-                if Type in Seg:
-                    Types[Type] = Types[Type] + 1
-    Props = {k: v / NumSegs for k, v in Types.items()}
-    return Props
-
-
-def get_zetas(Types, OneProps, TwoProps, ZetaFile):
-    """
-    Perform the actual Zeta calculation.
-    Zeta = Proportion in Group One + (1-Proportion in Group 2) -1
-    """
-    AllResults = []
-    for Type in Types:
-        try:
-            OneProp = OneProps[Type]
-        except:
-            OneProp = 0
-        try:
-            TwoProp = TwoProps[Type]
-        except:
-            TwoProp = 0
-        Zeta = OneProp + (1 - TwoProp) - 1
-        Result = {"type": Type, "one-prop": OneProp, "two-prop": TwoProp, "zeta": Zeta}
-        AllResults.append(Result)
-    AllResults = pd.DataFrame(AllResults)
-    AllResults = AllResults[["type", "one-prop", "two-prop", "zeta"]]
-    AllResults = AllResults.sort_values("zeta", ascending=False)
-    print(AllResults.head(10))
-    print(AllResults.tail(10))
-    with open(ZetaFile, "w") as OutFile:
-        AllResults.to_csv(OutFile)
-
-
-def zeta(workdir, taggedfolder,
-         metadatafile, contrast,
-         datafolder, resultsfolder,
-         seglength, threshold,
+def zeta(taggedfolder, metadatafile, contrast,
+         datafolder, resultsfolder, seglength,
          pos, forms, stoplistfile):
     """
     Main coordinating function for "pyzeta.zeta"
@@ -331,12 +210,12 @@ def zeta(workdir, taggedfolder,
     """
 
     # Generate necessary file and folder names
-    contraststring = "contrast-" + contrast[1] + "-" + contrast[2]
-    parameterstring = "params-" + str(seglength) + "-" + forms + "-" + str(pos[0])
-    segsfolder = datafolder + "_" + contraststring + "_" + parameterstring + "/"
-    zetafile = resultsfolder + "_" + contraststring + "_" + parameterstring + ".csv"
-    onefile = datafolder + contrast[1] + ".txt"
-    twofile = datafolder + contrast[2] + ".txt"
+    contraststring = contrast[1] + "-" + contrast[2]
+    parameterstring = str(seglength) + "-" + forms + "-" + str(pos)
+    segsfolder = datafolder + contraststring + "_" + parameterstring + "/"
+    zetascorefile = resultsfolder + contraststring + "_" + parameterstring + ".csv"
+    onefile = datafolder + "features_" + contrast[1] + "_" + parameterstring + ".csv"
+    twofile = datafolder + "features_" + contrast[2] + "_" + parameterstring + ".csv"
 
     # Create necessary folders
     if not os.path.exists(datafolder):
@@ -346,56 +225,21 @@ def zeta(workdir, taggedfolder,
     if not os.path.exists(resultsfolder):
         os.makedirs(resultsfolder)
 
-    # Generate list of files for the two groups
-    print("--generate list of files")
+    # Generate list of files for the two groups and get stoplist
     onelist, twolist = make_filelist(taggedfolder, metadatafile, contrast)
-
-    # Extract features from tagged files and merge all features for each group.
     stoplist = read_stoplistfile(stoplistfile)
-    onefeatures = create_featuretext(onelist, taggedfolder, pos, forms, stoplist)
-    twofeatures = create_featuretext(twolist, taggedfolder, pos, forms, stoplist)
 
+    # Create segments with selected types and turn into count matrix
+    allfeaturecountsone = make_segments(taggedfolder, onelist, seglength, segsfolder, pos, forms, stoplist, onefile)
+    allfeaturecountstwo = make_segments(taggedfolder, twolist, seglength, segsfolder, pos, forms, stoplist, twofile)
 
-
-    # Merge text files into two input files
-    #print("--merge_text (one and two)")
-    #merge_text(taggedfolder, onelist, onefile)
-    #merge_text(taggedfolder, twolist, twofile)
-
-    # Load both text files       
-    #print("--read_file (one and two)")
-    #OneText, OneFileName = read_file(OneFile)
-    #TwoText, TwoFileName = read_file(TwoFile)
-    # Prepare both text files
-    #print("--prepare_text (one)")
-    #OnePrepared = prepare_text(OneText, Mode, Pos, Forms, Stoplist)
-    #print("--prepare_text (two)")
-    #TwoPrepared = prepare_text(TwoText, Mode, Pos, Forms, Stoplist)
-    # Segment both text files
-    print("--segment_text (one and two)")
-    numsegsone = segment_text(onefeatures, seglength, onefilename, segsfolder)
-    numsegstwo = segment_text(twofeatures, seglength, twofilename, segsfolder)
-    #print("  Number of segments (one, two)", NumSegsOne, NumSegsTwo)
-    # Extract the list of selected types 
-    #print("--get_types (one)")
-    #Types = get_types(OnePrepared, TwoPrepared, Threshold)
-    #print("  Number of types", len(list(Types.keys())))
-    # Check in how many segs each type is (one)
-    #print("--check_types (one)")
-    # OneProps = check_types(SegsFolder + Contrast[1] + "*.txt", Types, NumSegsOne)
-    # Extract the list of selected types (repeat)
-    #print("--get_types (two)")
-    #Types = get_types(OnePrepared, TwoPrepared, Threshold)
-    # Check in how many segs each type is (two)
-    #print("--check_types (two)")
-    #TwoProps = check_types(SegsFolder + Contrast[2] + "*.txt", Types, NumSegsTwo)
-    # Calculate zeta for each type
-    #print("--get_zetas")
-    #get_zetas(Types, OneProps, TwoProps, ZetaFile)
+    # Perform the actual Zeta score calculation
+    zetascoredata = calculate_zetas(allfeaturecountsone, allfeaturecountstwo)
+    save_dataframe(zetascoredata, zetascorefile)
 
 
 # =================================
-# Visualize zeta data
+# Functions: plot zetadata
 # =================================
 
 zeta_style = pygal.style.Style(
@@ -407,28 +251,28 @@ zeta_style = pygal.style.Style(
     label_font_size=12)
 
 
-def get_zetadata(zetafile, numwords):
-    with open(zetafile, "r") as infile:
-        zetadata = pd.DataFrame.from_csv(infile)
-        # print(ZetaData.head())
-        zetadata.drop(["one-prop", "two-prop"], axis=1, inplace=True)
-        zetadata.sort_values("zeta", ascending=False, inplace=True)
+def get_zetadata(zetascorefile, numwords):
+    with open(zetascorefile, "r") as infile:
+        zetadata = pd.DataFrame.from_csv(infile, sep="\t")
+        print(zetadata.head())
+        zetadata.drop(["docpropone", "docproptwo"], axis=1, inplace=True)
+        zetadata.sort_values("zetascores", ascending=False, inplace=True)
         zetadatahead = zetadata.head(numwords)
         zetadatatail = zetadata.tail(numwords)
         zetadata = zetadatahead.append(zetadatatail)
-        zetadata = zetadata.reset_index(drop=True)
-        # print(zetadata)
+        zetadata = zetadata.reset_index(drop=False)
+        print(zetadata.head())
         return zetadata
 
 
-def plot_zetadata(zetadata, contrast, plotfile, numwords):
+def plot_zetadata(zetadata, contraststring, zetaplotfile, numwords):
     plot = pygal.HorizontalBar(style=zeta_style,
                                print_values=False,
                                print_labels=True,
                                show_legend=False,
                                range=(-1, 1),
                                title=("Kontrastive Analyse mit Zeta\n (" +
-                                      contrast[2] + " vs " + contrast[1] + ")"),
+                                      str(contraststring) + ")"),
                                x_title="Zeta-Score",
                                y_title="Je " + str(numwords) + " Worte pro Sammlung"
                                )
@@ -456,18 +300,19 @@ def plot_zetadata(zetadata, contrast, plotfile, numwords):
         else:
             color = "DarkGrey"
         plot.add(zetadata.iloc[i, 0], [{"value": zetadata.iloc[i, 1], "label": zetadata.iloc[i, 0], "color": color}])
-    plot.render_to_file(plotfile)
+    plot.render_to_file(zetaplotfile)
 
 
-def plot_zeta(zetafile,
-              numwords,
-              contrast,
-              plotfile):
+def plot_zeta(numwords, contrast, seglength, pos, forms, resultsfolder):
     print("--plot_zeta")
-    zetadata = get_zetadata(zetafile, numwords)
-    plot_zetadata(zetadata, contrast, plotfile, numwords)
-
-
+    # Define some filenames
+    contraststring = contrast[1] + "-" + contrast[2]
+    parameterstring = str(seglength) + "-" + forms + "-" + str(pos)
+    zetascorefile = resultsfolder + contraststring + "_" + parameterstring + ".csv"
+    zetaplotfile = resultsfolder + contraststring + "_" + parameterstring + ".svg"
+    # Get the data and plot it
+    zetadata = get_zetadata(zetascorefile, numwords)
+    plot_zetadata(zetadata, contrast, zetaplotfile, numwords)
 
 
 # ==============================================
@@ -481,7 +326,7 @@ def get_scores(ZetaFile, nFeatures):
         posScores = ZetaScores.head(nFeatures)
         negScores = ZetaScores.tail(nFeatures)
         Scores = pd.concat([posScores, negScores])
-        #print(Scores.head())
+        # print(Scores.head())
         return Scores
 
 
@@ -496,11 +341,11 @@ def make_data(Scores):
 def make_typesplot(Types, OnePs, TwoPs, Zetas, nFeatures, cutoff, Contrast, ScatterFile):
     plot = pygal.XY(style=zeta_style,
                     show_legend=False,
-                    range = (0,1),
-                    title = "Distribution of types",
-                    x_title = "Proportion of types in "+str(Contrast[1]),
-                    y_title = "Proportion of types in "+str(Contrast[2]))
-    for i in range(0, nFeatures*2):
+                    range=(0, 1),
+                    title="Distribution of types",
+                    x_title="Proportion of types in " + str(Contrast[1]),
+                    y_title="Proportion of types in " + str(Contrast[2]))
+    for i in range(0, nFeatures * 2):
         if Zetas[i] > cutoff:
             color = "green"
             size = 4
@@ -510,7 +355,8 @@ def make_typesplot(Types, OnePs, TwoPs, Zetas, nFeatures, cutoff, Contrast, Scat
         else:
             color = "grey"
             size = 3
-        plot.add(str(Types[i]), [{"value":(OnePs[i], TwoPs[i]), "label": "zeta "+str(Zetas[i]), "color": color, "node": {"r":size}}])
+        plot.add(str(Types[i]), [
+            {"value": (OnePs[i], TwoPs[i]), "label": "zeta " + str(Zetas[i]), "color": color, "node": {"r": size}}])
     plot.render_to_file(ScatterFile)
 
 
@@ -523,10 +369,6 @@ def plot_types(ZetaFile, nFeatures, cutoff, Contrast, ScatterFile):
     Types, OnePs, TwoPs, Zetas = make_data(Scores)
     make_typesplot(Types, OnePs, TwoPs, Zetas, nFeatures, cutoff, Contrast, ScatterFile)
     print("Done.")
-
-
-
-
 
 
 # ==============================================
@@ -543,7 +385,7 @@ def get_threewayscores(zetafile, numfeatures):
 
 
 def get_features(scores):
-    features = list(scores.loc[:,"type"])
+    features = list(scores.loc[:, "type"])
     # print("features", features)
     return features
 
@@ -574,7 +416,7 @@ def get_freqs(prepared):
 
 
 def select_freqs(freqsall, features, textlength, textname):
-    freqssel = dict((key, freqsall[key]/textlength) for key in features)
+    freqssel = dict((key, freqsall[key] / textlength) for key in features)
     freqssel = pd.Series(freqssel, name=textname)
     # print(freqssel)
     return freqssel
@@ -594,15 +436,15 @@ def make_2dscatterplot(transformed, components, textnames,
                        onelist, twolist, threelist,
                        variance,
                        mode, forms, pos):
-    components = [components[0] -1, components[1] - 1]
+    components = [components[0] - 1, components[1] - 1]
     plot = pygal.XY(style=zeta_style,
                     stroke=False,
                     show_legend=False,
-                    title = "PCA mit distinktiven Features",
-                    x_title = "PC" +str(components[0]+1)+ "("+"{:03.2f}".format(variance[components[0]])+")",
-                    y_title = "PC" +str(components[1]+1)+ "("+"{:03.2f}".format(variance[components[1]])+")",
+                    title="PCA mit distinktiven Features",
+                    x_title="PC" + str(components[0] + 1) + "(" + "{:03.2f}".format(variance[components[0]]) + ")",
+                    y_title="PC" + str(components[1] + 1) + "(" + "{:03.2f}".format(variance[components[1]]) + ")",
                     )
-    for i in range(0, 391):   # TODO: Derive from number of texts actually used.
+    for i in range(0, 391):  # TODO: Derive from number of texts actually used.
         point = (transformed[i][components[0]], transformed[i][components[1]])
         if textnames[i] in onelist:
             mylabel = "comedie"
@@ -616,8 +458,10 @@ def make_2dscatterplot(transformed, components, textnames,
         else:
             mylabel = "ERROR"
             mycolor = "grey"
-        plot.add(textnames[i], [{"value":point, "label":mylabel, "color":mycolor}])
-    plot.render_to_file("threeway-2dscatter_" + mode + "-" + forms + "-" + str(pos[0]) + "_PC" + str(components[0]+1) + "+" + str(components[1]+1) +".svg")
+        plot.add(textnames[i], [{"value": point, "label": mylabel, "color": mycolor}])
+    plot.render_to_file(
+        "threeway-2dscatter_" + mode + "-" + forms + "-" + str(pos[0]) + "_PC" + str(components[0] + 1) + "+" + str(
+            components[1] + 1) + ".svg")
 
 
 # Coordinating function
@@ -629,16 +473,16 @@ def threeway(datafolder, zetafile, numfeatures, components,
     for contrast in threecontrast[1:4]:
         zetafile = (datafolder + contrast[1] + "-" + contrast[2] + "_zeta-scores_segs-of-" +
                     str(seglength) + "-" + mode + "-" + forms + "-" + str(pos[0]) + ".csv")
-        #print(zetaFile)
+        # print(zetaFile)
         scores = get_threewayscores(zetafile, numfeatures)
         features = get_features(scores)
         featuresall.extend(features)
-    #print(featuresall)
+    # print(featuresall)
     onelist, twolist, threelist = make_three_filelist(metadatafile, threecontrast)
     freqmatrix = pd.DataFrame()
     textnames = []
     for textfile in glob.glob(inputfolder + "*.txt"):
-        text, textname = read_file(textfile)
+        text, textname = read_plaintext(textfile)
         textnames.append(textname)
         prepared = prepare_text(text, mode, pos, forms, stoplist)
         textlength = len(prepared)
