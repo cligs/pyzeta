@@ -11,6 +11,7 @@
 
 import os
 import re
+import csv
 import glob
 import pandas as pd
 from collections import Counter
@@ -23,7 +24,51 @@ from sklearn.decomposition import PCA
 
 
 # =================================
-# Functions
+# Functions: prepare
+# =================================
+
+def get_filename(file):
+    filename, ext = os.path.basename(file).split(".")
+    print(filename)
+    return filename
+
+
+def read_plaintext(file):
+    with open(file, "r") as infile:
+        text = infile.read()
+        return text
+
+
+def run_treetagger(text):
+    tagger = treetaggerwrapper.TreeTagger(TAGLANG="fr")
+    tagged = tagger.tag_text(text)
+    return tagged
+
+
+def save_tagged(taggedfolder, filename, tagged):
+    taggedfilename = taggedfolder + "/" + filename + ".txt"
+    with open(taggedfilename, "w") as outfile:
+        writer = csv.writer(outfile, delimiter='\t')
+        for item in tagged:
+            item = re.split("\t", item)
+            writer.writerow(item)
+
+
+def prepare(plaintextfolder, taggedfolder):
+    print("--prepare")
+    for file in glob.glob(plaintextfolder + "*.txt"):
+        filename = get_filename(file)
+        text = read_plaintext(file)
+        tagged = run_treetagger(text)
+        save_tagged(taggedfolder, filename, tagged)
+    print("Done.")
+
+
+
+
+
+# =================================
+# Functions: Zeta
 # =================================
 
 
@@ -230,16 +275,13 @@ def get_zetas(Types, OneProps, TwoProps, ZetaFile):
         AllResults.to_csv(OutFile)
 
 
-# =================================
-# Main coordinating function
-# =================================
-
 def zeta(WorkDir, InputFolder,
          MetadataFile, Contrast,
          DataFolder,
          SegLength, Threshold,
          Mode, Pos, Forms, Stoplist):
     """
+    Main coordinating function for "pyzeta.zeta"
     Python implementation of Craig's Zeta. 
     Status: proof-of-concept quality.
     """
