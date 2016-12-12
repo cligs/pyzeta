@@ -46,7 +46,7 @@ def run_treetagger(text):
 
 
 def save_tagged(taggedfolder, filename, tagged):
-    taggedfilename = taggedfolder + "/" + filename + ".txt"
+    taggedfilename = taggedfolder + "/" + filename + ".csv"
     with open(taggedfilename, "w") as outfile:
         writer = csv.writer(outfile, delimiter='\t')
         for item in tagged:
@@ -72,20 +72,64 @@ def prepare(plaintextfolder, taggedfolder):
 # =================================
 
 
-def make_filelist(DataFolder, MetadataFile, Contrast):
+def make_filelist(datafolder, metadatafile, contrast):
     """
     Based on the metadata, create two lists of files, each from one group.
     The category to check and the two labels are found in Contrast.
     """
-    with open(MetadataFile, "r") as InFile:
-        Metadata = pd.DataFrame.from_csv(InFile, sep=";")
-        OneMetadata = Metadata[Metadata[Contrast[0]].isin([Contrast[1]])]
-        TwoMetadata = Metadata[Metadata[Contrast[0]].isin([Contrast[2]])]
-        OneList = list(OneMetadata.loc[:, "idno"])
-        TwoList = list(TwoMetadata.loc[:, "idno"])
-        # print(OneList, TwoList)
-        print("---", len(OneList), len(TwoList), "texts")
-        return OneList, TwoList
+    with open(metadatafile, "r") as infile:
+        metadata = pd.DataFrame.from_csv(infile, sep=";")
+        onemetadata = metadata[metadata[contrast[0]].isin([contrast[1]])]
+        twometadata = metadata[metadata[contrast[0]].isin([contrast[2]])]
+        onelist = list(onemetadata.loc[:, "idno"])
+        twolist = list(twometadata.loc[:, "idno"])
+        # print(onelist, twolist)
+        print("---", len(onelist), len(twolist), "texts")
+        return onelist, twolist
+
+def read_stoplistfile(stoplistfile):
+    with open(stoplistfile, "r") as infile:
+        stoplist = infile.read()
+        stoplist = list(re.split("\n", stoplist))
+        #print(stoplist)
+        return stoplist
+
+
+def create_featuretext(currentlist, taggedfolder, pos, forms, stoplist):
+    """
+    Reads the tagged files and builds one long list of features (words, lemmas or pos) from them.
+    Status: OK
+    TODO: Add a replacement feature for words like "j'" or "-ils"
+    """
+    print(currentlist)
+    allfeatures = []
+    for file in currentlist:
+        file = taggedfolder + file + ".csv"
+        if os.path.isfile(file):
+            with open(file, "r", newline="\n") as csvfile:
+                content = csv.reader(csvfile, delimiter='\t')
+                if pos == "all":
+                    if forms == "words":
+                        features = [line[0].lower() for line in content if len(line[0]) > 2 and line[0] not in stoplist]
+                        allfeatures.extend(features)
+                    if forms == "lemmata":
+                        features = [line[2].lower() for line in content if len(line[0]) > 2 and line[0] not in stoplist]
+                        allfeatures.extend(features)
+                    if forms == "pos":
+                        features = [line[1].lower() for line in content if len(line[0]) > 2 and line[0] not in stoplist]
+                        allfeatures.extend(features)
+                if pos != "all":
+                    if forms == "words":
+                        features = [line[0].lower() for line in content if len(line[0]) > 2 and line[0] not in stoplist and pos in line[1]]
+                        allfeatures.extend(features)
+                    if forms == "lemmata":
+                        features = [line[2].lower() for line in content if len(line[0]) > 2 and line[0] not in stoplist and pos in line[1]]
+                        allfeatures.extend(features)
+                    if forms == "pos":
+                        features = [line[1].lower() for line in content if len(line[0]) > 2 and line[0] not in stoplist and pos in line[1]]
+                        allfeatures.extend(features)
+    print(allfeatures[0:10])
+    return allfeatures
 
 
 def merge_text(DataFolder, List, File):
@@ -275,65 +319,79 @@ def get_zetas(Types, OneProps, TwoProps, ZetaFile):
         AllResults.to_csv(OutFile)
 
 
-def zeta(WorkDir, InputFolder,
-         MetadataFile, Contrast,
-         DataFolder,
-         SegLength, Threshold,
-         Mode, Pos, Forms, Stoplist):
+def zeta(workdir, taggedfolder,
+         metadatafile, contrast,
+         datafolder, resultsfolder,
+         seglength, threshold,
+         pos, forms, stoplistfile):
     """
     Main coordinating function for "pyzeta.zeta"
     Python implementation of Craig's Zeta. 
     Status: proof-of-concept quality.
     """
+
     # Generate necessary file and folder names
-    OneFile = DataFolder + Contrast[1] + ".txt"
-    TwoFile = DataFolder + Contrast[2] + ".txt"
-    SegsFolder = DataFolder + Contrast[1] + "-" + Contrast[2] + "_segs-of-" + str(
-        SegLength) + "-" + Mode + "-" + Forms + "-" + str(Pos[0]) + "/"
-    ZetaFile = DataFolder + Contrast[1] + "-" + Contrast[2] + "_zeta-scores_segs-of-" + str(
-        SegLength) + "-" + Mode + "-" + Forms + "-" + str(Pos[0]) + ".csv"
+    contraststring = "contrast-" + contrast[1] + "-" + contrast[2]
+    parameterstring = "params-" + str(seglength) + "-" + forms + "-" + str(pos[0])
+    segsfolder = datafolder + "_" + contraststring + "_" + parameterstring + "/"
+    zetafile = resultsfolder + "_" + contraststring + "_" + parameterstring + ".csv"
+    onefile = datafolder + contrast[1] + ".txt"
+    twofile = datafolder + contrast[2] + ".txt"
+
     # Create necessary folders
-    if not os.path.exists(DataFolder):
-        os.makedirs(DataFolder)
-    if not os.path.exists(SegsFolder):
-        os.makedirs(SegsFolder)
+    if not os.path.exists(datafolder):
+        os.makedirs(datafolder)
+    if not os.path.exists(segsfolder):
+        os.makedirs(segsfolder)
+    if not os.path.exists(resultsfolder):
+        os.makedirs(resultsfolder)
+
     # Generate list of files for the two groups
     print("--generate list of files")
-    OneList, TwoList = make_filelist(InputFolder, MetadataFile, Contrast)
+    onelist, twolist = make_filelist(taggedfolder, metadatafile, contrast)
+
+    # Extract features from tagged files and merge all features for each group.
+    stoplist = read_stoplistfile(stoplistfile)
+    onefeatures = create_featuretext(onelist, taggedfolder, pos, forms, stoplist)
+    twofeatures = create_featuretext(twolist, taggedfolder, pos, forms, stoplist)
+
+
+
     # Merge text files into two input files
-    print("--merge_text (one and two)")
-    merge_text(InputFolder, OneList, OneFile)
-    merge_text(InputFolder, TwoList, TwoFile)
+    #print("--merge_text (one and two)")
+    #merge_text(taggedfolder, onelist, onefile)
+    #merge_text(taggedfolder, twolist, twofile)
+
     # Load both text files       
-    print("--read_file (one and two)")
-    OneText, OneFileName = read_file(OneFile)
-    TwoText, TwoFileName = read_file(TwoFile)
+    #print("--read_file (one and two)")
+    #OneText, OneFileName = read_file(OneFile)
+    #TwoText, TwoFileName = read_file(TwoFile)
     # Prepare both text files
-    print("--prepare_text (one)")
-    OnePrepared = prepare_text(OneText, Mode, Pos, Forms, Stoplist)
-    print("--prepare_text (two)")
-    TwoPrepared = prepare_text(TwoText, Mode, Pos, Forms, Stoplist)
+    #print("--prepare_text (one)")
+    #OnePrepared = prepare_text(OneText, Mode, Pos, Forms, Stoplist)
+    #print("--prepare_text (two)")
+    #TwoPrepared = prepare_text(TwoText, Mode, Pos, Forms, Stoplist)
     # Segment both text files
     print("--segment_text (one and two)")
-    NumSegsOne = segment_text(OnePrepared, SegLength, OneFileName, SegsFolder)
-    NumSegsTwo = segment_text(TwoPrepared, SegLength, TwoFileName, SegsFolder)
-    print("  Number of segments (one, two)", NumSegsOne, NumSegsTwo)
+    numsegsone = segment_text(onefeatures, seglength, onefilename, segsfolder)
+    numsegstwo = segment_text(twofeatures, seglength, twofilename, segsfolder)
+    #print("  Number of segments (one, two)", NumSegsOne, NumSegsTwo)
     # Extract the list of selected types 
-    print("--get_types (one)")
-    Types = get_types(OnePrepared, TwoPrepared, Threshold)
-    print("  Number of types", len(list(Types.keys())))
+    #print("--get_types (one)")
+    #Types = get_types(OnePrepared, TwoPrepared, Threshold)
+    #print("  Number of types", len(list(Types.keys())))
     # Check in how many segs each type is (one)
-    print("--check_types (one)")
-    OneProps = check_types(SegsFolder + Contrast[1] + "*.txt", Types, NumSegsOne)
+    #print("--check_types (one)")
+    # OneProps = check_types(SegsFolder + Contrast[1] + "*.txt", Types, NumSegsOne)
     # Extract the list of selected types (repeat)
-    print("--get_types (two)")
-    Types = get_types(OnePrepared, TwoPrepared, Threshold)
+    #print("--get_types (two)")
+    #Types = get_types(OnePrepared, TwoPrepared, Threshold)
     # Check in how many segs each type is (two)
-    print("--check_types (two)")
-    TwoProps = check_types(SegsFolder + Contrast[2] + "*.txt", Types, NumSegsTwo)
+    #print("--check_types (two)")
+    #TwoProps = check_types(SegsFolder + Contrast[2] + "*.txt", Types, NumSegsTwo)
     # Calculate zeta for each type
-    print("--get_zetas")
-    get_zetas(Types, OneProps, TwoProps, ZetaFile)
+    #print("--get_zetas")
+    #get_zetas(Types, OneProps, TwoProps, ZetaFile)
 
 
 # =================================

@@ -13,10 +13,8 @@ import pyzeta
 
 seglength = 2000
 threshold = 10
-mode = "tag"  # plain|tag|sel|posbigrams
-pos = ["all"]  # Nc|Np|Vv|Rg|Ag etc., or "all" if no selection
-forms = "lemmas"  # words|lemmas|pos
-stoplist = ["De", "Et", "...", "qu'", "Qu'", "-là", "-ci", "C'est-à-dire", "c'est-à-dire", "Rome", "aux", "Aux", "l'"]
+pos = "Vv"  # Nc|Np|Vv|Rg|Ag etc., or "all" if no selection
+forms = "lemmata"  # words|lemmata|pos
 contrast = ["subgenre", "tragicomedie", "comedie"]  # Category, Label1, Label2
 
 
@@ -28,6 +26,8 @@ plaintextfolder = workdir + "test/"
 taggedfolder = workdir + "tagged/"
 metadatafile = workdir + "metadata.csv"
 datafolder = workdir + "data/"
+resultsfolder =  workdir + "results/"
+stoplistfile = workdir + "stoplist.txt"
 
 
 # =================================
@@ -39,15 +39,15 @@ datafolder = workdir + "data/"
 
 
 # Calculate Zeta for words in two text collections
-pyzeta.zeta(workdir, taggedfolder, metadatafile, contrast, datafolder, seglength, threshold, mode, pos, forms,
-stoplist)
+pyzeta.zeta(workdir, taggedfolder, metadatafile, contrast, datafolder, resultsfolder,
+            seglength, threshold, pos, forms, stoplistfile)
 
 
 # Make a nice plot with some zeta data
 zetafile = (datafolder + contrast[1] + "-" + contrast[2] + "_zeta-scores_segs-of-" +
-            str(seglength) + "-" + mode + "-" + forms + "-" + str(pos[0]) + ".csv")
+            str(seglength) + "-" + forms + "-" + str(pos[0]) + ".csv")
 plotfile = (workdir + "zeta_scoreplot_" + contrast[1] + "-" + contrast[2] + "_segs-of-" +
-            str(seglength) + "-" + mode + "-" + forms + "-" + str(pos[0]) + ".svg")
+            str(seglength) + "-" + forms + "-" + str(pos[0]) + ".svg")
 numwords = 25
 # pyzeta.plot_zeta(zetafile, numwords, contrast, plotfile)
 
@@ -56,7 +56,7 @@ numwords = 25
 numfeatures = 1000
 cutoff = 0.30
 scatterfile = (workdir + "zeta_type-scatterplot_" + contrast[1] + "-" + contrast[2] +
-               "_segs-of-" + str(seglength) + "-" + mode + "-" + forms + "-" + str(pos[0]) + ".svg")
+               "_segs-of-" + str(seglength) + "-" + forms + "-" + str(pos[0]) + ".svg")
 # pyzeta.plot_types(zetafile, numfeatures, cutoff, contrast, scatterfile)
 
 
