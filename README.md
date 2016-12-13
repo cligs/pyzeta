@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/76167647.svg)](https://zenodo.org/badge/latestdoi/76167647)
 
-The pyzeta scripts are a Python implementation of Craig's Zeta score for contrastive text analysis. 
+**The pyzeta scripts are a Python implementation of Craig's Zeta score for contrastive text analysis.**
 
 Currently, the following processes are supported:
 
