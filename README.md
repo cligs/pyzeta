@@ -30,3 +30,8 @@ For more information on Zeta, see:
 - Hoover, David L. „Teasing out Authorship and Style with T-Tests and Zeta“. In Digital Humanities Conference. London, 2010. http://dh2010.cch.kcl.ac.uk/academic-programme/abstracts/papers/html/ab-658.html.
 - Schöch, Christof. „Genre Analysis“. In Digital Humanities for Literary Studies: Theories, Methods, and Practices, ed. by James O’Sullivan. University Park: Pennsylvania State Univ. Press, 2017 (to appear).
 
+Requirements, installation and usage
+
+- Requirements: Python 3 with pandas, numpy, treetaggerwrapper and pygal
+- Installation: Simply copy pyzeta.py and run_pyzeta.py to a common location on your computer
+- Usage: Open pyzeta.py and run_pyzeta.py with an IDE such as Spyder or PyCharm, adapt the parameters in run_pyzeta.py and run from the IDE. 
