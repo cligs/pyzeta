@@ -4,6 +4,12 @@
 
 **The pyzeta scripts are a Python implementation of Craig's Zeta score for contrastive text analysis.**
 
+The sample output folder contains some examples of what pyzeta produces:
+
+- A matrix containing the features used with their proportions in each partition and their resulting zeta score
+- A plot showing the most distinctive words as a horizontal bar chart.
+- A plot showing the feature distribution as a scatterplot.
+
 Currently, the following processes are supported:
 
 - Prepare a text collection by tagging it using TreeTagger (pyzeta.prepare; run once per collection)
