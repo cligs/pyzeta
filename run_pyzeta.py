@@ -5,6 +5,7 @@
 # version: 0.2.0
 
 import pyzeta
+import os
 
 """
 The pyzeta script is a Python implementation of Craig's Zeta.
@@ -30,6 +31,11 @@ You can set the following parameters:
 - Which POS should be selected? "all" selects all, "Xy" will select words corresponding to Xy POS tag.
 - Which partitions of the data should be contrasted? Indicate the category and the two contrasting labels.
 
+Requirements, installation and usage
+- Requirements: Linux OS, Python 3 with pandas, numpy, treetaggerwrapper and pygal
+- Installation: Simply copy pyzeta.py and run_pyzeta.py to a common location on your computer
+- Usage: Open pyzeta.py and run_pyzeta.py with an IDE such as Spyder or PyCharm, adapt the parameters in run_pyzeta.py and run from the IDE.
+
 For more information on Zeta, see:
 - Burrows, John. „All the Way Through: Testing for Authorship in Different Frequency Strata“.
   Literary and Linguistic Computing 22, Nr. 1 (2007): 27–47. doi:10.1093/llc/fqi067.
@@ -53,14 +59,15 @@ contrast = ["", "", ""]  # category, label1, label2
 # Files and folders
 # =================================
 workdir = ""  # full path to working directory; ends with slash
-plaintextfolder = workdir + "text/"
-metadatafile = workdir + "metadata.csv"
-stoplistfile = workdir + "stoplist.txt"
-taggedfolder = workdir + "tagged/"
-datafolder = workdir + "data/"
-resultsfolder = workdir + "results/"
+plaintextfolder = os.path.join(workdir, "text/")
+metadatafile = os.path.join(workdir, "metadata.csv")
+stoplistfile = os.path.join(workdir, "stoplist.txt")
+taggedfolder = os.path.join(workdir, "tagged/")
+datafolder = os.path.join(workdir, "data/")
+resultsfolder = os.path.join(workdir, "results/")
 contraststring = contrast[1] + "-" + contrast[2]
 parameterstring = str(seglength) + "-" + forms + "-" + str(pos)
+
 
 # =================================
 # Functions
@@ -68,7 +75,7 @@ parameterstring = str(seglength) + "-" + forms + "-" + str(pos)
 
 # Prepare texts: tag and save (run once for a collection).
 language = "fr"  # TreeTagger language model code
-pyzeta.prepare(plaintextfolder, language, taggedfolder)
+# pyzeta.prepare(plaintextfolder, language, taggedfolder)
 
 
 # Calculate Zeta for words in two text collections
