@@ -59,8 +59,8 @@ def save_dataframe(allfeaturecounts, currentfile):
 # =================================
 
 
-def run_treetagger(text):
-    tagger = treetaggerwrapper.TreeTagger(TAGLANG="fr")
+def run_treetagger(text, language):
+    tagger = treetaggerwrapper.TreeTagger(TAGLANG=language)
     tagged = tagger.tag_text(text)
     return tagged
 
@@ -74,14 +74,14 @@ def save_tagged(taggedfolder, filename, tagged):
             writer.writerow(item)
 
 
-def prepare(plaintextfolder, taggedfolder):
+def prepare(plaintextfolder, language, taggedfolder):
     print("--prepare")
     if not os.path.exists(taggedfolder):
         os.makedirs(taggedfolder)
     for file in glob.glob(plaintextfolder + "*.txt"):
         filename = get_filename(file)
         text = read_plaintext(file)
-        tagged = run_treetagger(text)
+        tagged = run_treetagger(text, language)
         save_tagged(taggedfolder, filename, tagged)
     print("Done.")
 

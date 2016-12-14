@@ -52,7 +52,7 @@ contrast = ["", "", ""]  # category, label1, label2
 # =================================
 # Files and folders
 # =================================
-workdir = "/"  # full path to working directory; ends with slash
+workdir = ""  # full path to working directory; ends with slash
 plaintextfolder = workdir + "text/"
 metadatafile = workdir + "metadata.csv"
 stoplistfile = workdir + "stoplist.txt"
@@ -67,7 +67,8 @@ parameterstring = str(seglength) + "-" + forms + "-" + str(pos)
 # =================================
 
 # Prepare texts: tag and save (run once for a collection).
-pyzeta.prepare(plaintextfolder, taggedfolder)
+language = "fr"  # TreeTagger language model code
+pyzeta.prepare(plaintextfolder, language, taggedfolder)
 
 
 # Calculate Zeta for words in two text collections
