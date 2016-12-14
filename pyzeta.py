@@ -99,6 +99,7 @@ def make_filelist(metadatafile, contrast):
     print("--make_filelist")
     with open(metadatafile, "r") as infile:
         metadata = pd.DataFrame.from_csv(infile, sep=";")
+        # print(metadata.head())
         onemetadata = metadata[metadata[contrast[0]].isin([contrast[1]])]
         twometadata = metadata[metadata[contrast[0]].isin([contrast[2]])]
         onelist = list(onemetadata.loc[:, "idno"])
@@ -197,7 +198,7 @@ def make_segments(taggedfolder, currentlist, seglength,
 def calculate_zetas(allfeaturecountsone, allfeaturecountstwo):
     """
     Perform the Zeta score calculation.
-    Zeta = proportion in group one + (1 - proportion in group two) -1
+    Zeta = proportion of segments containing the type in group one minus proportion in group two
     """
     print("--calculate_zetas")
     # Calculate the proportions by dividing the row-wise sums by the number of segments
@@ -207,7 +208,7 @@ def calculate_zetas(allfeaturecountsone, allfeaturecountstwo):
                               axis=1, join="outer")
     zetascoredata = zetascoredata.fillna(0)
     # The next line contains the actual zeta score calculation
-    zetascoredata["zetascores"] = zetascoredata.loc[:, "docpropone"] + (1 - zetascoredata.loc[:, "docproptwo"]) - 1
+    zetascoredata["zetascores"] = zetascoredata.loc[:, "docpropone"] - zetascoredata.loc[:, "docproptwo"]
     zetascoredata = zetascoredata.sort_values("zetascores", ascending=False)
     # print(zetascoredata.head(5))
     # print(zetascoredata.tail(5))

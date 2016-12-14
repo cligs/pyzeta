@@ -44,10 +44,10 @@ For more information on Zeta, see:
 # Zeta Parameters
 # =================================
 
-seglength = 1000  # int
+seglength = 1000  # int; 1000|2000|5000 are reasonable
 pos = "all"  # Nc|Vv|Rg|Ag etc. depending on tagger model, or "all" if no selection
 forms = "lemmata"  # words|lemmata|pos
-contrast = ["subgenre", "tragicomedie", "comedie"]  # Category, Label1, Label2
+contrast = ["", "", ""]  # category, label1, label2
 
 # =================================
 # Files and folders
@@ -67,7 +67,7 @@ parameterstring = str(seglength) + "-" + forms + "-" + str(pos)
 # =================================
 
 # Prepare texts: tag and save (run once for a collection).
-# pyzeta.prepare(plaintextfolder, taggedfolder)
+pyzeta.prepare(plaintextfolder, taggedfolder)
 
 
 # Calculate Zeta for words in two text collections
@@ -81,7 +81,7 @@ pyzeta.plot_scores(numwords, contraststring, parameterstring, resultsfolder)
 
 
 # Scatterplot of types
-numfeatures = 500
+numfeatures = 500  # int
 cutoff = 0.30
 pyzeta.plot_types(numfeatures, cutoff, contrast, contraststring, parameterstring, resultsfolder)
 
