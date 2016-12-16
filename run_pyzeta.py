@@ -17,9 +17,9 @@ Currently, the following processes are supported:
   and calculate the zeta scores for the vocabulary (pyzeta.zeta).
   There are options to choose word forms or lemmata or POS as features.
   There is the possibility to filter features based on their POS.
-- Visualize the most distinctive words as a horizontal bar chart. (pyzeta.plot_scores)
-- Visualize the feature distribution as a scatterplot (pyzeta.plot_types)
-- Currently non-functional: PCA for three partitions using distinctive features.
+- Visualize the most distinctive words as an interactive, horizontal bar chart. (pyzeta.plot_scores)
+- Visualize the feature distribution as an interactive scatterplot (pyzeta.plot_types)
+- Visualize a threeway comparison of the proportions of the top-distinctive features (pyzeta.threeway)
 
 The script expects the following as input:
 - A folder with plain text files
@@ -50,7 +50,7 @@ For more information on Zeta, see:
 # Zeta Parameters
 # =================================
 
-seglength = 1000  # int; 1000|2000|5000 are reasonable
+seglength = 3000  # int; 1000|2000|5000 are reasonable
 pos = "all"  # Nc|Vv|Rg|Ag etc. depending on tagger model, or "all" if no selection
 forms = "lemmata"  # words|lemmata|pos
 contrast = ["", "", ""]  # category, label1, label2
@@ -58,13 +58,13 @@ contrast = ["", "", ""]  # category, label1, label2
 # =================================
 # Files and folders
 # =================================
-workdir = ""  # full path to working directory; ends with slash
-plaintextfolder = os.path.join(workdir, "text/")
+workdir = "/"  # full path to working directory; ends with slash
+plaintextfolder = os.path.join(workdir, "text", "")
 metadatafile = os.path.join(workdir, "metadata.csv")
 stoplistfile = os.path.join(workdir, "stoplist.txt")
-taggedfolder = os.path.join(workdir, "tagged/")
-datafolder = os.path.join(workdir, "data/")
-resultsfolder = os.path.join(workdir, "results/")
+taggedfolder = os.path.join(workdir, "tagged", "")
+datafolder = os.path.join(workdir, "data", "")
+resultsfolder = os.path.join(workdir, "results", "")
 contraststring = contrast[1] + "-" + contrast[2]
 parameterstring = str(seglength) + "-" + forms + "-" + str(pos)
 
@@ -74,8 +74,8 @@ parameterstring = str(seglength) + "-" + forms + "-" + str(pos)
 # =================================
 
 # Prepare texts: tag and save (run once for a collection).
-language = "fr"  # TreeTagger language model code
-# pyzeta.prepare(plaintextfolder, language, taggedfolder)
+# language = "fr"  # TreeTagger language model code
+pyzeta.prepare(plaintextfolder, language, taggedfolder)
 
 
 # Calculate Zeta for words in two text collections
@@ -83,23 +83,21 @@ pyzeta.zeta(taggedfolder, metadatafile, contrast, datafolder, resultsfolder,
             seglength, pos, forms, stoplistfile)
 
 
-# Make a nice plot with some zeta data
-numwords = 20
-pyzeta.plot_scores(numwords, contraststring, parameterstring, resultsfolder)
+# Barchart with the most extreme zeta values
+numfeatures = 25
+pyzeta.plot_zetascores(numfeatures, contrast, contraststring, parameterstring, resultsfolder)
 
 
 # Scatterplot of types
-numfeatures = 500  # int
-cutoff = 0.30
+numfeatures = 200  # int
+cutoff = 0.40
 pyzeta.plot_types(numfeatures, cutoff, contrast, contraststring, parameterstring, resultsfolder)
 
 
-# Threeway comparison (NON-FUNCTIONAL)
-# numfeatures = 20
-# components = [1, 2]
-# threecontrast = [["subgenre", "comedie", "tragedie", "tragicomedie"],
-#                  ["comedie", "comedie", "other"],
-#                  ["tragedie", "tragedie", "other"],
-#                  ["tragicomedie", "tragicomedie", "other"]]
-# pyzeta.threeway(datafolder, zetafile, numfeatures, components, plaintextfolder, metadatafile,
-#                threecontrast, seglength, mode, pos, forms, stoplist)
+# Threeway comparison (simple)
+numfeatures = 25  # int
+thirdgroup = ["", ""]  # category, label3
+sortby = "comedie"  # label
+mode = "generate"  # string; generate|analyze
+pyzeta.threeway(datafolder, resultsfolder, contrast, contraststring, parameterstring,
+                thirdgroup, numfeatures, sortby, mode)

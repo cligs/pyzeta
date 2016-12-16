@@ -19,6 +19,7 @@ from collections import Counter
 import treetaggerwrapper
 import pygal
 from pygal import style
+from scipy import stats
 
 
 # import itertools
@@ -124,7 +125,6 @@ def select_features(segment, pos, forms, stoplist):
     Turns the complete list into a set, then turns into a string for better saving.
     TODO: Add a replacement feature for words like "j'" or "-ils"
     """
-    global features
     if pos != "all":
         if forms == "words":
             features = [line[0].lower() for line in segment if
@@ -228,7 +228,7 @@ def zeta(taggedfolder, metadatafile, contrast,
     contraststring = contrast[1] + "-" + contrast[2]
     parameterstring = str(seglength) + "-" + forms + "-" + str(pos)
     segsfolder = datafolder + contraststring + "_" + parameterstring + "/"
-    zetascorefile = resultsfolder + contraststring + "_" + parameterstring + ".csv"
+    zetascorefile = resultsfolder + "zetascores_" + contraststring + "_" + parameterstring + ".csv"
     onefile = datafolder + "features_" + contrast[1] + "_" + parameterstring + ".csv"
     twofile = datafolder + "features_" + contrast[2] + "_" + parameterstring + ".csv"
 
@@ -263,33 +263,55 @@ zeta_style = pygal.style.Style(
     font_family="FreeSans",
     title_font_size=20,
     legend_font_size=16,
-    label_font_size=12)
+    label_font_size=12,
+    opacity_hover=0.2)
+
+
+def calculate_confint(zetadata):
+    """
+    Calculate the confidence interval for the zeta score distribution.
+    Status: Not useful because a huge part of the scores are beyond the confint.
+    """
+    print("----calculate_confint")
+    zetascores = list(zetadata.loc[:, "zetascores"])
+    numvals = len(zetascores)
+    mean = np.mean(zetascores)
+    sem = stats.sem(zetascores)
+    coveredint = 0.9995  # the area of the distribution to be excluded
+    confint = stats.norm.interval(coveredint,
+                                   loc=mean,
+                                   scale=sem)
+    # print(confint)
+    return confint
 
 
 def get_zetadata(zetascorefile, numwords):
+    print("----get_zetadata")
     with open(zetascorefile, "r") as infile:
         zetadata = pd.DataFrame.from_csv(infile, sep="\t")
         # print(zetadata.head())
         zetadata.drop(["docpropone", "docproptwo"], axis=1, inplace=True)
         zetadata.sort_values("zetascores", ascending=False, inplace=True)
+        confint = calculate_confint(zetadata)
         zetadatahead = zetadata.head(numwords)
         zetadatatail = zetadata.tail(numwords)
         zetadata = zetadatahead.append(zetadatatail)
         zetadata = zetadata.reset_index(drop=False)
         # print(zetadata.head())
-        return zetadata
+        return zetadata, confint
 
 
-def plot_zetadata(zetadata, contraststring, zetaplotfile, numwords):
-    plot = pygal.HorizontalBar(style=zeta_style,
-                               print_values=False,
-                               print_labels=True,
-                               show_legend=False,
-                               range=(-1, 1),
-                               title=("Kontrastive Analyse mit Zeta\n (" +
-                                      str(contraststring) + ")"),
-                               x_title="Zeta-Score",
-                               y_title="Je " + str(numwords) + " Worte pro Sammlung"
+def plot_zetadata(zetadata, contrast, contraststring, zetaplotfile, numwords):
+    print("----plot_zetadata")
+    plot = pygal.HorizontalBar(style = zeta_style,
+                               print_values = False,
+                               print_labels = True,
+                               show_legend = False,
+                               range = (-1, 1),
+                               title = ("Kontrastive Analyse mit Zeta\n (" +
+                                        str(contrast[2]) + " vs. " + str(contrast[1]) + ")"),
+                               x_title = "Zeta-Score",
+                               y_title = str(numwords) + " Worte pro Partition"
                                )
     for i in range(len(zetadata)):
         if zetadata.iloc[i, 1] > 0.8:
@@ -300,7 +322,7 @@ def plot_zetadata(zetadata, contraststring, zetaplotfile, numwords):
             color = "#29a329"
         elif zetadata.iloc[i, 1] > 0.5:
             color = "#3d8f3d"
-        elif zetadata.iloc[i, 1] > 0:
+        elif zetadata.iloc[i, 1] > 0.3:
             color = "#4d804d"
         elif zetadata.iloc[i, 1] < -0.8:
             color = "#0066ff"
@@ -310,22 +332,22 @@ def plot_zetadata(zetadata, contraststring, zetaplotfile, numwords):
             color = "#3370cc"
         elif zetadata.iloc[i, 1] < -0.5:
             color = "#4d75b3"
-        elif zetadata.iloc[i, 1] < 0:
+        elif zetadata.iloc[i, 1] < -0.3:
             color = "#60799f"
         else:
-            color = "DarkGrey"
+            color = "#585858"
         plot.add(zetadata.iloc[i, 0], [{"value": zetadata.iloc[i, 1], "label": zetadata.iloc[i, 0], "color": color}])
     plot.render_to_file(zetaplotfile)
 
 
-def plot_scores(numwords, contraststring, parameterstring, resultsfolder):
-    print("--plot_scores")
+def plot_zetascores(numfeatures, contrast, contraststring, parameterstring, resultsfolder):
+    print("--plot_zetascores")
     # Define some filenames
-    zetascorefile = resultsfolder + contraststring + "_" + parameterstring + ".csv"
-    zetaplotfile = resultsfolder + "zetascores_" + contraststring + "_" + parameterstring + ".svg"
+    zetascorefile = resultsfolder + "zetascores_" + contraststring + "_" + parameterstring + ".csv"
+    zetaplotfile = resultsfolder + "scoresplot_" + contraststring + "_" + parameterstring + "-" + str(numfeatures) + ".svg"
     # Get the data and plot it
-    zetadata = get_zetadata(zetascorefile, numwords)
-    plot_zetadata(zetadata, contraststring, zetaplotfile, numwords)
+    zetadata, confint = get_zetadata(zetascorefile, numfeatures)
+    plot_zetadata(zetadata, contrast, contraststring, zetaplotfile, numfeatures)
 
 
 # ==============================================
@@ -360,9 +382,9 @@ def make_typesplot(types, propsone, propstwo, zetas, numfeatures, cutoff, contra
                     range=(0, 1),
                     show_y_guides=True,
                     show_x_guides=True,
-                    title="Distribution of types",
-                    x_title="Proportion of types in " + str(contrast[1]),
-                    y_title="Proportion of types in " + str(contrast[2]))
+                    title="Verteilung der Type-Anteile",
+                    x_title="Anteil der Types in " + str(contrast[1]),
+                    y_title="Anteil der Types in " + str(contrast[2]))
     for i in range(0, numfeatures * 2):
         if zetas[i] > cutoff:
             color = "green"
@@ -394,135 +416,180 @@ def plot_types(numfeatures, cutoff, contrast, contraststring, parameterstring, r
     Function to make a scatterplot with the type proprtion data.
     """
     print("--plot_types")
-    zetascorefile = resultsfolder + contraststring + "_" + parameterstring + ".csv"
+    zetascorefile = resultsfolder + "zetascores_" + contraststring + "_" + parameterstring + ".csv"
     typescatterfile = (resultsfolder + "typescatter_" + contraststring + "_"
-                       + parameterstring + "_" + str(numfeatures) + ".svg")
+                       + parameterstring + "-" + str(numfeatures) + "-" + str(cutoff) + ".svg")
     scores = get_scores(zetascorefile, numfeatures)
     thetypes, propsone, propstwo, zetas = make_data(scores)
     make_typesplot(thetypes, propsone, propstwo, zetas, numfeatures, cutoff, contrast, typescatterfile)
     print("Done.")
 
+
 # ==============================================
 # Threeway comparison
 # ==============================================
 
+threeway_style = pygal.style.Style(
+    background = 'white',
+    plot_background = 'white',
+    font_family = "FreeSans",
+    guide_stroke_dasharray = (6,6),
+    major_guide_stroke_dasharray = (1,1),
+    title_font_size = 16,
+    legend_font_size = 14,
+    label_font_size = 12,
+    major_label_font_size = 12,
+    value_font_size = 12,
+    major_value_font_size = 12,
+    tooltip_font_size = 12,
+    opacity_hover = 0.2,
+    colors = ("firebrick", "mediumblue", "green"))
 
-# def get_threewayscores(zetafile, numfeatures):
-#     with open(zetafile, "r") as infile:
-#         zetascores = pd.DataFrame.from_csv(infile)
-#         scores = zetascores.head(numfeatures)
-#         # print(scores.head())
-#         return scores
-#
-#
-# def get_features(scores):
-#     features = list(scores.loc[:, "type"])
-#     # print("features", features)
-#     return features
-#
-#
-# def make_three_filelist(metadatafile, threecontrast):
-#     """
-#     Based on the metadata, create three lists of files, each from one group.
-#     The category to check and the two labels are found in threeContrast.
-#     """
-#     with open(metadatafile, "r") as infile:
-#         metadata = pd.DataFrame.from_csv(infile, sep=";")
-#         threecontrast = threecontrast[0]
-#         onemetadata = metadata[metadata[threecontrast[0]].isin([threecontrast[1]])]
-#         twometadata = metadata[metadata[threecontrast[0]].isin([threecontrast[2]])]
-#         threemetadata = metadata[metadata[threecontrast[0]].isin([threecontrast[3]])]
-#         onelist = list(onemetadata.loc[:, "idno"])
-#         twolist = list(twometadata.loc[:, "idno"])
-#         threelist = list(threemetadata.loc[:, "idno"])
-#         # print(oneList, twoList, threeList)
-#         print("---", len(onelist), len(twolist), len(threelist), "texts")
-#         return onelist, twolist, threelist
-#
-#
-# def get_freqs(prepared):
-#     freqsall = Counter(prepared)
-#     # print(freqsall)
-#     return freqsall
-#
-#
-# def select_freqs(freqsall, features, textlength, textname):
-#     freqssel = dict((key, freqsall[key] / textlength) for key in features)
-#     freqssel = pd.Series(freqssel, name=textname)
-#     # print(freqssel)
-#     return freqssel
-#
-#
-# def apply_pca(freqmatrix):
-#     pca = PCA(n_components=5, whiten=True)
-#     pca.fit(freqmatrix)
-#     variance = pca.explained_variance_ratio_
-#     transformed = pca.transform(freqmatrix)
-#     # print(transformed)
-#     print(variance)
-#     return transformed, variance
-#
-#
-# def make_2dscatterplot(transformed, components, textnames,
-#                        onelist, twolist, threelist,
-#                        variance,
-#                        mode, forms, pos):
-#     components = [components[0] - 1, components[1] - 1]
-#     plot = pygal.XY(style=zeta_style,
-#                     stroke=False,
-#                     show_legend=False,
-#                     title="PCA mit distinktiven Features",
-#                     x_title="PC" + str(components[0] + 1) + "(" + "{:03.2f}".format(variance[components[0]]) + ")",
-#                     y_title="PC" + str(components[1] + 1) + "(" + "{:03.2f}".format(variance[components[1]]) + ")",
-#                     )
-#     for i in range(0, 391):  # TODO: Derive from number of texts actually used.
-#         point = (transformed[i][components[0]], transformed[i][components[1]])
-#         if textnames[i] in onelist:
-#             mylabel = "comedie"
-#             mycolor = "red"
-#         elif textnames[i] in twolist:
-#             mylabel = "tragedie"
-#             mycolor = "blue"
-#         elif textnames[i] in threelist:
-#             mylabel = "tragicomedie"
-#             mycolor = "green"
-#         else:
-#             mylabel = "ERROR"
-#             mycolor = "grey"
-#         plot.add(textnames[i], [{"value": point, "label": mylabel, "color": mycolor}])
-#     plot.render_to_file(
-#         "threeway-2dscatter_" + mode + "-" + forms + "-" + str(pos[0]) + "_PC" + str(components[0] + 1) + "+" + str(
-#             components[1] + 1) + ".svg")
-#
-#
-# # Coordinating function
-# def threeway(datafolder, zetafile, numfeatures, components,
-#              inputfolder, metadatafile, threecontrast,
-#              seglength, mode, pos, forms, stoplist):
-#     print("--threeway")
-#     featuresall = []
-#     for contrast in threecontrast[1:4]:
-#         zetafile = (datafolder + contrast[1] + "-" + contrast[2] + "_zeta-scores_segs-of-" +
-#                     str(seglength) + "-" + mode + "-" + forms + "-" + str(pos[0]) + ".csv")
-#         # print(zetaFile)
-#         scores = get_threewayscores(zetafile, numfeatures)
-#         features = get_features(scores)
-#         featuresall.extend(features)
-#     # print(featuresall)
-#     onelist, twolist, threelist = make_three_filelist(metadatafile, threecontrast)
-#     freqmatrix = pd.DataFrame()
-#     textnames = []
-#     for textfile in glob.glob(inputfolder + "*.txt"):
-#         text, textname = read_plaintext(textfile)
-#         textnames.append(textname)
-#         prepared = prepare_text(text, mode, pos, forms, stoplist)
-#         textlength = len(prepared)
-#         freqsall = get_freqs(prepared)
-#         freqssel = select_freqs(freqsall, featuresall, textlength, textname)
-#         freqmatrix[textname] = freqssel
-#     print(freqmatrix.shape)
-#     transformed, variance = apply_pca(freqmatrix.T)
-#     make_2dscatterplot(transformed, components, textnames,
-#                        onelist, twolist, threelist,
-#                        variance,
-#                        mode, forms, pos)
+
+def get_distfeatures(zetascorefile, numfeatures):
+    print("----get_distfeatures")
+    with open(zetascorefile, "r") as infile:
+        allzetascores = pd.DataFrame.from_csv(infile, sep="\t")
+        allzetascores["type"] = allzetascores.index
+        distscoreshead = allzetascores.head(numfeatures)
+        distscorestail = allzetascores.tail(numfeatures)
+        distscoresall = distscoreshead.append(distscorestail)
+        distfeatures = list(distscoresall.loc[:, "type"])
+        # print("distfeatures", distfeatures)
+        return distfeatures
+
+
+def select_distrawcounts(featuresfile, distfeatures):
+    print("----select_distrawcounts")
+    with open(featuresfile, "r") as infile:
+        allcounts = pd.DataFrame.from_csv(infile, sep="\t")
+        allcounts["type"] = allcounts.index
+        # print(allcounts.head())
+        distrawcounts = allcounts[allcounts["type"].isin(distfeatures)]
+        distrawcounts = distrawcounts.drop("type", axis=1)
+        # print(distrawcounts.head())
+        return distrawcounts
+
+
+def calculate_distprops(distrawcounts, group):
+    print("----calculate_distprops")
+    distprops = np.sum(distrawcounts, axis=1).divide(len(distrawcounts.columns), axis=0)
+    distprops = pd.Series(distprops, name=group)
+    # print(distprops)
+    return distprops
+
+
+def load_dataframe(distpropsfile):
+    with open(distpropsfile, "r") as infile:
+        alldistprops = pd.DataFrame.from_csv(infile, sep="\t")
+        # print(alldistprops.head())
+        return alldistprops
+
+
+def make_dotplot(alldistprops, sortby, dotplotfile):
+    print("----make_dotplot")
+    alldistprops = alldistprops.T
+    alldistprops = alldistprops.sort_values(sortby, axis=0, ascending="False")
+    alldistprops = alldistprops.T
+    dotplot = pygal.Dot(style=threeway_style,
+                        show_legend=False,
+                        legend_at_bottom=True,
+                        legend_at_bottom_columns=3,
+                        show_y_guides=True,
+                        show_x_guides=False,
+                        x_label_rotation=60,
+                        title="Vergleich dreier Gruppen\n(Anteil der Segmente pro Gruppe)",
+                        x_title="Distinktive Types",
+                        y_title="Textgruppen")
+    distfeatures = alldistprops.columns
+    dotplot.x_labels = distfeatures
+    for i in range(0,3):
+        grouplabel = alldistprops.index[i]
+        distprops = list(alldistprops.loc[alldistprops.index[i],:])
+        dotplot.add(grouplabel, distprops)
+    dotplot.render_to_file(dotplotfile)
+
+
+def make_lineplot(alldistprops, sortby, lineplotfile):
+    print("----make_lineplot")
+    if sortby == "zetascores":
+        alldistprops = alldistprops.T
+        alldistprops[sortby] = alldistprops.loc[:,"comedie"] - alldistprops.loc[:,"tragedie"]
+        alldistprops = alldistprops.sort_values(sortby, axis=0, ascending=False)
+        print(alldistprops)
+        alldistprops = alldistprops.T
+    else:
+        alldistprops = alldistprops.T
+        alldistprops = alldistprops.sort_values(sortby, axis=0, ascending="True")
+        alldistprops = alldistprops.T
+    lineplot = pygal.Line(style=threeway_style,
+                    show_legend=True,
+                    legend_at_bottom=True,
+                    legend_at_bottom_columns=3,
+                    show_y_guides=False,
+                    show_x_guides=False,
+                    x_label_rotation=60,
+                    title="Vergleich dreier Gruppen",
+                    x_title="Distinktive Types",
+                    y_title="Anteil der Segmente",
+                    interpolate='cubic')
+    distfeatures = alldistprops.columns
+    lineplot.x_labels = distfeatures
+    for i in range(0,3):
+        grouplabel = alldistprops.index[i]
+        distprops = list(alldistprops.loc[alldistprops.index[i],:])
+        lineplot.add(grouplabel, distprops)
+        lineplot.render_to_file(lineplotfile)
+
+
+def test_correlations(alldistprops):
+    print("----test_correlations")
+    columnlabels = ["groupone", "grouptwo", "correlation", "p-value"]
+    allcorrinfos = []
+    for i,j in [(0,1), (0,2), (1,2)]:
+        comparison = [alldistprops.index[i], alldistprops.index[j]]
+        correlation = stats.pearsonr(list(alldistprops.loc[alldistprops.index[i],:]),
+                                     list(alldistprops.loc[alldistprops.index[j],:]))
+        corrinfo = [comparison[0], comparison[1], correlation[0], correlation[1]]
+        allcorrinfos.append(corrinfo)
+    allcorrinfosdf = pd.DataFrame(allcorrinfos, columns=columnlabels)
+    allcorrinfosdf.sort_values(by="p-value", ascending=True, inplace=True)
+    # print(allcorrinfosdf)
+    return allcorrinfosdf
+
+
+# Coordinating function
+def threeway(datafolder, resultsfolder, contrast, contraststring, parameterstring,
+             thirdgroup, numfeatures, sortby, mode):
+    print("--threeway")
+    # Create necessary filenames
+    zetascorefile = resultsfolder + "zetascores_" + contraststring + "_" + parameterstring + ".csv"
+    dotplotfile = resultsfolder + "dotplot_" + contraststring + "-" + thirdgroup[1] + "_" + parameterstring + "-" + str(numfeatures) + ".svg"
+    lineplotfile = resultsfolder + "lineplot_" + contraststring + "-" + thirdgroup[1] + "_" + parameterstring + "-" + str(numfeatures) + ".svg"
+    distpropsfile = datafolder + "distprops_" + contraststring + "_" + parameterstring + "-" + str(numfeatures) + ".csv"
+    correlationsfile = resultsfolder + "correlations_" + contraststring + "-" + thirdgroup[1] + "_" + parameterstring + "-" + str(numfeatures) + ".csv"
+    # Do the actual work
+    if mode == "generate":
+        # Calculate the proportions for each feature for the three groups
+        distfeatures = get_distfeatures(zetascorefile, numfeatures)
+        alldistprops = pd.DataFrame()
+        for group in (contrast[1], contrast[2], thirdgroup[1]):
+            featuresfile = datafolder + "features_" + group + "_" + parameterstring + ".csv"
+            distrawcounts = select_distrawcounts(featuresfile, distfeatures)
+            distprops = calculate_distprops(distrawcounts, group)
+            alldistprops = alldistprops.append(distprops)
+        save_dataframe(alldistprops, distpropsfile)
+        # Visualize the data and make a correlation test
+        # make_dotplot(alldistprops, sortby, dotplotfile)
+        make_lineplot(alldistprops, sortby, lineplotfile)
+        correlationscoresdf = test_correlations(alldistprops)
+        save_dataframe(correlationscoresdf, correlationsfile)
+    if mode == "analyze":
+        # Load data from a previous "generate" step
+        alldistprops = load_dataframe(distpropsfile)
+        # print(alldistprops)
+        # Visualize the data and make a correlation test
+        # make_dotplot(alldistprops, sortby, dotplotfile)
+        make_lineplot(alldistprops, sortby, lineplotfile)
+        correlationscoresdf = test_correlations(alldistprops)
+        save_dataframe(correlationscoresdf, correlationsfile)
