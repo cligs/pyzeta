@@ -16,7 +16,8 @@ Currently, the following processes are supported:
 - For any two partitions of the collection, create a matrix of per-segment type frequencies and calculate the zeta scores for the vocabulary (pyzeta.zeta). There are options to choose word forms or lemmata or POS as features. There is the possibility to filter features based on their POS.
 - Visualize the most distinctive words as a horizontal bar chart. (pyzeta.plot_scores)
 - Visualize the feature distribution as a scatterplot (pyzeta.plot_types)
-- Currently non-functional: PCA for three partitions using distinctive features.
+- Visualize the relation between three partitions based on type proportions in two partitions (pyzeta.threeway)
+- (Currently non-functional: PCA for three partitions using distinctive features.)
 
 The script expects the following as input:
 
