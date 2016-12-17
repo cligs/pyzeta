@@ -20,11 +20,14 @@ import treetaggerwrapper
 import pygal
 from pygal import style
 from scipy import stats
+import matplotlib
+import matplotlib.pyplot as plt
+from scipy.spatial.distance import pdist
+from scipy.cluster.hierarchy import dendrogram, linkage
+import itertools
+import shutil
+from sklearn.decomposition import PCA
 
-
-# import itertools
-# import shutil
-# from sklearn.decomposition import PCA
 
 # =================================
 # Shared functions
@@ -422,7 +425,6 @@ def plot_types(numfeatures, cutoff, contrast, contraststring, parameterstring, r
     scores = get_scores(zetascorefile, numfeatures)
     thetypes, propsone, propstwo, zetas = make_data(scores)
     make_typesplot(thetypes, propsone, propstwo, zetas, numfeatures, cutoff, contrast, typescatterfile)
-    print("Done.")
 
 
 # ==============================================
@@ -435,7 +437,7 @@ threeway_style = pygal.style.Style(
     font_family = "FreeSans",
     guide_stroke_dasharray = (6,6),
     major_guide_stroke_dasharray = (1,1),
-    title_font_size = 16,
+    title_font_size = 18,
     legend_font_size = 14,
     label_font_size = 12,
     major_label_font_size = 12,
@@ -559,18 +561,18 @@ def test_correlations(alldistprops):
 
 
 # Coordinating function
-def threeway(datafolder, resultsfolder, contrast, contraststring, parameterstring,
+def threeway_compare(datafolder, resultsfolder, contrast, contraststring, parameterstring,
              thirdgroup, numfeatures, sortby, mode):
-    print("--threeway")
+    print("--threeway_compare")
     # Create necessary filenames
     zetascorefile = resultsfolder + "zetascores_" + contraststring + "_" + parameterstring + ".csv"
     dotplotfile = resultsfolder + "dotplot_" + contraststring + "-" + thirdgroup[1] + "_" + parameterstring + "-" + str(numfeatures) + ".svg"
     lineplotfile = resultsfolder + "lineplot_" + contraststring + "-" + thirdgroup[1] + "_" + parameterstring + "-" + str(numfeatures) + ".svg"
-    distpropsfile = datafolder + "distprops_" + contraststring + "_" + parameterstring + "-" + str(numfeatures) + ".csv"
+    distpropsfile = datafolder + "distpropspergroup_" + contraststring + "_" + parameterstring + "-" + str(numfeatures) + ".csv"
     correlationsfile = resultsfolder + "correlations_" + contraststring + "-" + thirdgroup[1] + "_" + parameterstring + "-" + str(numfeatures) + ".csv"
     # Do the actual work
     if mode == "generate":
-        # Calculate the proportions for each feature for the three groups
+        # Calculate the proportions for each feature for each group as a whole
         distfeatures = get_distfeatures(zetascorefile, numfeatures)
         alldistprops = pd.DataFrame()
         for group in (contrast[1], contrast[2], thirdgroup[1]):
@@ -580,7 +582,7 @@ def threeway(datafolder, resultsfolder, contrast, contraststring, parameterstrin
             alldistprops = alldistprops.append(distprops)
         save_dataframe(alldistprops, distpropsfile)
         # Visualize the data and make a correlation test
-        # make_dotplot(alldistprops, sortby, dotplotfile)
+        make_dotplot(alldistprops, sortby, dotplotfile)
         make_lineplot(alldistprops, sortby, lineplotfile)
         correlationscoresdf = test_correlations(alldistprops)
         save_dataframe(correlationscoresdf, correlationsfile)
@@ -589,7 +591,161 @@ def threeway(datafolder, resultsfolder, contrast, contraststring, parameterstrin
         alldistprops = load_dataframe(distpropsfile)
         # print(alldistprops)
         # Visualize the data and make a correlation test
-        # make_dotplot(alldistprops, sortby, dotplotfile)
+        make_dotplot(alldistprops, sortby, dotplotfile)
         make_lineplot(alldistprops, sortby, lineplotfile)
         correlationscoresdf = test_correlations(alldistprops)
         save_dataframe(correlationscoresdf, correlationsfile)
+
+
+# ==============================================
+# Threeway dendrogram
+# ==============================================
+
+
+def make_propspertext(distrawcounts, label):
+    distrawcounts = distrawcounts.T
+    segids = list(distrawcounts.index)
+    distrawcounts["idnos"] = [item[0:6] for item in segids]
+    # print(distrawcounts.head())
+    rawcountspertext = pd.groupby(distrawcounts, "idnos")
+    distpropspertext = rawcountspertext.aggregate(np.mean)
+    distpropspertext["label"] = label
+    # print(distpropspertext.head())
+    return distpropspertext
+
+
+def make_boxplots(alldistpropspertext, boxplotfile):
+    for feature in alldistpropspertext.columns[:-1].values:
+        currentboxplotfile = boxplotfile + "_" + feature + ".svg"
+        distribution = alldistpropspertext.loc[:,[feature,"label"]]
+        distributionspertext = pd.groupby(distribution, "label")
+        boxplot = pygal.Box(style=threeway_style,
+                            title = "Verteilung für \'" + feature + "\'",
+                            x_title = "Partitionen",
+                            y_title = "Verteilung der Anteile",
+                            legend_at_bottom=True,
+                            legend_at_bottom_columns = 3)
+        for name, group in distributionspertext:
+            groupprops = list(group.loc[:,feature])
+            boxplot.add(name, groupprops)
+        boxplot.render_to_file(currentboxplotfile)
+
+
+def get_labels(alldistpropspertext):
+    """
+    Get the labels for each text: idno and group
+    """
+    print("----get_labels")
+    groups = list(alldistpropspertext.iloc[:, -1])
+    idnos = list(alldistpropspertext.index.values)
+    labels = []
+    for i in range(len(idnos)):
+        label = idnos[i] + "-" + groups[i]
+        labels.append(label)
+    # print(labels)
+    return labels
+
+
+def scale_features(alldistpropspertext):
+    """
+    4: Apply feature scaling to the data, in this case transform to z-scores.
+    """
+    print("----scale_features")
+    alldistpropspertext = alldistpropspertext.iloc[:,0:-2]
+    # print(alldistpropspertext.head())
+    # Define the means and std of each word
+    means = np.mean(alldistpropspertext, axis=1)
+    stds = np.std(alldistpropspertext, axis=1)
+    # Substract the mean and divide by the std for each word
+    scaled = alldistpropspertext
+    scaled = scaled.subtract(means, axis=0)
+    scaled = scaled.divide(stds, axis=0)
+    # print(scaled.head())
+    # print(len(scaled))
+    return scaled
+
+
+def get_distancematrix(scaled, distmeasure):
+    """
+    5: Transform the term-document matrix to a distance matrix.
+    https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html
+    """
+    print("----get_distancematrix")
+    distancematrix = pdist(scaled, distmeasure)
+    # print(distancematrix)
+    return distancematrix
+
+
+def get_linkagematrix(distancematrix):
+    """
+    6: Transform the distance matrix to a linkage matrix.
+    https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html
+    """
+    print("----get_linkagematrix")
+    linkagematrix = linkage(distancematrix, method="ward", metric="Euclidean")
+    # print(linkagematrix[0:10])
+    return linkagematrix
+
+
+def make_dendrogram(linkagematrix, labels, dendrogramfile):
+    """
+    7: Visualize the linkage matrix as a dendrogam.
+    """
+    print("----make_dendrogram")
+    plt.figure(figsize=(10,20))
+    plt.title("Dendrogramm", fontsize=12)
+    matplotlib.rcParams['lines.linewidth'] = 0.6
+    dendrogram(linkagematrix,
+               orientation="left",
+               labels = labels,
+               leaf_font_size = 4,
+               )
+    plt.savefig(dendrogramfile, dpi=600, figsize=(6,12), bbox_inches="tight")
+    plt.close()
+
+
+def perform_clusteranalysis(alldistpropspertext, distmeasure, dendrogramfile):
+    print("----perform_clusteranalysis")
+    labels = get_labels(alldistpropspertext)
+    scaled = scale_features(alldistpropspertext)
+    distancematrix = get_distancematrix(scaled, distmeasure)
+    linkagematrix = get_linkagematrix(distancematrix)
+    make_dendrogram(linkagematrix, labels, dendrogramfile)
+
+
+# Coordinating function
+def threeway_clustering(datafolder, resultsfolder, contrast, contraststring, parameterstring,
+                        thirdgroup, numfeatures, distmeasure, mode):
+    print("--threeway_clustering")
+    # Define necessary filenames
+    zetascorefile = resultsfolder + "zetascores_" + contraststring + "_" + parameterstring + ".csv"
+    distpropspertextfile = datafolder + "distpropspertext_" + contraststring + "_" + parameterstring + "-" + str(numfeatures) + ".csv"
+    boxplotfile = resultsfolder + "boxplot_" + contraststring + "-" + thirdgroup[1] + "_" + parameterstring + "-" + str(numfeatures)
+    dendrogramfile = resultsfolder + "dendrogram_" + contraststring + "-" + thirdgroup[1] + "_" + parameterstring + "-" + str(numfeatures) + ".png"
+    # Get the necessary data
+    distfeatures = get_distfeatures(zetascorefile, numfeatures)
+    alldistpropspertext = pd.DataFrame()
+    if mode == "generate":
+        # Calculate the proportions for each feature for each text in the three groups
+        for group in (contrast[1], contrast[2], thirdgroup[1]):
+            label = str(group)
+            featuresfile = datafolder + "features_" + group + "_" + parameterstring + ".csv"
+            distrawcounts = select_distrawcounts(featuresfile, distfeatures)
+            distpropspertext = make_propspertext(distrawcounts, label)
+            alldistpropspertext = alldistpropspertext.append(distpropspertext)
+            save_dataframe(alldistpropspertext, distpropspertextfile)
+        # make_boxplots(alldistpropspertext, boxplotfile)
+        perform_clusteranalysis(alldistpropspertext, distmeasure, dendrogramfile)
+    if mode == "analyze":
+        # Load data from a previous "generate" step
+        alldistpropspertext = load_dataframe(distpropspertextfile)
+        # make_boxplots(alldistpropspertext, boxplotfile)
+        perform_clusteranalysis(alldistpropspertext, distmeasure, dendrogramfile)
+
+
+
+
+
+
+
+
