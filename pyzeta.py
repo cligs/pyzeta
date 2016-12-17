@@ -264,9 +264,13 @@ zeta_style = pygal.style.Style(
     background='white',
     plot_background='white',
     font_family="FreeSans",
-    title_font_size=20,
-    legend_font_size=16,
-    label_font_size=12,
+    title_font_size = 18,
+    legend_font_size = 14,
+    label_font_size = 12,
+    major_label_font_size = 12,
+    value_font_size = 12,
+    major_value_font_size = 12,
+    tooltip_font_size = 12,
     opacity_hover=0.2)
 
 
@@ -598,8 +602,11 @@ def threeway_compare(datafolder, resultsfolder, contrast, contraststring, parame
 
 
 # ==============================================
-# Threeway dendrogram
+# Threeway clustering
 # ==============================================
+
+
+# ========= make_boxplots =================
 
 
 def make_propspertext(distrawcounts, label):
@@ -631,6 +638,9 @@ def make_boxplots(alldistpropspertext, boxplotfile):
         boxplot.render_to_file(currentboxplotfile)
 
 
+# ========= perform_clusternalysis =================
+
+
 def get_labels(alldistpropspertext):
     """
     Get the labels for each text: idno and group
@@ -643,7 +653,7 @@ def get_labels(alldistpropspertext):
         label = idnos[i] + "-" + groups[i]
         labels.append(label)
     # print(labels)
-    return labels
+    return groups, idnos, labels
 
 
 def scale_features(alldistpropspertext):
@@ -706,14 +716,107 @@ def make_dendrogram(linkagematrix, labels, dendrogramfile):
 
 def perform_clusteranalysis(alldistpropspertext, distmeasure, dendrogramfile):
     print("----perform_clusteranalysis")
-    labels = get_labels(alldistpropspertext)
+    groups, idnos, labels = get_labels(alldistpropspertext)
     scaled = scale_features(alldistpropspertext)
     distancematrix = get_distancematrix(scaled, distmeasure)
     linkagematrix = get_linkagematrix(distancematrix)
     make_dendrogram(linkagematrix, labels, dendrogramfile)
 
 
-# Coordinating function
+# ========= perform_pca =================
+
+
+def apply_pca(alldistpropspertext):
+    alldistpropspertext = alldistpropspertext.iloc[:, 0:-2]
+    pca = PCA(n_components=5, whiten=False)
+    pca.fit(alldistpropspertext)
+    variance = pca.explained_variance_ratio_
+    transformed = pca.transform(alldistpropspertext)
+    # print(transformed)
+    # print(variance)
+    return transformed, variance
+
+
+def make_2dscatterplot(transformed, variance, groups, idnos, pcafile):
+    print("----make_2dscatterplot")
+    components = [0, 1]
+    plot = pygal.XY(style=zeta_style,
+                    stroke=False,
+                    show_legend=False,
+                    show_y_guides=True,
+                    show_x_guides=False,
+                    title="PCA mit distinktiven Features",
+                    x_title="PC" + str(components[0] + 1) + " (" + "{:03.2f}".format(variance[components[0]]*100) + "%)",
+                    y_title="PC" + str(components[1] + 1) + " (" + "{:03.2f}".format(variance[components[1]]*100) + "%)",
+                    )
+    for i in range(0, len(idnos)):
+        label = groups[i]
+        point = (transformed[i][components[0]], transformed[i][components[1]])
+        idno = idnos[i]
+        if label == "comedie":
+            mycolor = "firebrick"
+        elif label == "tragedie":
+            mycolor = "mediumblue"
+        elif label == "tragicomedie":
+            mycolor = "green"
+        else:
+            mylabel = "ERROR"
+            mycolor = "grey"
+        plot.add(idno, [{"value": point, "label": label, "color": mycolor}], dots_size=4)
+    plot.render_to_file(pcafile)
+
+
+def make_pcboxplot(transformed, variance, groups, idnos, pcboxplotfile):
+    print("----make_pcboxplot")
+    values = []
+    for i in range(0,391):
+        value = transformed[i][0]
+        values.append(value)
+    data = pd.DataFrame({"group" : groups, "value" : values, "idnos" : idnos})
+    # print(data.head())
+    data = data.groupby("group")
+    boxplot = pygal.Box(style=threeway_style,
+                        title="Verteilung der Texte",
+                        # x_title="X",
+                        y_title="PC 1",
+                        legend_at_bottom=True,
+                        print_labels = True,
+                        legend_at_bottom_columns=3)
+    for name, group in data:
+        groupscores = list(group.loc[:, "value"])
+        boxplot.add(name, groupscores)
+    boxplot.render_to_file(pcboxplotfile)
+    return data
+
+
+def test_mannwhitney(data):
+    """
+    # Performs the Mann-Whitney-U-test for two independent samples that may not be normally distributed.
+    # See: http://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.mannwhitneyu.html
+    # Status: Ok, but not entirely confident all is correct.
+    """
+    labels = ["comedie", "tragedie", "tragicomedie"]
+    allgroupscores = []
+    for name, group in data:
+        groupscores = list(group.loc[:, "value"])
+        allgroupscores.append(groupscores)
+    combinations = [[0,1], [0,2], [1,2]]
+    for combination in combinations:
+        mannwhitney =  stats.mannwhitneyu(allgroupscores[combination[0]], allgroupscores[combination[1]], alternative="two-sided")
+        statistics = [labels[combination[0]], labels[combination[1]], mannwhitney[0], mannwhitney[1]]
+        print(statistics)
+
+
+def perform_pca(alldistpropspertext, pcafile, pcboxplotfile):
+    print("----perform_pca")
+    groups, idnos, labels = get_labels(alldistpropspertext)
+    transformed, variance = apply_pca(alldistpropspertext)
+    make_2dscatterplot(transformed, variance, groups, idnos, pcafile)
+    data = make_pcboxplot(transformed, variance, groups, idnos, pcboxplotfile)
+    test_mannwhitney(data)
+
+
+# ========= threeway_clustering: coordinating function =================
 def threeway_clustering(datafolder, resultsfolder, contrast, contraststring, parameterstring,
                         thirdgroup, numfeatures, distmeasure, mode):
     print("--threeway_clustering")
@@ -722,6 +825,8 @@ def threeway_clustering(datafolder, resultsfolder, contrast, contraststring, par
     distpropspertextfile = datafolder + "distpropspertext_" + contraststring + "_" + parameterstring + "-" + str(numfeatures) + ".csv"
     boxplotfile = resultsfolder + "boxplot_" + contraststring + "-" + thirdgroup[1] + "_" + parameterstring + "-" + str(numfeatures)
     dendrogramfile = resultsfolder + "dendrogram_" + contraststring + "-" + thirdgroup[1] + "_" + parameterstring + "-" + str(numfeatures) + ".png"
+    pcafile = resultsfolder + "pca_" + contraststring + "-" + thirdgroup[1] + "_" + parameterstring + "-" + str(numfeatures) + ".svg"
+    pcboxplotfile = resultsfolder + "pcboxplot_" + contraststring + "-" + thirdgroup[1] + "_" + parameterstring + "-" + str(numfeatures) + ".svg"
     # Get the necessary data
     distfeatures = get_distfeatures(zetascorefile, numfeatures)
     alldistpropspertext = pd.DataFrame()
@@ -740,7 +845,8 @@ def threeway_clustering(datafolder, resultsfolder, contrast, contraststring, par
         # Load data from a previous "generate" step
         alldistpropspertext = load_dataframe(distpropspertextfile)
         # make_boxplots(alldistpropspertext, boxplotfile)
-        perform_clusteranalysis(alldistpropspertext, distmeasure, dendrogramfile)
+        # perform_clusteranalysis(alldistpropspertext, distmeasure, dendrogramfile)
+        perform_pca(alldistpropspertext, pcafile, pcboxplotfile)
 
 
 
