@@ -48,14 +48,17 @@ The folder `sample-output/results` contains some examples of what pyzeta produce
 
 ## What processes and options are supported?
 
-Currently, the following processes are supported:
+Currently, the following standard processes are supported:
 
 - Prepare a text collection by tagging it using TreeTagger (pyzeta.prepare; run once per collection)
 - For any two partitions of the collection, create a matrix of per-segment type frequencies and calculate the zeta scores for the vocabulary (pyzeta.zeta). There are options to choose word forms or lemmata or POS as features. There is the possibility to filter features based on their POS.
 - Visualize the most distinctive words as a horizontal bar chart. (pyzeta.plot_scores)
 - Visualize the feature distribution as a scatterplot (pyzeta.plot_types)
+
+The following experimental functions are present but not really supported:
+
 - Visualize the relation between three partitions based on type proportions in two partitions (pyzeta.threeway)
-- (Currently non-functional: PCA for three partitions using distinctive features.)
+- PCA for three partitions using distinctive features.
 
 
 ## What parameters are there to control pyzeta behavior?
