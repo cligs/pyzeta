@@ -55,8 +55,9 @@ Currently, the following standard processes are supported:
 - Visualize the most distinctive words as a horizontal bar chart. (pyzeta.plot_scores)
 - Visualize the feature distribution as a scatterplot (pyzeta.plot_types)
 
-The following experimental functions are present but not really supported:
+The following experimental functions are present (but not really supported):
 
+- If you use ["random", "0", "1"] as the value for the `contrast` parameter, the partitions will be built randomly, splitting the collection in equal-sized parts. This is interesting if you want to see how strong your zeta scores really are relative to a random partitioning. (Expanding on this principle could be the basis for some type of significance test for zeta scores.)
 - Visualize the relation between three partitions based on type proportions in two partitions (pyzeta.threeway)
 - PCA for three partitions using distinctive features.
 

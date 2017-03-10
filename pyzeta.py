@@ -27,6 +27,7 @@ from scipy.cluster.hierarchy import dendrogram, linkage
 import itertools
 import shutil
 from sklearn.decomposition import PCA
+import random
 
 
 # =================================
@@ -104,11 +105,17 @@ def make_filelist(metadatafile, contrast):
     with open(metadatafile, "r") as infile:
         metadata = pd.DataFrame.from_csv(infile, sep=";")
         # print(metadata.head())
-        onemetadata = metadata[metadata[contrast[0]].isin([contrast[1]])]
-        twometadata = metadata[metadata[contrast[0]].isin([contrast[2]])]
-        onelist = list(onemetadata.loc[:, "idno"])
-        twolist = list(twometadata.loc[:, "idno"])
-        # print(onelist, twolist)
+        if contrast[0] != "random": 
+            onemetadata = metadata[metadata[contrast[0]].isin([contrast[1]])]
+            twometadata = metadata[metadata[contrast[0]].isin([contrast[2]])]
+            onelist = list(onemetadata.loc[:, "idno"])
+            twolist = list(twometadata.loc[:, "idno"])
+        elif contrast[0] == "random":
+            idnolist = list(metadata.loc[:, "idno"])
+            newidnolist = random.sample(idnolist, len(idnolist))
+            onelist = newidnolist[:int(len(idnolist)/2)]
+            twolist = newidnolist[int(len(idnolist)/2):]
+        print(onelist, twolist)
         print("----number of texts: " + str(len(onelist)) + " and " + str(len(twolist)))
         return onelist, twolist
 
