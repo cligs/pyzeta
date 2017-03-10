@@ -631,7 +631,8 @@ def make_boxplots(alldistpropspertext, boxplotfile):
                             x_title = "Partitionen",
                             y_title = "Verteilung der Anteile",
                             legend_at_bottom=True,
-                            legend_at_bottom_columns = 3)
+                            legend_at_bottom_columns = 3,
+                            )
         for name, group in distributionspertext:
             groupprops = list(group.loc[:,feature])
             boxplot.add(name, groupprops)
@@ -739,7 +740,7 @@ def apply_pca(alldistpropspertext):
 
 def make_2dscatterplot(transformed, variance, groups, idnos, pcafile):
     print("----make_2dscatterplot")
-    components = [0, 1]
+    components = [0, 2]
     plot = pygal.XY(style=zeta_style,
                     stroke=False,
                     show_legend=False,

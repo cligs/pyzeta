@@ -54,12 +54,12 @@ For more information on Zeta, see:
 seglength = 3000  # int; 1000|2000|5000 are reasonable
 pos = "all"  # Nc|Vv|Rg|Ag etc. depending on tagger model, or "all" if no selection
 forms = "lemmata"  # words|lemmata|pos
-contrast = ["", "", ""]  # category, label1, label2
+contrast = ["subgenre", "comedie", "tragedie"]  # category, label1, label2
 
 # =================================
 # Files and folders
 # =================================
-workdir = "/"  # full path to working directory; ends with slash
+workdir = "/media/christof/data/Dropbox/0-Analysen/2016/zeta/fr-theatre/"  # full path to working directory; ends with slash
 plaintextfolder = os.path.join(workdir, "text", "")
 metadatafile = os.path.join(workdir, "metadata.csv")
 stoplistfile = os.path.join(workdir, "stoplist.txt")
@@ -92,23 +92,23 @@ pyzeta.plot_zetascores(numfeatures, contrast, contraststring, parameterstring, r
 # Scatterplot of types
 numfeatures = 200  # int
 cutoff = 0.40
-pyzeta.plot_types(numfeatures, cutoff, contrast, contraststring, parameterstring, resultsfolder)
+# pyzeta.plot_types(numfeatures, cutoff, contrast, contraststring, parameterstring, resultsfolder)
 
 
 # Threeway comparison (simple)
 numfeatures = 25  # int
-thirdgroup = ["", ""]  # category, label3
+thirdgroup = ["subgenre", "tragicomedie"]  # category, label3
 sortby = "comedy"  # label
 mode = "generate"  # string; generate|analyze
-pyzeta.threeway_compare(datafolder, resultsfolder, contrast, contraststring, parameterstring,
-                        thirdgroup, numfeatures, sortby, mode)
+# pyzeta.threeway_compare(datafolder, resultsfolder, contrast, contraststring, parameterstring,
+#                         thirdgroup, numfeatures, sortby, mode)
 
 
 # Threeway cluster analysis (dendrogram)
 numfeatures = 25  # int
-thirdgroup = ["", ""]  # category, label3
+thirdgroup = ["subgenre", "tragicomedie"]  # category, label3
 mode = "analyze" # string; generate|analyze
 distmeasure = "euclidean"
-pyzeta.threeway_clustering(datafolder, resultsfolder, contrast, contraststring, parameterstring,
-                           thirdgroup, numfeatures, distmeasure, mode)
+#pyzeta.threeway_clustering(datafolder, resultsfolder, contrast, contraststring, parameterstring,
+#                           thirdgroup, numfeatures, distmeasure, mode)
 
