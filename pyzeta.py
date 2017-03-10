@@ -316,7 +316,7 @@ def plot_zetadata(zetadata, contrast, contraststring, zetaplotfile, numwords):
                                show_legend = False,
                                range = (-1, 1),
                                title = ("Kontrastive Analyse mit Zeta\n (" +
-                                        str(contrast[2]) + " vs. " + str(contrast[1]) + ")"),
+                                        str(contrast[0]) + ": " + str(contrast[2]) + " vs. " + str(contrast[1]) + ")"),
                                x_title = "Zeta-Score",
                                y_title = str(numwords) + " Worte pro Partition"
                                )

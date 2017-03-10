@@ -21,15 +21,6 @@ Requirements:
 - Make sure you have `pyzeta.py` and `run_pyzeta.py` in a common location on your computer
 
 
-## What is necessary to run the analyses?
-
-The script expects the following as input:
-
-- A folder with plain text files. They need to be in UTF-8 encoding.
-- A metadata file with category information about each file, identified through "idno" = filename. The metadata file should be a CSV file, with the ";" used as the separator character
-- A file with stopwords, one per line
-
-
 ## How to run pyzeta?
 
 - Open run_pyzeta.py with an IDE such as Geany, Spyder or PyCharm
@@ -37,9 +28,18 @@ The script expects the following as input:
 - Run from the IDE. 
 
 
+## What is necessary to run the analyses?
+
+The script expects the following as input. See the `sample-input` folder for an example. 
+
+- A folder with plain text files. They need to be in UTF-8 encoding. The files should all be in one folder. 
+- A metadata file with category information about each file, identified through "idno" = filename. The metadata file should be a CSV file, with the ";" used as the separator character.
+- A file with stopwords, one per line
+
+
 ## What kind of output does pyzeta produce?
 
-The sample output folder contains some examples of what pyzeta produces:
+The folder `sample-output/results` contains some examples of what pyzeta produces:
 
 - A matrix containing the features used with their proportions in each partition and their resulting zeta score
 - A plot showing the most distinctive words as a horizontal bar chart.
