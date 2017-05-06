@@ -115,6 +115,8 @@ def make_filelist(metadatafile, contrast):
             newidnolist = random.sample(idnolist, len(idnolist))
             onelist = newidnolist[:int(len(idnolist)/2)]
             twolist = newidnolist[int(len(idnolist)/2):]
+            onelist = newidnolist[:4]
+            twolist = newidnolist[4:]
         print(onelist, twolist)
         print("----number of texts: " + str(len(onelist)) + " and " + str(len(twolist)))
         return onelist, twolist
@@ -227,15 +229,17 @@ def calculate_zetas(allfeaturecountsone, allfeaturecountstwo):
 
 def zeta(taggedfolder, metadatafile, contrast,
          datafolder, resultsfolder, seglength,
-         pos, forms, stoplistfile):
+         pos, forms, stoplistfile, random):
     """
     Main coordinating function for "pyzeta.zeta"
     Python implementation of Craig's Zeta. 
     Status: proof-of-concept quality.
     """
 
+    ## 1. Normal procedure 
+
     # Generate necessary file and folder names
-    contraststring = contrast[1] + "-" + contrast[2]
+    contraststring = contrast[0] + "-" + contrast[1] + "-" + contrast[2]
     parameterstring = str(seglength) + "-" + forms + "-" + str(pos)
     segsfolder = datafolder + contraststring + "_" + parameterstring + "/"
     zetascorefile = resultsfolder + "zetascores_" + contraststring + "_" + parameterstring + ".csv"
@@ -261,6 +265,67 @@ def zeta(taggedfolder, metadatafile, contrast,
     # Perform the actual Zeta score calculation
     zetascoredata = calculate_zetas(allfeaturecountsone, allfeaturecountstwo)
     save_dataframe(zetascoredata, zetascorefile)
+
+
+    ## 2. Random procedure for comparison
+
+    if random[0] == "yes":
+
+        # Creating the random data
+        allrandomzeta = pd.DataFrame()
+        counter = 0
+        while counter < random[1]: 
+            # Generate necessary file and folder names
+            contrast = ["random", "one", "two"]
+            contraststring = contrast[0] + "-" + contrast[1] + "-" + contrast[2]
+            parameterstring = str(seglength) + "-" + forms + "-" + str(pos)
+            segsfolder = datafolder + contraststring + "_" + parameterstring + "/"
+            zetascorefile = resultsfolder + "zetascores_" + contraststring + "_" + parameterstring + ".csv"
+            onefile = datafolder + "features_" + contrast[0] + "-" + contrast[1] + "_" + parameterstring + ".csv"
+            twofile = datafolder + "features_" + contrast[0] + "-" + contrast[2] + "_" + parameterstring + ".csv"
+
+            # Generate list of files for the two groups and get stoplist
+            onelist, twolist = make_filelist(metadatafile, contrast)
+            stoplist = read_stoplistfile(stoplistfile)
+
+            # Create segments with selected types and turn into count matrix
+            allfeaturecountsone = make_segments(taggedfolder, onelist, seglength, segsfolder, pos, forms, stoplist, onefile)
+            allfeaturecountstwo = make_segments(taggedfolder, twolist, seglength, segsfolder, pos, forms, stoplist, twofile)
+
+            # Perform the actual Zeta score calculation
+            randomzetascoredata = calculate_zetas(allfeaturecountsone, allfeaturecountstwo)
+            justrandomzeta = randomzetascoredata.drop(["docpropone", "docproptwo"], axis=1)
+            justrandomzeta = pd.Series(justrandomzeta.loc[:,"zetascores"])           
+            #print(justrandomzeta[0:5])
+
+            # Merge one random set of scores into the others
+            allrandomzeta[str(counter)] = justrandomzeta.values
+            counter +=1
+
+        # Get some distribution indicators for each value
+        allrandomzeta["min"] = np.min(allrandomzeta, axis=1)
+        allrandomzeta["max"] = np.max(allrandomzeta, axis=1)
+        allrandomzeta["mean"] = np.mean(allrandomzeta, axis=1)
+        allrandomzeta["median"] = np.median(allrandomzeta, axis=1)
+        allrandomzeta["std"] = np.std(allrandomzeta, axis=1)
+        #print(allrandomzeta.head())
+        zetascoredata["features"] = zetascoredata.index
+        #print(pd.Series(zetascoredata.loc[:,"features"].head()))
+
+        # Add the data from the "real" run to the table
+        allrandomzeta["features"] = pd.Series(zetascoredata.loc[:,"features"].values)
+        allrandomzeta["docpropone"] = pd.Series(zetascoredata.loc[:,"docpropone"].values)
+        allrandomzeta["docproptwo"] = pd.Series(zetascoredata.loc[:,"docproptwo"].values)
+        allrandomzeta["zetascores"] = pd.Series(zetascoredata.loc[:,"zetascores"].values)
+ 
+        # Save everything
+        print(allrandomzeta.head())
+        save_dataframe(allrandomzeta, zetascorefile)
+
+
+
+
+    
 
 
 # =================================
@@ -362,6 +427,95 @@ def plot_zetascores(numfeatures, contrast, contraststring, parameterstring, resu
     # Get the data and plot it
     zetadata, confint = get_zetadata(zetascorefile, numfeatures)
     plot_zetadata(zetadata, contrast, contraststring, zetaplotfile, numfeatures)
+
+
+
+
+# ==============================================
+# Plot real and random zeta data together
+# ==============================================
+
+
+def get_realrandomdata(realrandomdatafile, numfeatures):
+    print("----get_realrandomdata")
+    with open(realrandomdatafile, "r") as infile:
+        realrandomdata = pd.DataFrame.from_csv(infile, sep="\t")
+        realrandomdatahead = realrandomdata.head(numfeatures)
+        realrandomdatatail = realrandomdata.tail(numfeatures)
+        realrandomdata = realrandomdatahead.append(realrandomdatatail)
+        realrandomdata = realrandomdata.reset_index(drop=False)
+        print(realrandomdata)
+        return realrandomdata
+
+
+def plot_rrdata(realrandomdata, realrandomplotfile, contrast, contraststring, numfeatures):
+    print("----plot_rrdata")
+    plot = pygal.HorizontalBar(style = zeta_style,
+                               print_values = False,
+                               print_labels = True,
+                               show_legend = False,
+                               range = (-1, 1),
+                               title = ("Kontrastive Analyse mit Zeta\n (" +
+                                        str(contrast[0]) + ": " + str(contrast[2]) + " vs. " + str(contrast[1]) + ")"),
+                               x_title = "Zeta-Score",
+                               y_title = str(numfeatures) + " Worte pro Partition"
+                               )
+    for i in range(0, 100):
+        feature = realrandomdata.iloc[i, 26]
+        label = realrandomdata.iloc[i, 26]
+        realzeta = realrandomdata.iloc[i, 29]
+        mean = realrandomdata.iloc[i, 23]
+        std = realrandomdata.iloc[i, 25]
+        lowvalue = mean - (1 * std / np.sqrt(20)) # equals 95% confidence interval
+        highvalue = mean + (1 * std / np.sqrt(20)) # equals 95% confidence interval
+        if realzeta > highvalue:
+            color = "green"
+        else:
+            color = "#585858"
+        #ppppppppot.add(zetadata.iloc[i, 0], [{"value": zetadata.iloc[i, 1], "label": zetadata.iloc[i, 0], "color": color}])
+        plot.add(feature, [{"value" : realzeta, "label" : str(label), "ci" : {"low" : lowvalue, "high" : highvalue}, "color": color}])
+    for i in range(100, 200):
+        feature = realrandomdata.iloc[i, 26]
+        label = realrandomdata.iloc[i, 26]
+        realzeta = realrandomdata.iloc[i, 29]
+        mean = realrandomdata.iloc[i, 23]
+        std = realrandomdata.iloc[i, 25]
+        lowvalue = mean + (1 * std / np.sqrt(20)) # equals 95% confidence interval
+        highvalue = mean - (1 * std / np.sqrt(20)) # equals 95% confidence interval
+        if realzeta < highvalue:
+            color = "red"
+        else:
+            color = "#585858"
+        #ppppppppot.add(zetadata.iloc[i, 0], [{"value": zetadata.iloc[i, 1], "label": zetadata.iloc[i, 0], "color": color}])
+        plot.add(feature, [{"value" : realzeta, "label" : str(label), "ci" : {"low" : lowvalue, "high" : highvalue}, "color": color}])
+
+    plot.render_to_file(realrandomplotfile)
+    
+
+
+
+def plot_realrandom(numfeatures, contrast, contraststring, parameterstring, resultsfolder):
+    print("--plot_realrandom")
+    contrast = ["random", "one", "two"]
+    contraststring = contrast[0] + "-" + contrast[1] + "-" + contrast[2]
+    realrandomdatafile = resultsfolder + "zetascores_" + contraststring + "_" + parameterstring + ".csv"
+    realrandomplotfile = resultsfolder + "scoresplot_" + contraststring + "_" + parameterstring + "-" + str(numfeatures) + ".svg"
+    realrandomdata = get_realrandomdata(realrandomdatafile, numfeatures)
+    plot_rrdata(realrandomdata, realrandomplotfile, contrast, contraststring, numfeatures)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # ==============================================

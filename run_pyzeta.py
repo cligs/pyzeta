@@ -23,20 +23,21 @@ seglength = 2000  # int; 1000|2000|5000 are reasonable
 pos = "all"  # Nc|Vv|Rg|Ag etc. depending on tagger model, or "all" if no selection
 forms = "lemmata"  # words|lemmata|pos
 contrast = ["detective", "yes", "no"]  # category, label1, label2
+random = ["yes", 20]
 
 
 # =================================
 # Files and folders
 # =================================
 
-workdir = "/media/christof/data/repos/cligs/pyzeta/"  # full path to working directory; ends with slash
+workdir = "/media/christof/data/Dropbox/0-Analysen/2017/pyzeta/"  # full path to working directory; ends with slash
 plaintextfolder = os.path.join(workdir, "sample-input", "corpus", "")
 metadatafile = os.path.join(workdir, "sample-input", "metadata.csv")
 stoplistfile = os.path.join(workdir, "sample-input", "stoplist.txt")
 taggedfolder = os.path.join(workdir, "sample-output", "tagged", "")
 datafolder = os.path.join(workdir, "sample-output", "data", "")
 resultsfolder = os.path.join(workdir, "sample-output", "results", "")
-contraststring = contrast[1] + "-" + contrast[2]
+contraststring = contrast[0] + "-" + contrast[1] + "-" + contrast[2]
 parameterstring = str(seglength) + "-" + forms + "-" + str(pos)
 
 
@@ -56,18 +57,23 @@ language = "en"  # TreeTagger language model code: fr|en|de|...
 
 
 # Calculate Zeta for words in two text collections
-pyzeta.zeta(taggedfolder, metadatafile, contrast, datafolder, resultsfolder, seglength, pos, forms, stoplistfile)
+#pyzeta.zeta(taggedfolder, metadatafile, contrast, datafolder, resultsfolder, seglength, pos, forms, stoplistfile, random)
 
 
 # Barchart with the most extreme zeta values
-numfeatures = 25
+numfeatures = 50
 pyzeta.plot_zetascores(numfeatures, contrast, contraststring, parameterstring, resultsfolder)
+
+
+# joint plot for random and real zeta scores
+numfeatures = 100
+pyzeta.plot_realrandom(numfeatures, contrast, contraststring, parameterstring, resultsfolder)
 
 
 # Scatterplot of types
 numfeatures = 200  # int
 cutoff = 0.40
-pyzeta.plot_types(numfeatures, cutoff, contrast, contraststring, parameterstring, resultsfolder)
+#pyzeta.plot_types(numfeatures, cutoff, contrast, contraststring, parameterstring, resultsfolder)
 
 
 # =============================================
@@ -80,8 +86,7 @@ numfeatures = 25  # int
 thirdgroup = ["subgenre", "tragicomedie"]  # category, label3
 sortby = "comedy"  # label
 mode = "generate"  # string; generate|analyze
-# pyzeta.threeway_compare(datafolder, resultsfolder, contrast, contraststring, parameterstring,
-#                         thirdgroup, numfeatures, sortby, mode)
+# pyzeta.threeway_compare(datafolder, resultsfolder, contrast, contraststring, parameterstring, thirdgroup, numfeatures, sortby, mode)
 
 
 # Threeway cluster analysis (dendrogram)
@@ -89,6 +94,5 @@ numfeatures = 25  # int
 thirdgroup = ["subgenre", "tragicomedie"]  # category, label3
 mode = "analyze" # string; generate|analyze
 distmeasure = "euclidean"
-#pyzeta.threeway_clustering(datafolder, resultsfolder, contrast, contraststring, parameterstring,
-#                           thirdgroup, numfeatures, distmeasure, mode)
+#pyzeta.threeway_clustering(datafolder, resultsfolder, contrast, contraststring, parameterstring, thirdgroup, numfeatures, distmeasure, mode)
 
