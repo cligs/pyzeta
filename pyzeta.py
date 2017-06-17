@@ -24,8 +24,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import pdist
 from scipy.cluster.hierarchy import dendrogram, linkage
-import itertools
-import shutil
 from sklearn.decomposition import PCA
 import random
 
@@ -34,6 +32,7 @@ import random
 # Shared functions
 # =================================
 
+import sys
 
 def get_filename(file):
     filename, ext = os.path.basename(file).split(".")
@@ -41,10 +40,14 @@ def get_filename(file):
     return filename
 
 
-def read_plaintext(file):
+def read_plaintext(file, filename):
     with open(file, "r") as infile:
-        text = infile.read()
-        return text
+        try:
+            text = infile.read()
+            return text
+        except:
+            print("UTF-8 required for input text files; check" + filename + ".")
+            sys.exit(1)
 
 
 def read_csvfile(filepath):
@@ -85,7 +88,7 @@ def prepare(plaintextfolder, language, taggedfolder):
         os.makedirs(taggedfolder)
     for file in glob.glob(plaintextfolder + "*.txt"):
         filename = get_filename(file)
-        text = read_plaintext(file)
+        text = read_plaintext(file, filename)
         tagged = run_treetagger(text, language)
         save_tagged(taggedfolder, filename, tagged)
     print("Done.")
@@ -576,6 +579,7 @@ def make_typesplot(types, propsone, propstwo, zetas, numfeatures, cutoff, contra
                  stroke_style={'width': 0.3, 'dasharray': '2, 6'})
         plot.add("orientation", [(0, 0), (1, 1)], stroke=True, show_dots=False,
                  stroke_style={'width': 0.3, 'dasharray': '2, 6'})
+    print(typescatterfile)
     plot.render_to_file(typescatterfile)
 
 

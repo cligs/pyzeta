@@ -23,7 +23,7 @@ seglength = 2000  # int; 1000|2000|5000 are reasonable
 pos = "all"  # Nc|Vv|Rg|Ag etc. depending on tagger model, or "all" if no selection
 forms = "lemmata"  # words|lemmata|pos
 contrast = ["detective", "yes", "no"]  # category, label1, label2
-random = ["yes", 20]
+random = ["no", 20]
 
 
 # =================================
@@ -45,16 +45,14 @@ parameterstring = str(seglength) + "-" + forms + "-" + str(pos)
 # Function to run once for a given collection
 # =============================================
 
-
 # Prepare texts: tag and save (run once for a collection).
 language = "en"  # TreeTagger language model code: fr|en|de|...
-# pyzeta.prepare(plaintextfolder, language, taggedfolder)
+pyzeta.prepare(plaintextfolder, language, taggedfolder)
 
 
 # =============================================
 # Standard functions to calculate and plot zeta
 # =============================================
-
 
 # Calculate Zeta for words in two text collections
 #pyzeta.zeta(taggedfolder, metadatafile, contrast, datafolder, resultsfolder, seglength, pos, forms, stoplistfile, random)
@@ -62,12 +60,12 @@ language = "en"  # TreeTagger language model code: fr|en|de|...
 
 # Barchart with the most extreme zeta values
 numfeatures = 50
-pyzeta.plot_zetascores(numfeatures, contrast, contraststring, parameterstring, resultsfolder)
+#pyzeta.plot_zetascores(numfeatures, contrast, contraststring, parameterstring, resultsfolder)
 
 
 # joint plot for random and real zeta scores
 numfeatures = 100
-pyzeta.plot_realrandom(numfeatures, contrast, contraststring, parameterstring, resultsfolder)
+#pyzeta.plot_realrandom(numfeatures, contrast, contraststring, parameterstring, resultsfolder)
 
 
 # Scatterplot of types
