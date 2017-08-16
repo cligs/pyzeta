@@ -66,9 +66,9 @@ def get_indicators(binary1, binary2, relative1, relative2):
     docprops1 = pd.Series(docprops1, name="docprops2")
     docprops2 = np.mean(binary2, axis=1)
     docprops2 = pd.Series(docprops2, name="docprops2")
-    relfreqs1 = np.mean(relative1, axis=1)*100
+    relfreqs1 = np.mean(relative1, axis=1)*1000
     relfreqs1 = pd.Series(relfreqs1, name="relfreqs1")
-    relfreqs2 = np.mean(relative2, axis=1)*100
+    relfreqs2 = np.mean(relative2, axis=1)*1000
     relfreqs2 = pd.Series(relfreqs2, name="relfreqs2")
     return docprops1, docprops2, relfreqs1, relfreqs2
 
@@ -85,35 +85,39 @@ def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2):
     # Original Zeta and variants
     origzeta = docprops1 - docprops2
     origzeta = pd.Series(origzeta, name="zeta")
-    divzeta = (docprops1 + 0.00000000001) / (docprops2 + 0.00000000001)
-    divzeta = pd.Series(divzeta, name="divzeta")
-    logzeta = np.log(docprops1 + 0.001) - np.log(docprops2 + 0.001)
-    logzeta = pd.Series(logzeta, name="logzeta")   
-    # Rescale logzeta to range of original zeta for comparability
+    # Prepare scaler to rescale variants to range of origzeta
     lowest = min(origzeta)
     highest = max(origzeta)
     scaler = prp.MinMaxScaler(feature_range=(lowest,highest))
+    # Zeta with division instead of subtraction
+    divzeta = (docprops1 + 0.00000000001) / (docprops2 + 0.00000000001)
+    divzeta = pd.Series(divzeta, name="divzeta")
+    scaler.fit(divzeta)
+    divzeta = scaler.transform(divzeta)
+    # Zeta with log transform of values
+    logzeta = np.log(docprops1 + 0.001) - np.log(docprops2 + 0.001)
+    logzeta = pd.Series(logzeta, name="logzeta")   
     scaler.fit(logzeta)
-    scaledlogzeta = pd.Series(logzeta, name="scaledlogzeta")
-    scaledlogzeta = scaler.transform(scaledlogzeta)
-    # Ratio of relative frequencies and variants
+    logzeta = scaler.transform(logzeta)
+    # Standard ratio of relative frequencies
     ratiorelfreqs = (relfreqs1 + 0.00000000001) / (relfreqs2 + 0.00000000001)
     ratiorelfreqs = pd.Series(ratiorelfreqs, name="ratiorelfreqs")
-    subtractfreqs = relfreqs1 - relfreqs2
-    subtractfreqs = pd.Series(subtractfreqs, name="subtractfreqs")
-    logrrf = np.log(relfreqs1 + 0.001) - np.log(relfreqs2 + 0.001)
-    logrrf = pd.Series(logrrf, name="logrrf")   
-    # Rescale logrrf to range of original rrf for comparability
-    lowest = min(ratiorelfreqs)
-    highest = max(ratiorelfreqs)
-    scaler = prp.MinMaxScaler(feature_range=(lowest,highest))
-    scaler.fit(logrrf)
-    scaledlogrrf = pd.Series(logrrf, name="scaledlogrrf")
-    scaledlogrrf = scaler.transform(scaledlogrrf)
-    return origzeta, divzeta, logzeta, scaledlogzeta, ratiorelfreqs, subtractfreqs, logrrf, scaledlogrrf
+    scaler.fit(ratiorelfreqs)
+    ratiorelfreqs = scaler.transform(ratiorelfreqs)
+    # Subtraction of relative frequencies
+    subrelfreqs = relfreqs1 - relfreqs2
+    subrelfreqs = pd.Series(subrelfreqs, name="subrelfreqs")
+    scaler.fit(subrelfreqs)
+    subrelfreqs = scaler.transform(subrelfreqs)
+    # Subtraction of relative frequencies after log transformation
+    logrelfreqs = np.log(relfreqs1 + 0.001) - np.log(relfreqs2 + 0.001)
+    logrelfreqs = pd.Series(logrelfreqs, name="logrelfreqs")   
+    scaler.fit(logrelfreqs)
+    logrelfreqs = scaler.transform(logrelfreqs)
+    return origzeta, divzeta, logzeta, ratiorelfreqs, subrelfreqs, logrelfreqs
     
 
-def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, logzeta, scaledlogzeta, ratiorelfreqs, subtractfreqs, logrrf, scaledlogrrf):
+def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, logzeta, ratiorelfreqs, subrelfreqs, logrelfreqs):
     results = pd.DataFrame({
     "docprops1":docprops1,
     "docprops2":docprops2,
@@ -121,14 +125,12 @@ def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzet
     "relfreqs2":relfreqs2,
     "origzeta":origzeta,
     "divzeta":divzeta,
-    "scaledlogzeta":scaledlogzeta,
+    "logzeta":logzeta,
     "ratiorelfreqs":ratiorelfreqs,
-    "subtractfreqs":subtractfreqs,
-    "logrrf":logrrf,
-    "scaledlogrrf":scaledlogrrf,
-    "logzeta":logzeta})
+    "subrelfreqs":subrelfreqs,
+    "logrelfreqs":logrelfreqs})
     print(results.columns.tolist())
-    results = results[["docprops1", "docprops2", "origzeta", "scaledlogzeta", "logzeta", "divzeta", "relfreqs1", "relfreqs2", "ratiorelfreqs", "subtractfreqs", "logrrf", "scaledlogrrf"]]
+    results = results[["docprops1", "docprops2", "origzeta", "logzeta", "divzeta", "relfreqs1", "relfreqs2", "ratiorelfreqs", "subrelfreqs", "logrelfreqs"]]
     results.sort_values(by="origzeta", ascending=False, inplace=True)
     print(results.head(10), "\n", results.tail(10))
     return results
@@ -150,8 +152,8 @@ def main(datafolder, metadatafile, contrast, resultsfolder):
     idlists = make_idlists(metadatafile, contrast)
     binary1, binary2, relative1, relative2 = filter_dtm(datafolder, idlists)
     docprops1, docprops2, relfreqs1, relfreqs2 = get_indicators(binary1, binary2, relative1, relative2)
-    origzeta, divzeta, logzeta, scaledlogzeta, ratiorelfreqs, subtractfreqs, logrrf, scaledlogrrf = calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2)
-    results = combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, logzeta, scaledlogzeta, ratiorelfreqs, subtractfreqs, logrrf, scaledlogrrf)
+    origzeta, divzeta, logzeta, ratiorelfreqs, subrelfreqs, logrelfreqs = calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2)
+    results = combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, logzeta, ratiorelfreqs, subrelfreqs, logrelfreqs)
     save_results(results, resultsfolder)
     
 
