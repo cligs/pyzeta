@@ -136,13 +136,13 @@ def count_features(features, filename):
     return featurecount
 
 
-def save_dataframe(allfeaturecounts, datafolder):
-    dtmfile = datafolder + "dtm_absolute-freqs.csv"
+def save_dataframe(allfeaturecounts, datafolder, parameterstring):
+    dtmfile = datafolder + "dtm_"+parameterstring+"_absolutefreqs.csv"
     with open(dtmfile, "w") as outfile:
         allfeaturecounts.to_csv(outfile, sep="\t")
 
 
-def make_dtm(segmentfolder, datafolder):
+def make_dtm(segmentfolder, datafolder, parameterstring):
     allfeaturecounts = []
     for file in glob.glob(segmentfolder + "*.txt"):
         features = read_plaintext(file)
@@ -151,7 +151,7 @@ def make_dtm(segmentfolder, datafolder):
         allfeaturecounts.append(featurecount)
     allfeaturecounts = pd.concat(allfeaturecounts, axis=1)
     allfeaturecounts = allfeaturecounts.fillna(0).astype(int)
-    save_dataframe(allfeaturecounts, datafolder)
+    save_dataframe(allfeaturecounts, datafolder, parameterstring)
     
 
 # =================================
@@ -172,11 +172,11 @@ def transform_dtm(absolutefreqs, segmentlength):
     return relativefreqs, binaryfreqs
 
 
-def save_transformed(relativefreqs, binaryfreqs, datafolder):
-    transformedfile = datafolder + "dtm_relativefreqs.csv"
+def save_transformed(relativefreqs, binaryfreqs, datafolder, parameterstring):
+    transformedfile = datafolder + "dtm_"+parameterstring+"_relativefreqs.csv"
     with open(transformedfile, "w") as outfile:
         relativefreqs.to_csv(outfile, sep="\t")
-    transformedfile = datafolder + "dtm_binaryfreqs.csv"
+    transformedfile = datafolder + "dtm_"+parameterstring+"_binaryfreqs.csv"
     with open(transformedfile, "w") as outfile:
         binaryfreqs.to_csv(outfile, sep="\t")
 
@@ -187,12 +187,15 @@ def save_transformed(relativefreqs, binaryfreqs, datafolder):
 
     
 def main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype):
+    if not os.path.exists(datafolder):
+        os.makedirs(datafolder)
+    parameterstring = str(segmentlength) +"-"+ str(featuretype[0]) +"-"+ str(featuretype[1])
     print("--prepare")
     for file in glob.glob(taggedfolder+"*.csv"):
         segmentids, segments = make_segments(file, segmentfolder, segmentlength)
         select_features(segmentfolder, segmentids, segments, stoplistfile, featuretype)
-        make_dtm(segmentfolder, datafolder)
-    absolutefreqs = read_freqsfile(datafolder + "dtm_absolute-freqs.csv")
+        make_dtm(segmentfolder, datafolder, parameterstring)
+    absolutefreqs = read_freqsfile(datafolder + "dtm_"+parameterstring+"_absolutefreqs.csv")
     relativefreqs, binaryfreqs = transform_dtm(absolutefreqs, segmentlength)
-    save_transformed(relativefreqs, binaryfreqs, datafolder)
+    save_transformed(relativefreqs, binaryfreqs, datafolder, parameterstring)
 

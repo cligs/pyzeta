@@ -36,20 +36,20 @@ def make_idlists(metadatafile, contrast):
         return idlists
 
 
-def filter_dtm(datafolder, idlists):
+def filter_dtm(datafolder, parameterstring, idlists):
     """
     This function splits the DTM in two parts.
     Each part consists of the segments corresponding to one partition.
     Each segment is chosen based on the file id it corresponds to.
     """
-    dtmfile = datafolder + "dtm_binaryfreqs.csv"
+    dtmfile = datafolder + "dtm_"+parameterstring+"_binaryfreqs.csv"
     ids1 = "|".join([id+".*" for id in idlists[0]])
     ids2 = "|".join([id+".*" for id in idlists[1]])
     with open(dtmfile, "r") as infile:
         binary = pd.DataFrame.from_csv(infile, sep="\t")
         binary1 = binary.filter(regex=ids1, axis=1)
         binary2 = binary.filter(regex=ids2, axis=1)
-    dtmfile = datafolder + "dtm_relativefreqs.csv"
+    dtmfile = datafolder + "dtm_"+parameterstring+"_relativefreqs.csv"
     with open(dtmfile, "r") as infile:
         relative = pd.DataFrame.from_csv(infile, sep="\t")
         relative1 = relative.filter(regex=ids1, axis=1)
@@ -136,8 +136,7 @@ def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzet
     return results
     
 
-def save_results(results, resultsfolder):
-    resultsfile = resultsfolder + "zetaresults.csv"
+def save_results(results, resultsfile):
     with open(resultsfile, "w") as outfile:
         results.to_csv(outfile, sep="\t")
 
@@ -147,16 +146,19 @@ def save_results(results, resultsfolder):
 # =================================
 
 
-def main(datafolder, metadatafile, contrast, resultsfolder):
+def main(datafolder, metadatafile, contrast, resultsfolder, segmentlength, featuretype):
     print("--calculate")
     if not os.path.exists(resultsfolder):
         os.makedirs(resultsfolder)
+    parameterstring = str(segmentlength) +"-"+ str(featuretype[0]) +"-"+ str(featuretype[1])
+    contraststring = str(contrast[0]) +"_"+ str(contrast[2]) +"-"+ str(contrast[1])
+    resultsfile = resultsfolder + "results_" + parameterstring +"_"+ contraststring +".csv"
     idlists = make_idlists(metadatafile, contrast)
-    binary1, binary2, relative1, relative2 = filter_dtm(datafolder, idlists)
+    binary1, binary2, relative1, relative2 = filter_dtm(datafolder, parameterstring, idlists)
     docprops1, docprops2, relfreqs1, relfreqs2 = get_indicators(binary1, binary2, relative1, relative2)
     origzeta, divzeta, logzeta, ratiorelfreqs, subrelfreqs, logrelfreqs = calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2)
     results = combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, logzeta, ratiorelfreqs, subrelfreqs, logrelfreqs)
-    save_results(results, resultsfolder)
+    save_results(results, resultsfile)
     
 
     

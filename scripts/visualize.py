@@ -108,7 +108,7 @@ def zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, res
     # Define some strings and filenames
     parameterstring = str(segmentlength) +"-"+ str(featuretype[0]) +"-"+ str(featuretype[1])
     contraststring = str(contrast[0]) +"_"+ str(contrast[2]) +"-"+ str(contrast[1])
-    resultsfile = resultsfolder + "zetaresults.csv"
+    resultsfile = resultsfolder + "results_" + parameterstring +"_"+ contraststring +".csv"
     zetaplotfile = plotfolder + "zetabarchart_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +"-"+str(measure) + ".svg"
     if not os.path.exists(plotfolder):
         os.makedirs(plotfolder)
@@ -133,7 +133,7 @@ def get_scores(resultsfile, numfeatures, measure):
         positivescores = zetascores.head(numfeatures)
         negativescores = zetascores.tail(numfeatures)
         scores = pd.concat([positivescores, negativescores])
-        print(scores.head())
+        #print(scores.head())
         return scores
 
 
@@ -142,7 +142,6 @@ def make_data(scores, measure):
     propsone = list(scores.loc[:, "docprops1"])
     propstwo = list(scores.loc[:, "docprops2"])
     zetas = list(scores.loc[:, measure])
-    #print(zetas)
     return thetypes, propsone, propstwo, zetas
 
 
@@ -188,8 +187,8 @@ def typescatterplot(numfeatures, cutoff, contrast, segmentlength, featuretype, m
     print("--typescatterplot (types)")
     parameterstring = str(segmentlength) +"-"+ str(featuretype[0]) +"-"+ str(featuretype[1])
     contraststring = str(contrast[0]) +"_"+ str(contrast[2]) +"-"+ str(contrast[1])
-    resultsfile = resultsfolder + "zetaresults.csv"
-    typescatterfile = plotfolder + "typescatterplot_" + parameterstring +"_"+ contraststring +"_" +str(measure) +"_" + str(numfeatures) +"-"+str(cutoff)+".svg"
+    resultsfile = resultsfolder + "results_" + parameterstring +"_"+ contraststring +".csv"
+    typescatterfile = plotfolder + "typescatterplot_" + parameterstring +"_"+ contraststring +"_" +str(numfeatures) +"-" + str(cutoff) +"-"+str(measure)+".svg"
     if not os.path.exists(plotfolder):
         os.makedirs(plotfolder)
     scores = get_scores(resultsfile, numfeatures, measure)

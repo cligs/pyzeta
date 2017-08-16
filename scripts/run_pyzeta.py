@@ -85,7 +85,7 @@ The calculation can work in several ways: by division, subtraction as well as wi
 #contrast = ["title", "HoundBaskervilles", "LostWorld"] # category, group1, group2
 contrast = ["subgenre", "detective", "historical"] # category, group1, group2
 
-#calculate.main(datafolder, metadatafile, contrast, resultsfolder)
+#calculate.main(datafolder, metadatafile, contrast, resultsfolder, segmentlength, featuretype)
 
 
 
@@ -100,11 +100,12 @@ This module provides several plotting functionalities.
 
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
 numfeatures = 20
-measure = "logzeta"
+measure = "origzeta" # origzeta|logzeta|ratiorelfreqs|etc.
 #visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
 numfeatures = 500
+measure = "origzeta" # origzeta|logzeta|ratiorelfreqs|etc.
 cutoff = 0.3
 visualize.typescatterplot(numfeatures, cutoff, contrast, segmentlength, featuretype, measure, resultsfolder, plotfolder)
 
