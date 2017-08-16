@@ -56,7 +56,7 @@ Currently, this module uses TreeTagger and treetaggerwrapper.
 """
 
 language = "en"
-#preprocess.main(plaintextfolder, taggedfolder, language)
+preprocess.main(plaintextfolder, taggedfolder, language)
 
 
 # =================================
@@ -73,7 +73,7 @@ This function needs to be run again when a parameter is changed.
 
 segmentlength = 2000
 featuretype = ["lemmata", "NN"] # forms, pos
-#prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype)
+prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype)
 
 
 # =================================
@@ -87,7 +87,7 @@ The calculation can work in several ways: by division, subtraction as well as wi
 """
 
 contrast = ["subgenre", "detective", "historical"] # category, group1, group2
-#calculate.main(datafolder, metadatafile, contrast, resultsfolder, segmentlength, featuretype)
+calculate.main(datafolder, metadatafile, contrast, resultsfolder, segmentlength, featuretype)
 
 
 
@@ -102,7 +102,7 @@ This module provides several plotting functionalities.
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
 numfeatures = 20
 measure = "origzeta" # origzeta|logzeta|ratiorelfreqs|etc.
-#visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, resultsfolder, plotfolder)
+visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
 numfeatures = 500
