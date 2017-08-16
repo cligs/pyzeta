@@ -129,10 +129,10 @@ def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzet
     "ratiorelfreqs":ratiorelfreqs,
     "subrelfreqs":subrelfreqs,
     "logrelfreqs":logrelfreqs})
-    print(results.columns.tolist())
+    #print(results.columns.tolist())
     results = results[["docprops1", "docprops2", "origzeta", "logzeta", "divzeta", "relfreqs1", "relfreqs2", "ratiorelfreqs", "subrelfreqs", "logrelfreqs"]]
     results.sort_values(by="origzeta", ascending=False, inplace=True)
-    print(results.head(10), "\n", results.tail(10))
+    #print(results.head(10), "\n", results.tail(10))
     return results
     
 
@@ -149,6 +149,8 @@ def save_results(results, resultsfolder):
 
 def main(datafolder, metadatafile, contrast, resultsfolder):
     print("--calculate")
+    if not os.path.exists(resultsfolder):
+        os.makedirs(resultsfolder)
     idlists = make_idlists(metadatafile, contrast)
     binary1, binary2, relative1, relative2 = filter_dtm(datafolder, idlists)
     docprops1, docprops2, relfreqs1, relfreqs2 = get_indicators(binary1, binary2, relative1, relative2)

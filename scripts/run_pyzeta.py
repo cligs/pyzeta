@@ -6,9 +6,9 @@
 
 
 """
-The pyzeta set of script is a Python implementation of Craig's Zeta.
-Craig's Zeta is a measure of keyness or distinctiveness for contrastive analysis of two groups of texts.
-
+The pyzeta set of script is a Python implementation of Craig's Zeta and related measures.
+Zeta is a measure of keyness or distinctiveness for contrastive analysis of two groups of texts.
+This set of scripts does preprocessing, data preparation, score calculation, and visualization.
 See the readme.md and howto.md files for help on how to run the script.
 """
 
@@ -28,14 +28,15 @@ from os.path import join
 # Parameters: files and folders
 # =================================
 
-workdir = "/media/christof/data/Dropbox/0-Analysen/2017/pyzeta/"
-plaintextfolder = join(workdir, "sample-input", "corpus", "")
-taggedfolder = join(workdir, "sample-output", "data", "tagged", "")
-segmentfolder = join(workdir, "sample-output", "data", "segments", "") # should be parameter-dependent
-metadatafile = join(workdir, "sample-input", "metadata.csv")
-stoplistfile = join(workdir, "sample-input", "stoplist.txt")
-datafolder = join(workdir, "sample-output", "data", "")
-resultsfolder = join(workdir, "sample-output", "results", "")
+workdir = "/media/christof/data/repos/cligs/pyzeta/"
+plaintextfolder = join(workdir, "sampledata", "corpus", "")
+taggedfolder = join(workdir, "sampledata", "data", "tagged", "")
+segmentfolder = join(workdir, "sampledata", "data", "segments", "") # should be parameter-dependent
+metadatafile = join(workdir, "sampledata", "metadata.csv")
+stoplistfile = join(workdir, "sampledata", "stoplist.txt")
+datafolder = join(workdir, "sampledata", "data", "")
+resultsfolder = join(workdir, "sampledata", "results", "")
+plotfolder = join(workdir, "sampledata", "plots", "")
 
 
 # =================================
@@ -97,8 +98,15 @@ calculate.main(datafolder, metadatafile, contrast, resultsfolder)
 This module provides several plotting functionalities.
 """
 
-#visualize.barchart()
+# This is for a horizontal barchart for plotting Zeta and similar scores per feature.
+numfeatures = 20
+measure = "origzeta"
+visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, resultsfolder, plotfolder)
 
+# This is for a scatterplot showing the relation between indicators and scores.
+numfeatures = 2000
+cutoff = 0.3
+visualize.typescatterplot(numfeatures, cutoff, contrast, segmentlength, featuretype, measure, resultsfolder, plotfolder)
 
 
 
