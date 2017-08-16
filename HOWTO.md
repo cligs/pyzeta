@@ -30,16 +30,16 @@ Requirements:
 
 ## What is necessary to run the analyses?
 
-The script expects the following as input. See the `sample-input` folder for an example. 
+The script expects the following as input. See the `sampledata` folder for an example. 
 
-- A folder with plain text files. They need to be in UTF-8 encoding. The files should all be in one folder. 
+- A folder (here called `corpus`) with plain text files. They need to be in UTF-8 encoding. The files should all be in one folder. 
 - A metadata file with category information about each file, identified through "idno" = filename. The metadata file should be a CSV file, with the ";" used as the separator character.
 - A file with stopwords, one per line
 
 
 ## What kind of output does pyzeta produce?
 
-The folder `sample-output` contains some examples of what pyzeta produces:
+The folder `sampledata` also contains some examples of what pyzeta produces:
 
 - The `data` folder contains the tagged text files as well as the text segments with selected features and the document-term-matrices
 - The `results`folder contains a matrix with a number of different scores for each word
