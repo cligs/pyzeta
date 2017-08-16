@@ -53,16 +53,20 @@ Currently, the following standard processes are supported:
 - Preprocess a text collection by tagging it using TreeTagger (preprocess.py; run once per collection)
 - Depending on some settings, create a document-term matrix of per-segment type frequencies (prepare.py). There are options to choose word forms or lemmata or POS as features. There is the possibility to filter features based on their POS.
 - Calculate the zeta scores for the vocabulary (calculate.py). Several types of zeta variants are calculated.
-- Visualize the results (visualize.py - not moved to next yet)
+- Visualize the results as a barchart of zeta scores and as a scatterplot of types.
 
 
 ## What parameters are there to control pyzeta behavior?
 
 You can set the following parameters:
 
-- How many word forms should each segment have (500-5000 may be reasonable)
-- Which POS should be selected? "all" selects all, "Xy" will select words corresponding to Xy POS tag.
-- Which partitions of the data should be contrasted? Indicate the category and the two contrasting labels.
+- language: Which language is your text in; important for linguistic annotation.
+- segmentlength: How long should each segment of text used by (500-5000 words may be reasonable)
+- featuretype: Should wordforms, lemmata or POS be used as features? Which POS should be selected? "all" selects all, "Xy" will select words corresponding to Xy POS tag.
+- contrast: Which partitions of the data should be contrasted? Indicate the category and the two contrasting labels as a list.
+- measure (visualize): Which of the six measures being calculated should be used in the visualization
+- cutoff (visualize): Which arbitrary cutoff of extreme scores should be used for highlighting?
+- numfeatures (visualize): How many of the features should be shown?
 
 
 ## Where can more background readings about Zeta be found?

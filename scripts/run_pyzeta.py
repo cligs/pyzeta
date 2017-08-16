@@ -85,7 +85,7 @@ The calculation can work in several ways: by division, subtraction as well as wi
 #contrast = ["title", "HoundBaskervilles", "LostWorld"] # category, group1, group2
 contrast = ["subgenre", "detective", "historical"] # category, group1, group2
 
-calculate.main(datafolder, metadatafile, contrast, resultsfolder)
+#calculate.main(datafolder, metadatafile, contrast, resultsfolder)
 
 
 

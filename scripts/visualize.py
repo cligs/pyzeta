@@ -109,7 +109,7 @@ def zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, res
     parameterstring = str(segmentlength) +"-"+ str(featuretype[0]) +"-"+ str(featuretype[1])
     contraststring = str(contrast[0]) +"_"+ str(contrast[2]) +"-"+ str(contrast[1])
     resultsfile = resultsfolder + "zetaresults.csv"
-    zetaplotfile = plotfolder + "zetabarchart_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +".svg"
+    zetaplotfile = plotfolder + "zetabarchart_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +"-"+str(measure) + ".svg"
     if not os.path.exists(plotfolder):
         os.makedirs(plotfolder)
     # Get the data and plot it
@@ -149,7 +149,7 @@ def make_typesplot(types, propsone, propstwo, zetas, numfeatures, cutoff, contra
                     range=(0, 1),
                     show_y_guides=True,
                     show_x_guides=True,
-                    title="Document proportions and " + "measure",
+                    title="Document proportions and " + str(measure),
                     x_title="document proportions in " + str(contrast[1]),
                     y_title="document proportions in " + str(contrast[2]))
     for i in range(0, numfeatures * 2):
@@ -186,7 +186,7 @@ def typescatterplot(numfeatures, cutoff, contrast, segmentlength, featuretype, m
     parameterstring = str(segmentlength) +"-"+ str(featuretype[0]) +"-"+ str(featuretype[1])
     contraststring = str(contrast[0]) +"_"+ str(contrast[2]) +"-"+ str(contrast[1])
     resultsfile = resultsfolder + "zetaresults.csv"
-    typescatterfile = plotfolder + "typescatterplot_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +"-"+str(cutoff)+".svg"
+    typescatterfile = plotfolder + "typescatterplot_" + parameterstring +"_"+ contraststring +"_" +str(measure) +"_" + str(numfeatures) +"-"+str(cutoff)+".svg"
     if not os.path.exists(plotfolder):
         os.makedirs(plotfolder)
     scores = get_scores(resultsfile, numfeatures)
