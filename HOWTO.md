@@ -13,12 +13,12 @@ Requirements:
 
 - Python 3
 - Packages pandas, numpy, treetaggerwrapper and pygal
+- Also, TreeTagger must be installed
 
 
 ## How to install pyzeta?
 
 - Simply download or clone the pyzeta repository
-- Make sure you have `pyzeta.py` and `run_pyzeta.py` in a common location on your computer
 
 
 ## How to run pyzeta?
@@ -39,27 +39,21 @@ The script expects the following as input. See the `sample-input` folder for an 
 
 ## What kind of output does pyzeta produce?
 
-The folder `sample-output/results` contains some examples of what pyzeta produces:
+The folder `sample-output` contains some examples of what pyzeta produces:
 
-- A matrix containing the features used with their proportions in each partition and their resulting zeta score
-- A plot showing the most distinctive words as a horizontal bar chart.
-- A plot showing the feature distribution as a scatterplot.
+- The `data` folder contains the tagged text files as well as the text segments with selected features and the document-term-matrices
+- The `results`folder contains a matrix with a number of different scores for each word
+- The `plots` folder has several types of plots, e.g. the most distinctive words as a horizontal bar chart or the feature distribution as a scatterplot.
 
 
 ## What processes and options are supported?
 
 Currently, the following standard processes are supported:
 
-- Prepare a text collection by tagging it using TreeTagger (pyzeta.prepare; run once per collection)
-- For any two partitions of the collection, create a matrix of per-segment type frequencies and calculate the zeta scores for the vocabulary (pyzeta.zeta). There are options to choose word forms or lemmata or POS as features. There is the possibility to filter features based on their POS.
-- Visualize the most distinctive words as a horizontal bar chart. (pyzeta.plot_scores)
-- Visualize the feature distribution as a scatterplot (pyzeta.plot_types)
-
-The following experimental functions are present (but not really supported):
-
-- If you use ["random", "0", "1"] as the value for the `contrast` parameter, the partitions will be built randomly, splitting the collection in equal-sized parts. This is interesting if you want to see how strong your zeta scores really are relative to a random partitioning. (Expanding on this principle could be the basis for some type of significance test for zeta scores.)
-- Visualize the relation between three partitions based on type proportions in two partitions (pyzeta.threeway)
-- PCA for three partitions using distinctive features.
+- Preprocess a text collection by tagging it using TreeTagger (preprocess.py; run once per collection)
+- Depending on some settings, create a document-term matrix of per-segment type frequencies (prepare.py). There are options to choose word forms or lemmata or POS as features. There is the possibility to filter features based on their POS.
+- Calculate the zeta scores for the vocabulary (calculate.py). Several types of zeta variants are calculated.
+- Visualize the results (visualize.py - not moved to next yet)
 
 
 ## What parameters are there to control pyzeta behavior?
