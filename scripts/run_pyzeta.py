@@ -28,15 +28,21 @@ from os.path import join
 # Parameters: files and folders
 # =================================
 
+# You need to adapt these
 workdir = "/media/christof/data/repos/cligs/pyzeta/"
-plaintextfolder = join(workdir, "sampledata", "corpus", "")
-taggedfolder = join(workdir, "sampledata", "data", "tagged", "")
-segmentfolder = join(workdir, "sampledata", "data", "segments", "") # should be parameter-dependent
-metadatafile = join(workdir, "sampledata", "metadata.csv")
-stoplistfile = join(workdir, "sampledata", "stoplist.txt")
-datafolder = join(workdir, "sampledata", "data", "")
-resultsfolder = join(workdir, "sampledata", "results", "")
-plotfolder = join(workdir, "sampledata", "plots", "")
+datadir = join(workdir, "sampledata")
+
+# It is recommended to name your files and folders accordingly 
+plaintextfolder = join(datadir, "corpus", "")
+metadatafile = join(datadir, "metadata.csv")
+stoplistfile = join(datadir, "stoplist.txt")
+
+# It is recommended not to change these
+taggedfolder = join(datadir, "data", "tagged", "")
+segmentfolder = join(datadir, "data", "segments", "")
+datafolder = join(datadir, "data", "")
+resultsfolder = join(datadir, "results", "")
+plotfolder = join(datadir, "plots", "")
 
 
 # =================================
@@ -50,7 +56,6 @@ Currently, this module uses TreeTagger and treetaggerwrapper.
 """
 
 language = "en"
-
 #preprocess.main(plaintextfolder, taggedfolder, language)
 
 
@@ -68,7 +73,6 @@ This function needs to be run again when a parameter is changed.
 
 segmentlength = 2000
 featuretype = ["lemmata", "NN"] # forms, pos
-
 #prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype)
 
 
@@ -82,11 +86,8 @@ The calculation can be based on relative or binary features.
 The calculation can work in several ways: by division, subtraction as well as with or without applying some log transformation.
 """
 
-#contrast = ["title", "HoundBaskervilles", "LostWorld"] # category, group1, group2
 contrast = ["subgenre", "detective", "historical"] # category, group1, group2
-
 #calculate.main(datafolder, metadatafile, contrast, resultsfolder, segmentlength, featuretype)
-
 
 
 
