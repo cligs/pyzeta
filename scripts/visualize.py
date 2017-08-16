@@ -126,20 +126,23 @@ def zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, res
 # ==============================================
 
 
-def get_scores(resultsfile, numfeatures):
+def get_scores(resultsfile, numfeatures, measure):
     with open(resultsfile, "r") as infile:
         zetascores = pd.DataFrame.from_csv(infile, sep="\t")
+        zetascores.sort_values(by=measure, ascending=False, inplace=True)
         positivescores = zetascores.head(numfeatures)
         negativescores = zetascores.tail(numfeatures)
         scores = pd.concat([positivescores, negativescores])
+        print(scores.head())
         return scores
 
 
-def make_data(scores):
+def make_data(scores, measure):
     thetypes = list(scores.index)
     propsone = list(scores.loc[:, "docprops1"])
     propstwo = list(scores.loc[:, "docprops2"])
-    zetas = list(scores.loc[:, "origzeta"])
+    zetas = list(scores.loc[:, measure])
+    #print(zetas)
     return thetypes, propsone, propstwo, zetas
 
 
@@ -189,7 +192,7 @@ def typescatterplot(numfeatures, cutoff, contrast, segmentlength, featuretype, m
     typescatterfile = plotfolder + "typescatterplot_" + parameterstring +"_"+ contraststring +"_" +str(measure) +"_" + str(numfeatures) +"-"+str(cutoff)+".svg"
     if not os.path.exists(plotfolder):
         os.makedirs(plotfolder)
-    scores = get_scores(resultsfile, numfeatures)
-    thetypes, propsone, propstwo, zetas = make_data(scores)
+    scores = get_scores(resultsfile, numfeatures, measure)
+    thetypes, propsone, propstwo, zetas = make_data(scores, measure)
     make_typesplot(thetypes, propsone, propstwo, zetas, numfeatures, cutoff, contrast, measure, typescatterfile)
 

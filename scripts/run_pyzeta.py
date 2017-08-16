@@ -100,11 +100,11 @@ This module provides several plotting functionalities.
 
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
 numfeatures = 20
-measure = "origzeta"
-visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, resultsfolder, plotfolder)
+measure = "logzeta"
+#visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
-numfeatures = 2000
+numfeatures = 500
 cutoff = 0.3
 visualize.typescatterplot(numfeatures, cutoff, contrast, segmentlength, featuretype, measure, resultsfolder, plotfolder)
 
