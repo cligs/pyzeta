@@ -1,6 +1,8 @@
 # pyzeta
 
-[![DOI](https://zenodo.org/badge/76167647.svg)](https://zenodo.org/badge/latestdoi/76167647)
+[![DOI](https://zenodo.org/badge/76167647.svg)](https://doi.org/10.5281/zenodo.597354)
+
+
 
 **The pyzeta scripts are a Python implementation of Craig's Zeta score for contrastive text analysis.**
 
