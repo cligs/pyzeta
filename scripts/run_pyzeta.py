@@ -73,7 +73,7 @@ This function needs to be run again when a parameter is changed.
 
 segmentlength = 2000
 featuretype = ["lemmata", "NN"] # forms, pos
-#prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype)
+prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype)
 
 
 # =================================
@@ -102,7 +102,7 @@ This module provides several plotting functionalities.
 
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
 numfeatures = 20
-measure = "log10zeta" # origzeta|logzeta|ratiorelfreqs|etc.
+measure = "origzeta" # origzeta|logzeta|ratiorelfreqs|etc.
 visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.

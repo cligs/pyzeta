@@ -12,9 +12,9 @@ The underlying measure of distinctiveness or keyness has been proposed by John B
 
 ## Getting help
 
-* The `sample output` folder contains some examples of what pyzeta produces
+* The `sampledata` folder contains some examples of what input pyzeta needs and what output it produces
 * The `howto.md` file contains a brief tutorial of sorts for running analyses with pyzeta.
 
 ## Requirements and installation
 
-* Requirements: Python 3 with pandas, numpy, treetaggerwrapper and pygal
+* Requirements: Python 3 with pandas, numpy, sklearn, pygal, treetaggerwrapper (and TreeTagger)
