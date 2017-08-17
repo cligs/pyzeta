@@ -1,6 +1,6 @@
 # pyzeta
 
-[![DOI](https://zenodo.org/badge/76167647.svg)](https://doi.org/10.5281/zenodo.597354)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.597354.svg)](https://doi.org/10.5281/zenodo.597354)
 
 
 
