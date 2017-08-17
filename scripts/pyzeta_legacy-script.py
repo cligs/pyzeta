@@ -24,8 +24,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import pdist
 from scipy.cluster.hierarchy import dendrogram, linkage
-import itertools
-import shutil
 from sklearn.decomposition import PCA
 import random
 import math

@@ -13,12 +13,13 @@ Requirements:
 
 - Python 3
 - Packages pandas, numpy, treetaggerwrapper and pygal
-- Also, TreeTagger must be installed
+- TreeTagger
 
 
 ## How to install pyzeta?
 
 - Simply download or clone the pyzeta repository
+- Make sure you have `pyzeta.py` and `run_pyzeta.py` in a common location on your computer
 
 
 ## How to run pyzeta?
@@ -30,43 +31,45 @@ Requirements:
 
 ## What is necessary to run the analyses?
 
-The script expects the following as input. See the `sampledata` folder for an example. 
+The script expects the following as input. See the `sample-input` folder for an example. 
 
-- A folder (here called `corpus`) with plain text files. They need to be in UTF-8 encoding. The files should all be in one folder. 
-- A metadata file with category information about each file, identified through "idno" = filename. The metadata file should be a CSV file, with the ";" used as the separator character.
+- A folder with plain text files. They need to be in UTF-8 encoding. The files should all be in one folder. 
+- A metadata file called "metadata.csv" with category information about each file, identified through the column header called "idno" and which contains the filenames (without the extension). The metadata file should be a CSV file, with the ";" used as the separator character.
 - A file with stopwords, one per line
 
 
 ## What kind of output does pyzeta produce?
 
-The folder `sampledata` also contains some examples of what pyzeta produces:
+The folder `sample-output/results` contains some examples of what pyzeta produces:
 
-- The `data` folder contains the tagged text files as well as the text segments with selected features and the document-term-matrices
-- The `results`folder contains a matrix with a number of different scores for each word
-- The `plots` folder has several types of plots, e.g. the most distinctive words as a horizontal bar chart or the feature distribution as a scatterplot.
+- A matrix containing the features used with their proportions in each partition and their resulting zeta score
+- A plot showing the most distinctive words as a horizontal bar chart.
+- A plot showing the feature distribution as a scatterplot.
 
 
 ## What processes and options are supported?
 
 Currently, the following standard processes are supported:
 
-- Preprocess a text collection by tagging it using TreeTagger (preprocess.py; run once per collection)
-- Depending on some settings, create a document-term matrix of per-segment type frequencies (prepare.py). There are options to choose word forms or lemmata or POS as features. There is the possibility to filter features based on their POS.
-- Calculate the zeta scores for the vocabulary (calculate.py). Several types of zeta variants are calculated.
-- Visualize the results as a barchart of zeta scores and as a scatterplot of types.
+- Prepare a text collection by tagging it using TreeTagger (pyzeta.prepare; run once per collection)
+- For any two partitions of the collection, create a matrix of per-segment type frequencies and calculate the zeta scores for the vocabulary (pyzeta.zeta). There are options to choose word forms or lemmata or POS as features. There is the possibility to filter features based on their POS.
+- Visualize the most distinctive words as a horizontal bar chart. (pyzeta.plot_scores)
+- Visualize the feature distribution as a scatterplot (pyzeta.plot_types)
+
+The following experimental functions are present (but not really supported):
+
+- If you use ["random", "0", "1"] as the value for the `contrast` parameter, the partitions will be built randomly, splitting the collection in equal-sized parts. This is interesting if you want to see how strong your zeta scores really are relative to a random partitioning. (Expanding on this principle could be the basis for some type of significance test for zeta scores.)
+- Visualize the relation between three partitions based on type proportions in two partitions (pyzeta.threeway)
+- PCA for three partitions using distinctive features.
 
 
 ## What parameters are there to control pyzeta behavior?
 
 You can set the following parameters:
 
-- language: Which language is your text in; important for linguistic annotation.
-- segmentlength: How long should each segment of text used by (500-5000 words may be reasonable)
-- featuretype: Should wordforms, lemmata or POS be used as features? Which POS should be selected? "all" selects all, "Xy" will select words corresponding to Xy POS tag.
-- contrast: Which partitions of the data should be contrasted? Indicate the category and the two contrasting labels as a list.
-- measure (visualize): Which of the six measures being calculated should be used in the visualization
-- cutoff (visualize): Which arbitrary cutoff of extreme scores should be used for highlighting?
-- numfeatures (visualize): How many of the features should be shown?
+- How many word forms should each segment have (500-5000 may be reasonable)
+- Which POS should be selected? "all" selects all, "Xy" will select words corresponding to Xy POS tag.
+- Which partitions of the data should be contrasted? Indicate the category and the two contrasting labels.
 
 
 ## Where can more background readings about Zeta be found?
