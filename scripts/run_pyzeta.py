@@ -73,7 +73,7 @@ This function needs to be run again when a parameter is changed.
 
 segmentlength = 2000
 featuretype = ["lemmata", "NN"] # forms, pos
-prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype)
+#prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype)
 
 
 # =================================
@@ -86,7 +86,7 @@ The calculation can be based on relative or binary features.
 The calculation can work in several ways: by division, subtraction as well as with or without applying some log transformation.
 """
 
-contrast = ["subgenre", "detective", "historical"] # category, group1, group2
+contrast = ["subgenre", "detective", "historical"]# category, group1, group2; or: "random", "one", "two"
 logaddition= 0.5 # has effect on log calculation.
 calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
 

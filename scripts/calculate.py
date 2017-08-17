@@ -16,6 +16,7 @@ import glob
 import pandas as pd
 import numpy as np
 from sklearn import preprocessing as prp
+import random
 
 
 # =================================
@@ -30,8 +31,14 @@ def make_idlists(metadatafile, contrast):
     """
     with open(metadatafile, "r") as infile:
         metadata = pd.DataFrame.from_csv(infile, sep=";")
-        list1 = list(metadata[metadata[contrast[0]].isin([contrast[1]])].index)
-        list2 = list(metadata[metadata[contrast[0]].isin([contrast[2]])].index)
+        if contrast[0] != "random": 
+            list1 = list(metadata[metadata[contrast[0]].isin([contrast[1]])].index)
+            list2 = list(metadata[metadata[contrast[0]].isin([contrast[2]])].index)
+        elif contrast[0] == "random":
+            allidnos = list(metadata.loc[:, "idno"])
+            allidnos = random.sample(allidnos, len(allidnos))
+            list1 = allidnos[:int(len(allidnos)/2)]
+            list2 = allidnos[int(len(allidnos)/2):]
         idlists = [list1, list2]
         return idlists
 
