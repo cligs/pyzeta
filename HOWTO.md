@@ -19,7 +19,7 @@ Requirements:
 ## How to install pyzeta?
 
 - Simply download or clone the pyzeta repository
-- Make sure you have `pyzeta.py` and `run_pyzeta.py` in a common location on your computer
+- Make sure you have all the files in the `script`folder, including `run_pyzeta.py`, in a common location on your computer
 
 
 ## How to run pyzeta?
@@ -27,6 +27,7 @@ Requirements:
 - Open run_pyzeta.py with an IDE such as Geany, Spyder or PyCharm
 - Adapt the parameters in run_pyzeta.py to you needs
 - Run from the IDE. 
+- (Once you have set all parameters in run_pyzeta.py, you can also call it from the Terminal.)
 
 
 ## What is necessary to run the analyses?
