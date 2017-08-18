@@ -86,10 +86,16 @@ def make_barchart(zetadata, comparisonplotfile, parameterstring, contraststring,
                     range = (0, numfeatures),
                     title = ("Vergleich von Zetawort-Listen nach Rang"),
                     y_title = "Inverser Rang der \n" + str(numfeatures) + " distinktivsten Merkmale",
-                    x_title = "Vergleich von: "+ comparison[0] +" (navy) und "+ comparison[1]+" (grau)")
+                    x_title = "Vergleich von: "+ comparison[0] +" (grau) und "+ comparison[1]+" (farbig)")
     for i in range(0,numfeatures):
-        plot.add(zetadata.iloc[i,0], [{"value": zetadata.iloc[i,3], "label": zetadata.iloc[i, 0], "color": "navy"}])
-        plot.add(zetadata.iloc[i,0], [{"value": zetadata.iloc[i,4], "label": zetadata.iloc[i, 0], "color": "darkslategrey"}])
+        plot.add(zetadata.iloc[i,0], [{"value": zetadata.iloc[i,3], "label": zetadata.iloc[i, 0], "color": "darkslategrey"}])
+        if zetadata.iloc[i,3] < zetadata.iloc[i,4]:
+            color = "darkgreen"
+        elif zetadata.iloc[i,3] > zetadata.iloc[i,4]:
+            color = "darkred"
+        else:
+            color = "darkslategrey"
+        plot.add(zetadata.iloc[i,0], [{"value": zetadata.iloc[i,4], "label": zetadata.iloc[i, 0], "color": color}])
         plot.add(zetadata.iloc[i,0], [{"value": 0, "label": "", "color": "white"}])
     plot.render_to_file(comparisonplotfile)
 
