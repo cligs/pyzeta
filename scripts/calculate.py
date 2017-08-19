@@ -39,6 +39,8 @@ def make_idlists(metadatafile, contrast):
             allidnos = random.sample(allidnos, len(allidnos))
             list1 = allidnos[:int(len(allidnos)/2)]
             list2 = allidnos[int(len(allidnos)/2):]
+            print(list1[0:5])
+            print(list2[0:5])
         idlists = [list1, list2]
         return idlists
 
@@ -121,14 +123,23 @@ def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition):
     logrelfreqs = pd.Series(logrelfreqs, name="logrelfreqs")  
     logrelfreqs = scaler.fit_transform(logrelfreqs)
     return origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs, subrelfreqs, logrelfreqs
+
+def get_meanrelfreqs(datafolder, parameterstring): 
+    dtmfile = datafolder + "dtm_"+parameterstring+"_relativefreqs.csv"
+    with open(dtmfile, "r") as infile:
+        meanrelfreqs = pd.DataFrame.from_csv(infile, sep="\t")
+        meanrelfreqs = np.mean(meanrelfreqs, axis=1)*1000
+        #print(meanrelfreqs.head(100))
+        return meanrelfreqs
     
 
-def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs, subrelfreqs, logrelfreqs):
+def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs, subrelfreqs, logrelfreqs, meanrelfreqs):
     results = pd.DataFrame({
     "docprops1":docprops1,
     "docprops2":docprops2,
     "relfreqs1":relfreqs1,
     "relfreqs2":relfreqs2,
+    "meanrelfreqs":meanrelfreqs,
     "origzeta":origzeta,
     "divzeta":divzeta,
     "log2zeta":log2zeta,
@@ -137,7 +148,7 @@ def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzet
     "subrelfreqs":subrelfreqs,
     "logrelfreqs":logrelfreqs})
     #print(results.columns.tolist())
-    results = results[["docprops1", "docprops2", "origzeta", "log2zeta", "log10zeta", "divzeta", "relfreqs1", "relfreqs2", "ratiorelfreqs", "subrelfreqs", "logrelfreqs"]]
+    results = results[["docprops1", "docprops2", "origzeta", "log2zeta", "log10zeta", "divzeta", "meanrelfreqs", "relfreqs1", "relfreqs2", "ratiorelfreqs", "subrelfreqs", "logrelfreqs"]]
     results.sort_values(by="origzeta", ascending=False, inplace=True)
     #print(results.head(10), "\n", results.tail(10))
     return results
@@ -164,7 +175,8 @@ def main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segment
     binary1, binary2, relative1, relative2 = filter_dtm(datafolder, parameterstring, idlists)
     docprops1, docprops2, relfreqs1, relfreqs2 = get_indicators(binary1, binary2, relative1, relative2)
     origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs, subrelfreqs, logrelfreqs = calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition)
-    results = combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs, subrelfreqs, logrelfreqs)
+    meanrelfreqs = get_meanrelfreqs(datafolder, parameterstring)
+    results = combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs, subrelfreqs, logrelfreqs, meanrelfreqs)
     save_results(results, resultsfile)
     
 
