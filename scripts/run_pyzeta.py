@@ -87,9 +87,9 @@ The calculation can be based on relative or binary features.
 The calculation can work in several ways: by division, subtraction as well as with or without applying some log transformation.
 """
 
-contrast = ["subgenre", "detective", "historical"]# category, group1, group2; or: "random", "one", "two"
+contrast = ["random", "two", "one"]# category, group1, group2; or: "random", "one", "two"
 logaddition= 0.5 # has effect on log calculation.
-#calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
+calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
 
 
 
@@ -107,7 +107,7 @@ This module provides several plotting functionalities.
 numfeatures = 20
 measure = "origzeta" # origzeta|logzeta|ratiorelfreqs|etc.
 droplist = ["anything", "everything", "anyone", "nothing"]
-visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
+#visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
 numfeatures = 500
