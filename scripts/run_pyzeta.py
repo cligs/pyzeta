@@ -20,6 +20,7 @@ import preprocess
 import prepare
 import calculate
 import visualize
+import experimental
 
 from os.path import join
 
@@ -88,7 +89,7 @@ The calculation can work in several ways: by division, subtraction as well as wi
 
 contrast = ["subgenre", "detective", "historical"]# category, group1, group2; or: "random", "one", "two"
 logaddition= 0.5 # has effect on log calculation.
-calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
+#calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
 
 
 
@@ -98,12 +99,15 @@ calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, s
 
 """
 This module provides several plotting functionalities.
+"zetabarchart" shows the n words with the most extreme, negative and postive, scores.
+"typescatterplot" provides a scatterplot in which each dot is one feature. 
 """
 
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
 numfeatures = 20
 measure = "origzeta" # origzeta|logzeta|ratiorelfreqs|etc.
-visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, resultsfolder, plotfolder)
+droplist = ["anything", "everything", "anyone", "nothing"]
+visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
 numfeatures = 500
@@ -113,6 +117,17 @@ cutoff = 0.3
 
 
 
+# =================================
+# Experimental
+# =================================
+
+"""
+"comparisonplot" is a plot showing the top n features with the highest zeta scores for two measures in comparison.
+"""
+
+comparison = ["origzeta", "log2zeta"]
+numfeatures = 25
+#experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 
 
 

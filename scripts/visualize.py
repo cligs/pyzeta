@@ -56,12 +56,14 @@ zeta_style = pygal.style.Style(
 # =================================
 
 
-def get_zetadata(resultsfile, measure, numfeatures):
+def get_zetadata(resultsfile, measure, numfeatures, droplist):
     with open(resultsfile, "r") as infile:
         alldata = pd.DataFrame.from_csv(infile, sep="\t")
         zetadata = alldata.loc[:, [measure, "docprops1"]]
         zetadata.sort_values(measure, ascending=False, inplace=True)
         zetadata.drop("docprops1", axis=1, inplace=True)
+        for item in droplist: 
+            zetadata.drop(item, axis=0, inplace=True)
         zetadata = zetadata.head(numfeatures).append(zetadata.tail(numfeatures))
         zetadata = zetadata.reset_index(drop=False)
         return zetadata
@@ -103,7 +105,7 @@ def make_barchart(zetadata, zetaplotfile, parameterstring, contraststring, measu
     plot.render_to_file(zetaplotfile)
 
 
-def zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, resultsfolder, plotfolder):
+def zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder):
     print("--barchart (zetascores)")
     # Define some strings and filenames
     parameterstring = str(segmentlength) +"-"+ str(featuretype[0]) +"-"+ str(featuretype[1])
@@ -113,7 +115,7 @@ def zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, res
     if not os.path.exists(plotfolder):
         os.makedirs(plotfolder)
     # Get the data and plot it
-    zetadata = get_zetadata(resultsfile, measure, numfeatures)
+    zetadata = get_zetadata(resultsfile, measure, numfeatures, droplist)
     make_barchart(zetadata, zetaplotfile, parameterstring, contraststring, measure, numfeatures)
 
 
