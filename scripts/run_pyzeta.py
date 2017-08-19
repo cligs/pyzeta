@@ -106,7 +106,8 @@ This module provides several plotting functionalities.
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
 numfeatures = 20
 measure = "origzeta" # origzeta|logzeta|ratiorelfreqs|etc.
-visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, resultsfolder, plotfolder)
+droplist = ["anything", "everything", "anyone", "nothing"]
+visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
 numfeatures = 500
