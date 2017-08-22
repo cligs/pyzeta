@@ -30,7 +30,7 @@ from os.path import join
 # =================================
 
 # You need to adapt these
-workdir = "/Users/Albin/PycharmProjects/pyzeta/"
+workdir = "/media/christof/data/repos/cligs/pyzeta/"
 datadir = join(workdir, "sampledata")
 
 # It is recommended to name your files and folders accordingly 
@@ -87,9 +87,9 @@ The calculation can be based on relative or binary features.
 The calculation can work in several ways: by division, subtraction as well as with or without applying some log transformation.
 """
 
-contrast = ["random", "two", "one"]# category, group1, group2; or: "random", "one", "two"
+contrast = ["subgenre", "detective", "historical"] # category, group1, group2; or: "random", "one", "two"
 logaddition= 0.5 # has effect on log calculation.
-calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
+#calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
 
 
 
@@ -128,6 +128,7 @@ cutoff = 0.3
 comparison = ["docprops1", "docprops2", "origzeta", "log2zeta", "log10zeta", "divzeta", "meanrelfreqs", "relfreqs1", "relfreqs2", "ratiorelfreqs", "subrelfreqs", "logrelfreqs"]
 numfeatures = 25
 #experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
+
 experimental.get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 
 

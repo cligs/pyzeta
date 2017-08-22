@@ -1,5 +1,9 @@
-# Source: https://github.com/maslinych/linis-scripts/blob/master/rbo_calc.py
-# Slightly modified
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# file: experimental.py
+# version: 0.1.0
+# source: https://github.com/maslinych/linis-scripts/blob/master/rbo_calc.py
+# ported to Python 3 and slightly modified by Albin Zehe
 
 def calc_rbo(l1, l2, p=0.98):
     """ 
