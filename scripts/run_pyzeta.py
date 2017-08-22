@@ -30,7 +30,7 @@ from os.path import join
 # =================================
 
 # You need to adapt these
-workdir = "/media/christof/data/repos/cligs/pyzeta/"
+workdir = "/Users/Albin/PycharmProjects/pyzeta/"
 datadir = join(workdir, "sampledata")
 
 # It is recommended to name your files and folders accordingly 
@@ -128,7 +128,7 @@ cutoff = 0.3
 comparison = ["origzeta", "log2zeta"]
 numfeatures = 25
 #experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
-
+experimental.get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 
 
 
