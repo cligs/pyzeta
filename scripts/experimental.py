@@ -14,7 +14,7 @@ import os
 import pandas as pd
 import pygal
 from pygal import style
-from scipy.stats import kendalltau
+from scipy.stats import kendalltau, spearmanr
 
 from scripts.correlation import calc_rbo as rbo_score
 
@@ -57,6 +57,26 @@ def add_ranks(zetadata, comparison):
     zetadata[comparison[0] + "-ranks"] = zetadata.loc[:, comparison[0]].rank(axis=0, ascending=True)
     zetadata.sort_values(comparison[1], ascending=False, inplace=True)
     zetadata[comparison[1] + "ranks"] = zetadata.loc[:, comparison[1]].rank(axis=0, ascending=True)
+    zetadata.sort_values(comparison[0] + "-ranks", ascending=False, inplace=True)
+    return zetadata
+
+
+def get_zetadata_multiple(resultsfile, comparison, numfeatures):
+    with open(resultsfile, "r") as infile:
+        alldata = pd.DataFrame.from_csv(infile, sep="\t")
+        zetadata = alldata.loc[:, comparison]
+        zetadata.sort_values(comparison[0], ascending=False, inplace=True)
+        zetadata = zetadata.head(numfeatures)
+        zetadata = zetadata.reset_index(drop=False)
+        # print(zetadata)
+        return zetadata
+
+
+def add_ranks_multiple(zetadata, comparison):
+    zetadata.sort_values(comparison[0], ascending=False, inplace=True)
+    for i in range(len(comparison)):
+        zetadata[comparison[i] + "-ranks"] = zetadata.loc[:, comparison[i]].rank(axis=0, ascending=True)
+        zetadata.sort_values(comparison[i], ascending=False, inplace=True)
     zetadata.sort_values(comparison[0] + "-ranks", ascending=False, inplace=True)
     return zetadata
 
@@ -108,8 +128,11 @@ def get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featu
     resultsfile = resultsfolder + "results_" + parameterstring + "_" + contraststring + ".csv"
 
     # Get the data and compare it
-    zetadata = get_zetadata(resultsfile, comparison, numfeatures)
-    zetadata = add_ranks(zetadata, comparison)
+    zetadata = get_zetadata_multiple(resultsfile, comparison, numfeatures)
+    zetadata = add_ranks_multiple(zetadata, comparison)
+
+    columns = ("Measure 1", "Measure 2", "RBO", "Kendall's Tau", "p-value", "Spearman Rho", "p-value")
+    df = pd.DataFrame(columns=columns)
 
     resultsfile = resultsfolder + "correlation_" + parameterstring + "_" + contraststring + ".csv"
     with open(resultsfile, "w") as file:
@@ -118,8 +141,14 @@ def get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featu
             for zeta_2 in rank_columns[i + 1:]:
                 rbo = rbo_score(list(zetadata[zeta_1].values), list(zetadata[zeta_2].values))
                 tau = kendalltau(list(zetadata[zeta_1].values), list(zetadata[zeta_2].values))
+                rho = spearmanr(list(zetadata[zeta_1].values), list(zetadata[zeta_2].values))
 
-                file.write("Correlations between %s and %s:\n" % (zeta_1, zeta_2))
-                file.write("RBO: %.5f\n" % rbo)
-                file.write("Kendalls Tau: %s\n" % str(tau))
-                file.write("\n\n\n")
+                # file.write("Correlations between %s and %s:\n" % (zeta_1, zeta_2))
+                # file.write("RBO: %.5f\n" % rbo)
+                # file.write("Kendalls Tau: %s\n" % str(tau))
+                # file.write("\n\n\n")
+
+                df = df.append(pd.Series(index=columns, data=(zeta_1, zeta_2, rbo, tau[0], tau[1], rho[0], rho[1])),
+                               ignore_index=True)
+
+        file.write(df.to_csv(index=False, sep="\t"))
