@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# file: complot.py
+# file: experimental.py
 # author: #cf
 # version: 0.1.0
 
@@ -10,13 +10,12 @@
 # =================================
 
 import os
-
 import pandas as pd
 import pygal
 from pygal import style
 from scipy.stats import kendalltau
 
-from scripts.correlation import calc_rbo as rbo_score
+from correlation import calc_rbo as rbo_score
 
 # =================================
 # Pygal style
@@ -99,6 +98,11 @@ def comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentle
     zetadata = get_zetadata(resultsfile, comparison, numfeatures)
     zetadata = add_ranks(zetadata, comparison)
     make_barchart(zetadata, comparisonplotfile, parameterstring, contraststring, comparison, numfeatures)
+
+
+# =================================
+# Functions: RBO correlation
+# =================================
 
 
 def get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast):
