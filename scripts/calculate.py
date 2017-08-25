@@ -18,6 +18,9 @@ import numpy as np
 from sklearn import preprocessing as prp
 import random
 
+import sklearn
+print(sklearn.__version__)
+
 
 # =================================
 # Functions: calculate
@@ -31,7 +34,7 @@ def make_idlists(metadatafile, contrast):
     """
     with open(metadatafile, "r") as infile:
         metadata = pd.DataFrame.from_csv(infile, sep=";")
-        if contrast[0] != "random": 
+        if contrast[0] != "random":
             list1 = list(metadata[metadata[contrast[0]].isin([contrast[1]])].index)
             list2 = list(metadata[metadata[contrast[0]].isin([contrast[2]])].index)
         elif contrast[0] == "random":
@@ -69,7 +72,7 @@ def filter_dtm(datafolder, parameterstring, idlists):
 def get_indicators(binary1, binary2, relative1, relative2):
     """
     Indicators are the mean relative frequency or the document proportions,
-    depending on the method chosen.   
+    depending on the method chosen.
     """
     docprops1 = np.mean(binary1, axis=1)
     docprops1 = pd.Series(docprops1, name="docprops2")
@@ -86,7 +89,7 @@ def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition):
     """
     Scores are based on the division or substraction of the indicators.
     For division, the scores are adjusted to avoid division by zero.
-    For 
+    For
     The combination of binary features and subtraction is Burrows' Zeta.
     The combination of relative features and division corresponds to
     the ratio of relative frequencies.
@@ -104,11 +107,11 @@ def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition):
     divzeta = scaler.fit_transform(divzeta)
     # Zeta with log2 transform of values
     log2zeta = np.log2(docprops1 + logaddition) - np.log2(docprops2 + logaddition)
-    log2zeta = pd.Series(log2zeta, name="log2zeta")   
+    log2zeta = pd.Series(log2zeta, name="log2zeta")
     log2zeta = scaler.fit_transform(log2zeta)
     # Zeta with log10 transform of values
     log10zeta = np.log10(docprops1 + logaddition) - np.log2(docprops2 + logaddition)
-    log10zeta = pd.Series(log10zeta, name="log2zeta")   
+    log10zeta = pd.Series(log10zeta, name="log2zeta")
     log10zeta = scaler.fit_transform(log10zeta)
     # Standard ratio of relative frequencies
     ratiorelfreqs = (relfreqs1 + 0.00000000001) / (relfreqs2 + 0.00000000001)
@@ -120,18 +123,18 @@ def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition):
     subrelfreqs = scaler.fit_transform(subrelfreqs)
     # Subtraction of relative frequencies after log transformation
     logrelfreqs = np.log(relfreqs1 + logaddition) - np.log(relfreqs2 + logaddition)
-    logrelfreqs = pd.Series(logrelfreqs, name="logrelfreqs")  
+    logrelfreqs = pd.Series(logrelfreqs, name="logrelfreqs")
     logrelfreqs = scaler.fit_transform(logrelfreqs)
     return origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs, subrelfreqs, logrelfreqs
 
-def get_meanrelfreqs(datafolder, parameterstring): 
+def get_meanrelfreqs(datafolder, parameterstring):
     dtmfile = datafolder + "dtm_"+parameterstring+"_relativefreqs.csv"
     with open(dtmfile, "r") as infile:
         meanrelfreqs = pd.DataFrame.from_csv(infile, sep="\t")
         meanrelfreqs = np.mean(meanrelfreqs, axis=1)*1000
         #print(meanrelfreqs.head(100))
         return meanrelfreqs
-    
+
 
 def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs, subrelfreqs, logrelfreqs, meanrelfreqs):
     results = pd.DataFrame({
@@ -152,7 +155,7 @@ def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzet
     results.sort_values(by="origzeta", ascending=False, inplace=True)
     #print(results.head(10), "\n", results.tail(10))
     return results
-    
+
 
 def save_results(results, resultsfile):
     with open(resultsfile, "w") as outfile:
@@ -178,7 +181,7 @@ def main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segment
     meanrelfreqs = get_meanrelfreqs(datafolder, parameterstring)
     results = combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs, subrelfreqs, logrelfreqs, meanrelfreqs)
     save_results(results, resultsfile)
-    
 
-    
-    
+
+
+

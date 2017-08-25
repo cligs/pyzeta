@@ -30,10 +30,10 @@ from os.path import join
 # =================================
 
 # You need to adapt these
-workdir = "/media/christof/data/repos/cligs/pyzeta/"
+workdir = "/home/christof/repos/cligs/pyzeta/"
 datadir = join(workdir, "sampledata")
 
-# It is recommended to name your files and folders accordingly 
+# It is recommended to name your files and folders accordingly
 plaintextfolder = join(datadir, "corpus", "")
 metadatafile = join(datadir, "metadata.csv")
 stoplistfile = join(datadir, "stoplist.txt")
@@ -89,7 +89,7 @@ The calculation can work in several ways: by division, subtraction as well as wi
 
 contrast = ["subgenre", "detective", "historical"] # category, group1, group2; or: "random", "one", "two"
 logaddition= 0.5 # has effect on log calculation.
-#calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
+calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
 
 
 
@@ -100,7 +100,7 @@ logaddition= 0.5 # has effect on log calculation.
 """
 This module provides several plotting functionalities.
 "zetabarchart" shows the n words with the most extreme, negative and postive, scores.
-"typescatterplot" provides a scatterplot in which each dot is one feature. 
+"typescatterplot" provides a scatterplot in which each dot is one feature.
 """
 
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
@@ -129,7 +129,11 @@ comparison = ["docprops1", "docprops2", "origzeta", "log2zeta", "log10zeta", "di
 numfeatures = 25
 #experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 
-experimental.get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
+"""
+"get_correlation" calculates several correlation scores between the results of using different Zeta variants.
+"""
+
+#experimental.get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 
 
 
