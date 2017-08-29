@@ -18,6 +18,9 @@ import numpy as np
 from sklearn import preprocessing as prp
 import random
 
+import sklearn
+print(sklearn.__version__)
+
 
 # =================================
 # Functions: calculate
@@ -69,7 +72,7 @@ def filter_dtm(datafolder, parameterstring, idlists):
 def get_indicators(binary1, binary2, relative1, relative2):
     """
     Indicators are the mean relative frequency or the document proportions,
-    depending on the method chosen.   
+    depending on the method chosen.
     """
     docprops1 = np.mean(binary1, axis=1)
     docprops1 = pd.Series(docprops1, name="docprops2")
@@ -86,7 +89,7 @@ def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition):
     """
     Scores are based on the division or substraction of the indicators.
     For division, the scores are adjusted to avoid division by zero.
-    For 
+    For
     The combination of binary features and subtraction is Burrows' Zeta.
     The combination of relative features and division corresponds to
     the ratio of relative frequencies.
@@ -134,7 +137,7 @@ def get_meanrelfreqs(datafolder, parameterstring):
         # print(meanrelfreqs.head(100))
         return meanrelfreqs
 
-
+      
 def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs,
                     subrelfreqs, logrelfreqs, meanrelfreqs):
     results = pd.DataFrame({
@@ -188,3 +191,5 @@ def main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segment
     results = combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta,
                               ratiorelfreqs, subrelfreqs, logrelfreqs, meanrelfreqs)
     save_results(results, resultsfile)
+
+    
