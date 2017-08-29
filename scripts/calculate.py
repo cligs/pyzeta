@@ -104,27 +104,27 @@ def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition):
     # Zeta with division instead of subtraction
     divzeta = (docprops1 + 0.00000000001) / (docprops2 + 0.00000000001)
     divzeta = pd.Series(divzeta, name="divzeta")
-    divzeta = scaler.fit_transform(divzeta.reshape(-1, 1))
+    divzeta = scaler.fit_transform(divzeta.values.reshape(-1, 1))
     # Zeta with log2 transform of values
     log2zeta = np.log2(docprops1 + logaddition) - np.log2(docprops2 + logaddition)
     log2zeta = pd.Series(log2zeta, name="log2zeta")
-    log2zeta = scaler.fit_transform(log2zeta.reshape(-1, 1))
+    log2zeta = scaler.fit_transform(log2zeta.values.reshape(-1, 1))
     # Zeta with log10 transform of values
     log10zeta = np.log10(docprops1 + logaddition) - np.log2(docprops2 + logaddition)
     log10zeta = pd.Series(log10zeta, name="log2zeta")
-    log10zeta = scaler.fit_transform(log10zeta.reshape(-1, 1))
+    log10zeta = scaler.fit_transform(log10zeta.values.reshape(-1, 1))
     # Standard ratio of relative frequencies
     ratiorelfreqs = (relfreqs1 + 0.00000000001) / (relfreqs2 + 0.00000000001)
     ratiorelfreqs = pd.Series(ratiorelfreqs, name="ratiorelfreqs")
-    ratiorelfreqs = scaler.fit_transform(ratiorelfreqs.reshape(-1, 1))
+    ratiorelfreqs = scaler.fit_transform(ratiorelfreqs.values.reshape(-1, 1))
     # Subtraction of relative frequencies
     subrelfreqs = relfreqs1 - relfreqs2
     subrelfreqs = pd.Series(subrelfreqs, name="subrelfreqs")
-    subrelfreqs = scaler.fit_transform(subrelfreqs.reshape(-1, 1))
+    subrelfreqs = scaler.fit_transform(subrelfreqs.values.reshape(-1, 1))
     # Subtraction of relative frequencies after log transformation
     logrelfreqs = np.log(relfreqs1 + logaddition) - np.log(relfreqs2 + logaddition)
     logrelfreqs = pd.Series(logrelfreqs, name="logrelfreqs")
-    logrelfreqs = scaler.fit_transform(logrelfreqs.reshape(-1, 1))
+    logrelfreqs = scaler.fit_transform(logrelfreqs.values.reshape(-1, 1))
     return origzeta, divzeta.flatten(), log2zeta.flatten(), log10zeta.flatten(), ratiorelfreqs.flatten(), \
            subrelfreqs.flatten(), logrelfreqs.flatten()
 
@@ -137,7 +137,7 @@ def get_meanrelfreqs(datafolder, parameterstring):
         # print(meanrelfreqs.head(100))
         return meanrelfreqs
 
-      
+
 def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs,
                     subrelfreqs, logrelfreqs, meanrelfreqs):
     results = pd.DataFrame({
@@ -192,4 +192,3 @@ def main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segment
                               ratiorelfreqs, subrelfreqs, logrelfreqs, meanrelfreqs)
     save_results(results, resultsfile)
 
-    
