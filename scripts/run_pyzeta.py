@@ -87,9 +87,10 @@ The calculation can be based on relative or binary features.
 The calculation can work in several ways: by division, subtraction as well as with or without applying some log transformation.
 """
 
-contrast = ["subgenre", "detective", "historical"] # category, group1, group2; or: "random", "one", "two"
+#contrast = ["subgenre", "detective", "historical"] # category, group1, group2
+contrast = ["random", "two", "one"]
 logaddition= 0.5 # has effect on log calculation.
-calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
+#calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
 
 
 
@@ -133,7 +134,7 @@ numfeatures = 25
 "get_correlation" calculates several correlation scores between the results of using different Zeta variants.
 """
 
-#experimental.get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
+experimental.get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 
 
 
