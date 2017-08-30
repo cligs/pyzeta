@@ -16,6 +16,9 @@ from pygal import style
 from scipy.stats import kendalltau, spearmanr
 
 from correlation import calc_rbo as rbo_score
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import dendrogram, ward
 
 # =================================
 # Pygal style
@@ -156,3 +159,66 @@ def get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featu
                                ignore_index=True)
 
         file.write(df.to_csv(index=False, sep="\t"))
+
+def make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder):
+    """
+    This function creates a PCA from the file with the results.
+    """
+    # Prepare parameters    
+    parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])
+    contraststring = str(contrast[0]) + "_" + str(contrast[2]) + "-" + str(contrast[1])
+    resultsfile = resultsfolder + "results_" + parameterstring + "_" + contraststring + ".csv"
+    # Get the data and compare it
+    zetadata = experimental.get_zetadata_multiple(resultsfile, comparison, numfeatures)
+    zetadata = experimental.add_ranks_multiple(zetadata, comparison)
+    zetadata = zetadata[comparison].T
+    
+    # Calculate PCA
+    pca = PCA(n_components=2)
+    pca.fit(zetadata)
+    pca_results = pca.transform(zetadata)
+    x = pca_results[:, 0]
+    y = pca_results[:, 1]
+
+    # Make and print plot
+    plt.figure(figsize=(10, 10))
+    fig, ax = plt.subplots()
+    ax.scatter(x, y)
+
+    for i, txt in enumerate(comparison):
+        ax.annotate(txt, (x[i],y[i]))
+    ax.grid(True)
+    ax.set(xlabel='First Component', ylabel='Second Component',
+       title='PCA of Zeta Versions');
+    zetaplotfile = plotfolder + "PCA_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +".svg"
+    fig.savefig(zetaplotfile)
+
+
+def make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder):
+    """
+    This function creates a dendrogram from the results of the Zeta versions
+    """
+    # Prepare parameters    
+    parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])
+    contraststring = str(contrast[0]) + "_" + str(contrast[2]) + "-" + str(contrast[1])
+    resultsfile = resultsfolder + "results_" + parameterstring + "_" + contraststring + ".csv"
+    # Get the data and compare it
+    zetadata = get_zetadata_multiple(resultsfile, comparison, numfeatures)
+    zetadata = add_ranks_multiple(zetadata, comparison)
+    zetadata = zetadata[comparison].T
+
+    linkage_array = ward(zetadata)
+    # Now we plot the dendrogram for the linkage_array containing the distances
+    # between clusters
+    
+    plt.figure(figsize=(10, len(comparison)))
+    
+    dendrogram(linkage_array, labels=comparison, orientation="right")
+    print(type(dendrogram))
+    # Mark the cuts in the tree that signify two or three clusters
+    plt.xlabel("Sample index")
+    plt.ylabel("Cluster distance (Ward)")
+    
+    zetaplotfile = plotfolder + "Dendrogram_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +".svg"
+    plt.savefig(zetaplotfile)
+

@@ -24,13 +24,15 @@ import experimental
 
 from os.path import join
 
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
 
 # =================================
 # Parameters: files and folders
 # =================================
 
 # You need to adapt these
-workdir = "/home/christof/repos/cligs/pyzeta/"
+workdir = "/home/jose/cligs/pyzeta/"
 datadir = join(workdir, "sampledata")
 
 # It is recommended to name your files and folders accordingly
@@ -141,9 +143,13 @@ numfeatures = 25
 
 
 
+comparison = ['origzeta', 'log2zeta', 'log10zeta', 'divzeta', 'meanrelfreqs', 'relfreqs1', 'relfreqs2']
 
+numfeatures = 10000
 
+make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
 
+make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
 
 
 
