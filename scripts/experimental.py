@@ -162,6 +162,12 @@ def get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featu
 
         file.write(df.to_csv(index=False, sep="\t"))
 
+
+# =========================================
+# Visualize relationships between measures
+# =========================================
+
+
 def make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder):
     """
     This function creates a PCA from the file with the results.
@@ -264,6 +270,7 @@ def make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype
     zetaplotfile = plotfolder + "tSNE_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +".svg"
     plt.savefig(zetaplotfile)
 
+
 def clustering_kmeans(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder,n=4):
     """
     This function creates the clusters from the file with the results.
@@ -286,9 +293,9 @@ def clustering_kmeans(resultsfolder, comparison, numfeatures, segmentlength, fea
     kmeans.fit(zetadata)
 
     kmeans_results = zip(zetadata.index.tolist(),kmeans.labels_)
-    resultsfile = resultsfolder + "kmeans="+n+"_" + parameterstring + "_" + contraststring + ".txt"
+    resultsfile = resultsfolder + "kmeans="+str(n)+"_" + parameterstring + "_" + contraststring + ".txt"
     print(list(kmeans_results))
-    with open(resultsfile, "w") as file:
-        file.write(list(kmeans_results))
+    #with open(resultsfile, "w") as file:
+    #    file.write(list(kmeans_results))
 
 

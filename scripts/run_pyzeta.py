@@ -30,7 +30,8 @@ from os.path import join
 # =================================
 
 # You need to adapt these
-workdir = "/home/jose/cligs/pyzeta/"
+#workdir = "/home/jose/cligs/pyzeta/"
+workdir = "/media/christof/data/repos/cligs/pyzeta/"
 datadir = join(workdir, "sampledata")
 
 # It is recommended to name your files and folders accordingly
@@ -90,7 +91,7 @@ The calculation can work in several ways: by division, subtraction as well as wi
 contrast = ["subgenre", "detective", "historical"] # category, group1, group2
 #contrast = ["random", "two", "one"]
 logaddition= 0.5 # has effect on log calculation.
-calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
+#calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
 
 
 
@@ -131,7 +132,7 @@ numfeatures = 25
 #experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 
 """
-"get_correlation" calculates several correlation scores between the results of using different Zeta variants.
+"get_correlation" calculates several correlation scores between the results of using different Zeta variants. Written by Albin Zehe.
 """
 
 #experimental.get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
@@ -139,18 +140,20 @@ numfeatures = 25
 
 
 
-
+"""
+The following functions provide visualisations for a comparison of different measures of distinctiveness. Written by José Calvo.
+"""
 
 comparison = ['origzeta', 'log2zeta', 'log10zeta', 'divzeta', "ratiorelfreqs", "subrelfreqs", "logrelfreqs"]
 
-for numfeatures in [10, 50, 100, 500, 1000, 2000]:
+for numfeatures in [10]:#, 50, 100, 500, 1000, 2000]:
     
-    make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+    #experimental.make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
     
-    make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+    experimental.make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
     
-    make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+    #experimental.make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
 
 # TODO: The next step doesn't work in Spyder, it works in Jupyter... I don't understand why
-#clustering_kmeans(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder, n=4)
+    #experimental.clustering_kmeans(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder, n=4)
 
