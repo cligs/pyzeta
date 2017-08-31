@@ -141,15 +141,15 @@ numfeatures = 25
 
 
 
-comparison = ['origzeta', 'log2zeta', 'log10zeta', 'divzeta', 'meanrelfreqs', 'relfreqs1', 'relfreqs2']
+comparison = ['origzeta', 'log2zeta', 'log10zeta', 'divzeta', "ratiorelfreqs", "subrelfreqs", "logrelfreqs"]
 
-numfeatures = 10000
-
-make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
-
-make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
-
-make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+for numfeatures in [10, 50, 100, 500, 1000, 2000]:
+    
+    make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+    
+    make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+    
+    make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
 
 # TODO: The next step doesn't work in Spyder, it works in Jupyter... I don't understand why
 #clustering_kmeans(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder, n=4)
