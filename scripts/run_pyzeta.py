@@ -24,8 +24,6 @@ import experimental
 
 from os.path import join
 
-from sklearn.decomposition import PCA
-import matplotlib.pyplot as plt
 
 # =================================
 # Parameters: files and folders
@@ -151,5 +149,8 @@ make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, con
 
 make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
 
+make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
 
+# TODO: The next step doesn't work in Spyder, it works in Jupyter... I don't understand why
+#clustering_kmeans(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder, n=4)
 

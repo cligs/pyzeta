@@ -19,6 +19,8 @@ from correlation import calc_rbo as rbo_score
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 from scipy.cluster.hierarchy import dendrogram, ward
+from sklearn.manifold import TSNE
+from sklearn.cluster import KMeans
 
 # =================================
 # Pygal style
@@ -169,8 +171,8 @@ def make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype,
     contraststring = str(contrast[0]) + "_" + str(contrast[2]) + "-" + str(contrast[1])
     resultsfile = resultsfolder + "results_" + parameterstring + "_" + contraststring + ".csv"
     # Get the data and compare it
-    zetadata = experimental.get_zetadata_multiple(resultsfile, comparison, numfeatures)
-    zetadata = experimental.add_ranks_multiple(zetadata, comparison)
+    zetadata = get_zetadata_multiple(resultsfile, comparison, numfeatures)
+    zetadata = add_ranks_multiple(zetadata, comparison)
     zetadata = zetadata[comparison].T
     
     # Calculate PCA
@@ -189,7 +191,7 @@ def make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype,
         ax.annotate(txt, (x[i],y[i]))
     ax.grid(True)
     ax.set(xlabel='First Component', ylabel='Second Component',
-       title='PCA of Zeta Versions');
+       title='PCA of Zeta Versions (' + str(numfeatures) + " words)");
     zetaplotfile = plotfolder + "PCA_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +".svg"
     fig.savefig(zetaplotfile)
 
@@ -211,14 +213,82 @@ def make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featu
     # Now we plot the dendrogram for the linkage_array containing the distances
     # between clusters
     
-    plt.figure(figsize=(10, len(comparison)))
+    plt.figure(figsize=(8, len(comparison)-2))
     
     dendrogram(linkage_array, labels=comparison, orientation="right")
-    print(type(dendrogram))
+
     # Mark the cuts in the tree that signify two or three clusters
     plt.xlabel("Sample index")
-    plt.ylabel("Cluster distance (Ward)")
+    plt.ylabel("Cluster distance")
+    plt.title("Hierarchical Cluster (Ward) (" + str(numfeatures) + " words)")
     
     zetaplotfile = plotfolder + "Dendrogram_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +".svg"
     plt.savefig(zetaplotfile)
+
+
+def make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder):
+    """
+    This function creates a t-SNE from the file with the results.
+    """
+    
+    # Prepare parameters    
+    parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])
+    contraststring = str(contrast[0]) + "_" + str(contrast[2]) + "-" + str(contrast[1])
+    resultsfile = resultsfolder + "results_" + parameterstring + "_" + contraststring + ".csv"
+    # Get the data and compare it
+    zetadata = get_zetadata_multiple(resultsfile, comparison, numfeatures)
+    zetadata = add_ranks_multiple(zetadata, comparison)
+    zetadata = zetadata[comparison].T
+
+    tsne = TSNE(random_state = 0)
+    zeta_tsne = tsne.fit_transform(zetadata)
+
+    x = zeta_tsne[:, 0]
+    y = zeta_tsne[:, 1]
+    
+    fig, ax = plt.subplots()
+    ax.scatter(x, y)
+    
+    plt.xlim(zeta_tsne[:, 0].min(), zeta_tsne[:, 0].max())
+    plt.ylim(zeta_tsne[:, 1].min(), zeta_tsne[:, 1].max())
+    
+    for i, txt in enumerate(comparison):
+        ax.annotate(txt, (x[i],y[i]))
+    ax.grid(True)
+    plt.grid(True)
+    plt.xlabel("t-SNE feature 0")
+    plt.xlabel("t-SNE feature 1")
+
+    plt.title("t-SNE (" + str(numfeatures) + " words)")
+
+    zetaplotfile = plotfolder + "tSNE_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +".svg"
+    plt.savefig(zetaplotfile)
+
+def clustering_kmeans(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder,n=4):
+    """
+    This function creates the clusters from the file with the results.
+    """
+    # Prepare parameters    
+    parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])
+    contraststring = str(contrast[0]) + "_" + str(contrast[2]) + "-" + str(contrast[1])
+    resultsfile = resultsfolder + "results_" + parameterstring + "_" + contraststring + ".csv"
+    # Get the data and compare it
+    zetadata = get_zetadata_multiple(resultsfile, comparison, numfeatures)
+    zetadata = add_ranks_multiple(zetadata, comparison)
+    zetadata = zetadata[comparison].T
+
+    print(zetadata)
+    print(zetadata.shape)
+
+    # Create the clusters
+    kmeans = KMeans(n_clusters=n)
+    # TODO: this step works in Jupyter, but it makes the kernel to die in Spyder...
+    kmeans.fit(zetadata)
+
+    kmeans_results = zip(zetadata.index.tolist(),kmeans.labels_)
+    resultsfile = resultsfolder + "kmeans="+n+"_" + parameterstring + "_" + contraststring + ".txt"
+    print(list(kmeans_results))
+    with open(resultsfile, "w") as file:
+        file.write(list(kmeans_results))
+
 
