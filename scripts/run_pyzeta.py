@@ -24,7 +24,6 @@ import experimental
 
 from os.path import join
 
-
 # =================================
 # Parameters: files and folders
 # =================================
@@ -45,7 +44,6 @@ datafolder = join(datadir, "data", "")
 resultsfolder = join(datadir, "results", "")
 plotfolder = join(datadir, "plots", "")
 
-
 # =================================
 # Preprocess
 # =================================
@@ -57,7 +55,7 @@ Currently, this module uses TreeTagger and treetaggerwrapper.
 """
 
 language = "en"
-#preprocess.main(plaintextfolder, taggedfolder, language)
+# preprocess.main(plaintextfolder, taggedfolder, language)
 
 
 # =================================
@@ -73,9 +71,8 @@ This function needs to be run again when a parameter is changed.
 """
 
 segmentlength = 2000
-featuretype = ["lemmata", "NN"] # forms, pos
-#prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype)
-
+featuretype = ["lemmata", "NN"]  # forms, pos
+prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype, max_num_segments=-1)
 
 # =================================
 # Calculate
@@ -87,11 +84,9 @@ The calculation can be based on relative or binary features.
 The calculation can work in several ways: by division, subtraction as well as with or without applying some log transformation.
 """
 
-contrast = ["random", "two", "one"]# category, group1, group2; or: "random", "one", "two"
-logaddition= 0.5 # has effect on log calculation.
+contrast = ["random", "two", "one"]  # category, group1, group2; or: "random", "one", "two"
+logaddition = 0.5  # has effect on log calculation.
 calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
-
-
 
 # =================================
 # Visualize
@@ -105,17 +100,15 @@ This module provides several plotting functionalities.
 
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
 numfeatures = 20
-measure = "origzeta" # origzeta|logzeta|ratiorelfreqs|etc.
+measure = "origzeta"  # origzeta|logzeta|ratiorelfreqs|etc.
 droplist = ["anything", "everything", "anyone", "nothing"]
-#visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
+visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
 numfeatures = 500
-measure = "origzeta" # origzeta|logzeta|ratiorelfreqs|etc.
+measure = "origzeta"  # origzeta|logzeta|ratiorelfreqs|etc.
 cutoff = 0.3
-#visualize.typescatterplot(numfeatures, cutoff, contrast, segmentlength, featuretype, measure, resultsfolder, plotfolder)
-
-
+visualize.typescatterplot(numfeatures, cutoff, contrast, segmentlength, featuretype, measure, resultsfolder, plotfolder)
 
 # =================================
 # Experimental
@@ -127,17 +120,4 @@ cutoff = 0.3
 
 comparison = ["origzeta", "log2zeta"]
 numfeatures = 25
-#experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
-
-
-
-
-
-
-
-
-
-
-
-
-
+experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
