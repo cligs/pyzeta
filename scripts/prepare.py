@@ -17,6 +17,7 @@ import pandas as pd
 import numpy as np
 from collections import Counter
 import itertools
+import random
 
 
 # =================================
@@ -43,8 +44,9 @@ def segment_files(filename, alllines, segmentlength, max_num_segments=-1):
         segment = alllines[i * segmentlength:(i + 1) * segmentlength]
         segments.append(segment)
     if max_num_segments != -1 and numsegments > max_num_segments:
-        chosen_ids = sorted(np.random.randint(0, numsegments, max_num_segments))
-
+        #chosen_ids = sorted(np.random.randint(0, numsegments, max_num_segments))
+        chosen_ids = sorted(random.sample(range(0, numsegments), max_num_segments))
+        print(chosen_ids)
         segments = [segments[i] for i in chosen_ids]
         segmentids = [segmentids[i] for i in chosen_ids]
     return segmentids, segments
@@ -197,6 +199,9 @@ def main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, f
         os.makedirs(datafolder)
     parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])
     print("--prepare")
+    import shutil
+    if os.path.exists(segmentfolder):
+        shutil.rmtree(segmentfolder)
     for file in glob.glob(taggedfolder + "*.csv"):
         segmentids, segments = make_segments(file, segmentfolder, segmentlength, max_num_segments)
         select_features(segmentfolder, segmentids, segments, stoplistfile, featuretype)

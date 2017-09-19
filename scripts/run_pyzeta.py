@@ -29,10 +29,10 @@ from os.path import join
 # =================================
 
 # You need to adapt these
-workdir = "/media/christof/data/repos/cligs/pyzeta/"
+workdir = "/home/christof/repos/cligs/pyzeta/"
 datadir = join(workdir, "sampledata")
 
-# It is recommended to name your files and folders accordingly 
+# It is recommended to name your files and folders accordingly
 plaintextfolder = join(datadir, "corpus", "")
 metadatafile = join(datadir, "metadata.csv")
 stoplistfile = join(datadir, "stoplist.txt")
@@ -84,7 +84,7 @@ The calculation can be based on relative or binary features.
 The calculation can work in several ways: by division, subtraction as well as with or without applying some log transformation.
 """
 
-contrast = ["random", "two", "one"]  # category, group1, group2; or: "random", "one", "two"
+contrast = ["subgenre", "detective", "historical"]  # category, group1, group2; or: "random", "one", "two"
 logaddition = 0.5  # has effect on log calculation.
 calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
 
@@ -95,7 +95,7 @@ calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, s
 """
 This module provides several plotting functionalities.
 "zetabarchart" shows the n words with the most extreme, negative and postive, scores.
-"typescatterplot" provides a scatterplot in which each dot is one feature. 
+"typescatterplot" provides a scatterplot in which each dot is one feature.
 """
 
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
@@ -108,7 +108,7 @@ visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeature
 numfeatures = 500
 measure = "origzeta"  # origzeta|logzeta|ratiorelfreqs|etc.
 cutoff = 0.3
-visualize.typescatterplot(numfeatures, cutoff, contrast, segmentlength, featuretype, measure, resultsfolder, plotfolder)
+#visualize.typescatterplot(numfeatures, cutoff, contrast, segmentlength, featuretype, measure, resultsfolder, plotfolder)
 
 # =================================
 # Experimental
@@ -120,4 +120,4 @@ visualize.typescatterplot(numfeatures, cutoff, contrast, segmentlength, featuret
 
 comparison = ["origzeta", "log2zeta"]
 numfeatures = 25
-experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
+#experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
