@@ -111,7 +111,7 @@ def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition):
     log2zeta = scaler.fit_transform(log2zeta.values.reshape(-1, 1))
     # Zeta with log10 transform of values
     log10zeta = np.log10(docprops1 + logaddition) - np.log2(docprops2 + logaddition)
-    log10zeta = pd.Series(log10zeta, name="log2zeta")
+    log10zeta = pd.Series(log10zeta, name="log10zeta")
     log10zeta = scaler.fit_transform(log10zeta.values.reshape(-1, 1))
     # Standard ratio of relative frequencies
     ratiorelfreqs = (relfreqs1 + 0.00000000001) / (relfreqs2 + 0.00000000001)
@@ -125,17 +125,16 @@ def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition):
     logrelfreqs = np.log(relfreqs1 + logaddition) - np.log(relfreqs2 + logaddition)
     logrelfreqs = pd.Series(logrelfreqs, name="logrelfreqs")
     logrelfreqs = scaler.fit_transform(logrelfreqs.values.reshape(-1, 1))
-    return origzeta, divzeta.flatten(), log2zeta.flatten(), log10zeta.flatten(), ratiorelfreqs.flatten(), \
-           subrelfreqs.flatten(), logrelfreqs.flatten()
-
+    return origzeta, divzeta.flatten(), log2zeta.flatten(), log10zeta.flatten(), ratiorelfreqs.flatten(), subrelfreqs.flatten(), logrelfreqs.flatten()
 
 def get_meanrelfreqs(datafolder, parameterstring):
-    dtmfile = datafolder + "dtm_" + parameterstring + "_relativefreqs.csv"
+    dtmfile = datafolder + "dtm_"+parameterstring+"_relativefreqs.csv"
     with open(dtmfile, "r") as infile:
         meanrelfreqs = pd.DataFrame.from_csv(infile, sep="\t")
         meanrelfreqs = np.mean(meanrelfreqs, axis=1) * 1000
         # print(meanrelfreqs.head(100))
         return meanrelfreqs
+
 
 
 def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs,
@@ -191,4 +190,7 @@ def main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segment
     results = combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta,
                               ratiorelfreqs, subrelfreqs, logrelfreqs, meanrelfreqs)
     save_results(results, resultsfile)
+
+
+
 

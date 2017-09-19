@@ -17,6 +17,7 @@ import pandas as pd
 import numpy as np
 from collections import Counter
 import itertools
+import random
 
 
 # =================================
@@ -29,11 +30,11 @@ def read_csvfile(file):
         filename, ext = os.path.basename(file).split(".")
         content = csv.reader(csvfile, delimiter='\t')
         stops = ["SENT", "''", ",", "``", ":"]
-        alllines = [line for line in content if len(line)==3 and line[1] not in stops]
+        alllines = [line for line in content if len(line) == 3 and line[1] not in stops]
         return filename, alllines
 
 
-def segment_files(filename, alllines, segmentlength):
+def segment_files(filename, alllines, segmentlength, max_num_segments=-1):
     numsegments = int(len(alllines) / segmentlength)
     segments = []
     segmentids = []
@@ -42,21 +43,26 @@ def segment_files(filename, alllines, segmentlength):
         segmentids.append(segmentid)
         segment = alllines[i * segmentlength:(i + 1) * segmentlength]
         segments.append(segment)
+    if max_num_segments != -1 and numsegments > max_num_segments:
+        #chosen_ids = sorted(np.random.randint(0, numsegments, max_num_segments))
+        chosen_ids = sorted(random.sample(range(0, numsegments), max_num_segments))
+        print(chosen_ids)
+        segments = [segments[i] for i in chosen_ids]
+        segmentids = [segmentids[i] for i in chosen_ids]
     return segmentids, segments
 
 
-def make_segments(file, segmentfolder, segmentlength):
+def make_segments(file, segmentfolder, segmentlength, max_num_segments=-1):
     if not os.path.exists(segmentfolder):
         os.makedirs(segmentfolder)
     filename, alllines = read_csvfile(file)
-    segmentids, segments = segment_files(filename, alllines, segmentlength)
-    return segmentids, segments 
-        
+    segmentids, segments = segment_files(filename, alllines, segmentlength, max_num_segments)
+    return segmentids, segments
+
 
 # =================================
 # Functions: select_features
 # =================================
-
 
 def read_stoplistfile(stoplistfile):
     with open(stoplistfile, "r") as infile:
@@ -85,13 +91,16 @@ def perform_selection(segment, stoplist, featuretype):
     elif pos != "all":
         if forms == "words":
             selected = [line[0].lower() for line in segment if
-                        len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[2] not in stoplist]
+                        len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[
+                            2] not in stoplist]
         elif forms == "lemmata":
             selected = [line[2].lower() for line in segment if
-                        len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[2] not in stoplist]
+                        len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[
+                            2] not in stoplist]
         elif forms == "pos":
             features = [line[1].lower() for line in segment if
-                        len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[2] not in stoplist]
+                        len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[
+                            2] not in stoplist]
     else:
         selected = []
     selected = list(selected)
@@ -108,14 +117,13 @@ def save_segment(features, segmentfolder, segmentid):
 
 def select_features(segmentfolder, segmentids, segments, stoplistfile, features):
     stoplist = read_stoplistfile(stoplistfile)
-    #print(len(segmentids))
+    # print(len(segmentids))
     for i in range(len(segmentids)):
         segment = segments[i]
         selected = perform_selection(segment, stoplist, features)
         save_segment(selected, segmentfolder, segmentids[i])
-        
-    
-    
+
+
 # =================================
 # Functions: make_dtm
 # =================================
@@ -126,18 +134,18 @@ def read_plaintext(file):
         text = infile.read().split(" ")
         features = [form for form in text if form]
         return features
-        
+
 
 def count_features(features, filename):
     featurecount = Counter(features)
     featurecount = dict(featurecount)
     featurecount = pd.Series(featurecount, name=filename)
-    #print(featurecount.loc["man"])
+    # print(featurecount.loc["man"])
     return featurecount
 
 
 def save_dataframe(allfeaturecounts, datafolder, parameterstring):
-    dtmfile = datafolder + "dtm_"+parameterstring+"_absolutefreqs.csv"
+    dtmfile = datafolder + "dtm_" + parameterstring + "_absolutefreqs.csv"
     with open(dtmfile, "w") as outfile:
         allfeaturecounts.to_csv(outfile, sep="\t")
 
@@ -152,7 +160,7 @@ def make_dtm(segmentfolder, datafolder, parameterstring):
     allfeaturecounts = pd.concat(allfeaturecounts, axis=1)
     allfeaturecounts = allfeaturecounts.fillna(0).astype(int)
     save_dataframe(allfeaturecounts, datafolder, parameterstring)
-    
+
 
 # =================================
 # Functions: transform_dtm
@@ -167,16 +175,16 @@ def read_freqsfile(filepath):
 
 def transform_dtm(absolutefreqs, segmentlength):
     relativefreqs = absolutefreqs / segmentlength
-    absolutefreqs[absolutefreqs > 0]  = 1
+    absolutefreqs[absolutefreqs > 0] = 1
     binaryfreqs = absolutefreqs
     return relativefreqs, binaryfreqs
 
 
 def save_transformed(relativefreqs, binaryfreqs, datafolder, parameterstring):
-    transformedfile = datafolder + "dtm_"+parameterstring+"_relativefreqs.csv"
+    transformedfile = datafolder + "dtm_" + parameterstring + "_relativefreqs.csv"
     with open(transformedfile, "w") as outfile:
         relativefreqs.to_csv(outfile, sep="\t")
-    transformedfile = datafolder + "dtm_"+parameterstring+"_binaryfreqs.csv"
+    transformedfile = datafolder + "dtm_" + parameterstring + "_binaryfreqs.csv"
     with open(transformedfile, "w") as outfile:
         binaryfreqs.to_csv(outfile, sep="\t")
 
@@ -185,17 +193,19 @@ def save_transformed(relativefreqs, binaryfreqs, datafolder, parameterstring):
 # Functions: main
 # =================================
 
-    
-def main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype):
+
+def main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype, max_num_segments=-1):
     if not os.path.exists(datafolder):
         os.makedirs(datafolder)
-    parameterstring = str(segmentlength) +"-"+ str(featuretype[0]) +"-"+ str(featuretype[1])
+    parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])
     print("--prepare")
-    for file in glob.glob(taggedfolder+"*.csv"):
-        segmentids, segments = make_segments(file, segmentfolder, segmentlength)
+    import shutil
+    if os.path.exists(segmentfolder):
+        shutil.rmtree(segmentfolder)
+    for file in glob.glob(taggedfolder + "*.csv"):
+        segmentids, segments = make_segments(file, segmentfolder, segmentlength, max_num_segments)
         select_features(segmentfolder, segmentids, segments, stoplistfile, featuretype)
         make_dtm(segmentfolder, datafolder, parameterstring)
-    absolutefreqs = read_freqsfile(datafolder + "dtm_"+parameterstring+"_absolutefreqs.csv")
+    absolutefreqs = read_freqsfile(datafolder + "dtm_" + parameterstring + "_absolutefreqs.csv")
     relativefreqs, binaryfreqs = transform_dtm(absolutefreqs, segmentlength)
     save_transformed(relativefreqs, binaryfreqs, datafolder, parameterstring)
-
