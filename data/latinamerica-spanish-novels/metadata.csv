@@ -1,0 +1,49 @@
+	idno	author-name	author-gender	title	year	supergenre	genre	genre-subtitle	availability	subgenre	narrative-perspective	decade	words	continent
+ne0002	ne0002	Galdos	male	Misericordia	1889	narrative	novel	n.av.	free	realist	heterodiegetic	1880	83782	Europe
+ne0005	ne0005	Galdos	male	Tristana	1892	narrative	novel	n.av.	free	bildungsroman	heterodiegetic	1890	52555	Europe
+ne0019	ne0019	BlascoIbanez	male	Bodega	1905	narrative	novel	Novela	free	realist	heterodiegetic	1900	100190	Europe
+ne0027	ne0027	Galdos	male	Bringas	1884	narrative	novel	n.av.	free	realist	heterodiegetic	1880	71557	Europe
+ne0041	ne0041	Miro	male	Hilvan	1903	narrative	novel	n.av.	free	realist	heterodiegetic	1900	32088	Europe
+ne0042	ne0042	Miro	male	Vivir	1904	narrative	novel	Apuntes de parajes leprosos	free	autobiographical	heterodiegetic	1900	23138	Europe
+ne0044	ne0044	Miro	male	Amigo	1908	narrative	novel	n.av.	free	bildungsroman	homodiegetic	1900	19866	Europe
+ne0077	ne0077	Bazan	female	Pazos	1886	narrative	novel	n.av.	free	realist	heterodiegetic	1880	83784	Europe
+ne0082	ne0082	Bazan	female	Piedra	1891	narrative	novel	n.av.	free	philosophical	heterodiegetic	1890	51975	Europe
+ne0085	ne0085	Bazan	female	Sirena	1908	narrative	novel	n.av.	free	erotic	autodiegetic	1900	40369	Europe
+ne0135	ne0135	Clarin	male	Hijo	1891	narrative	novel	n.av.	free	realist	heterodiegetic	1890	89370	Europe
+ne0144	ne0144	Pereda	male	Pedro	1883	narrative	novel	n.av.	free	historical	autodiegetic	1880	110075	Europe
+ne0145	ne0145	Pereda	male	Penas	1895	narrative	novel	n.av.	free	realist	autodiegetic	1890	134680	Europe
+ne0146	ne0146	Pereda	male	Sotileza	1885	narrative	novel	n.av.	free	bildungsroman	heterodiegetic	1880	114210	Europe
+ne0151	ne0151	Valera	male	Genio	1897	narrative	novel	n.av.	free	bildungsroman	mixed	1890	53063	Europe
+ne0152	ne0152	Valera	male	Juanita	1896	narrative	novel	n.av.	free	realist	homodiegetic	1890	72353	Europe
+ne0153	ne0153	Valera	male	Morsamor	1899	narrative	novel	peregrinaciones heroicas y lances de amor y fortuna de Miguel de Zuheros y Tiburcio de Simahonda	free	fantastic	heterodiegetic	1890	83523	Europe
+ne0155	ne0155	Picon	male	Dulce	1891	narrative	novel	n.av.	free	erotic	heterodiegetic	1890	84424	Europe
+ne0161	ne0161	Picon	male	Lazaro	1882	narrative	novel	n.av.	free	realist	heterodiegetic	1880	30663	Europe
+ne0162	ne0162	Picon	male	JuanV	1885	narrative	novel	n.av.	free	bildungsroman	heterodiegetic	1880	31476	Europe
+ne0163	ne0163	BlascoIbanez	male	Arroz	1894	narrative	novel	n.av.	free	realist	heterodiegetic	1890	91009	Europe
+ne0164	ne0164	BlascoIbanez	male	Barraca	1898	narrative	novel	n.av.	free	realist	heterodiegetic	1890	52803	Europe
+ne0170	ne0170	Clarin	male	Cuesta	1891	narrative	novel	n.av.	free	erotic	autodiegetic	1890	18446	Europe
+ne0325	ne0325	Clarin	male	Regenta	1885	narrative	novel	n.av.	free	realist	heterodiegetic	1880	141497	Europe
+nh0081	nh0081	Bunge	male	Sangre	1903	narrative	novel	n.av.	free	historical	heterodiegetic	1900	79415	America
+nh0111	nh0111	Bunge	male	Grande	1907	narrative	short novel	n.av.	free	historical	heterodiegetic	1900	8374	America
+nh0082	nh0082	Bunge	male	Perez	1907	narrative	short novel	n.av.	free	sentimental	heterodiegetic	1900	12927	America
+nh0011	nh0011	Cambaceres	male	Rumbo	1885	narrative	novel	n.av.	free	naturalistic	heterodiegetic	1880	33586	America
+nh0012	nh0012	Cambaceres	male	Sangre	1887	narrative	novel	n.av.	free	naturalistic	heterodiegetic	1880	40831	America
+nh0034	nh0034	Cambaceres	male	Musica	1884	narrative	novel	silbidos de un vago	free	naturalistic	homodiegetic	1880	40786	America
+nh0129	nh0129	Cuellar	male	Fuerenos	1883	narrative	short novel	n.av.	free	costumbrista	heterodiegetic	1880	25050	America
+nh0131	nh0131	Cuellar	male	BaileCochino	1886	narrative	novel	n.av.	free	costumbrista	heterodiegetic	1880	35039	America
+nh0130	nh0130	Cuellar	male	NocheBuena	1890	narrative	short novel	Negativas tomadas del 24 al 25 de diciembre de 1882	free	costumbrista	heterodiegetic	1890	11668	America
+nh0021	nh0021	Frias	male	Miserias	1916	narrative	novel	Novela	free	autobiographical	heterodiegetic	1910	23922	America
+nh0022	nh0022	Frias	male	Tomochic	1895	narrative	novel	Novela histórica mexicana	free	historical	heterodiegetic	1890	62119	America
+nh0123	nh0123	Frias	male	Realidades	1896	narrative	short novel	n.av.	free	social	heterodiegetic	1890	13943	America
+nh0053	nh0053	Gutierrez	male	JuanMoreira	1880	narrative	novel	n.av.	free	gaucho	heterodiegetic	1880	82010	America
+nh0054	nh0054	Gutierrez	male	Chacho	1884	narrative	novel	n.av.	free	gaucho	heterodiegetic	1880	144240	America
+nh0055	nh0055	Gutierrez	male	Montoneros	1886	narrative	novel	Continuación de El Chacho	free	gaucho	heterodiegetic	1880	82370	America
+nh0186	nh0186	Holmberg	male	BolsaHuesos	1896	narrative	novel	n.av.	free	crime	autodiegetic	1890	19414	America
+nh0187	nh0187	Holmberg	male	Nelly	1896	narrative	novel	n.av.	free	fantastic	heterodiegetic	1890	19958	America
+nh0185	nh0185	Holmberg	male	ViajeMaravillosoNicNac	1875	narrative	novel	n.av.	free	science fiction	autodiegetic	1870	34633	America
+nh0003	nh0003	Payro	male	Laucha	1906	narrative	short novel	n.av.	free	costumbrista	autodiegetic	1900	12769	America
+nh0002	nh0002	Payro	male	Moreira	1910	narrative	novel	divertidas aventuras	free	costumbrista	autodiegetic	1910	98942	America
+nh0004	nh0004	Payro	male	Inca	1905	narrative	novel	n.av.	free	historical	heterodiegetic	1900	22000	America
+nh0029	nh0029	Sicardi	male	Extrano	1894	narrative	novel	Tomo I	free	naturalistic	heterodiegetic	1890	99876	America
+nh0031	nh0031	Sicardi	male	Paloche	1899	narrative	novel	"Libro extraño	 Tomo III"	free	naturalistic	heterodiegetic	1890	57725	America
+nh0033	nh0033	Sicardi	male	Justicia	1902	narrative	novel	"Libro extraño	 Tomo V"	free	naturalistic	heterodiegetic	1900	66664	America

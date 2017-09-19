@@ -1,0 +1,392 @@
+	idno	fievre_idno	author-name	year	subgenre	comedie	tragedie	tragicomedie	form	tc_inspiration	tc_structure	count
+tc0001	tc0001	ABEILLE_LYNCEE	ABEILLE	1678	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0007	tc0007	ALLAINVAL_ECOLEDESBOURGEOIS	ALLAINVAL	1728	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0034	tc0034	AURE_DIPNE	AURE	1668	tragedie	other	tragedie	other	vers	histoire chrétienne	Cinq actes	1
+tc0036	tc0036	AURE_GENEVIEVE70	AURE	1670	tragedie	other	tragedie	other	vers	histoire chrétienne	Cinq actes	1
+tc0037	tc0037	BACULARD_COLIGNI	BACULARD	1744	tragedie	other	tragedie	other	prose	histoire française	Trois actes	1
+tc0041	tc0041	BARANTE_ARLEQUINMISANTHROPE	BARANTE	1697	comedie	comedie	other	other	mixte	moeurs françaises	Trois actes	1
+tc0040	tc0040	BARANTEDUFRESNY_PASQUINMARFORIO	BARANTEDUFRESNY	1697	comedie	comedie	other	other	mixte	moeurs françaises	Trois actes	1
+tc0053	tc0053	BENSERADE_CLEOPATRE	BENSERADE	1636	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0054	tc0054	BENSERADE_MORTACHILLE	BENSERADE	1636	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0056	tc0056	BERNARD_BRUTUS	BERNARD	1691	tragedie	other	tragedie	other	vers	moeurs françaises	Trois actes	1
+tc0059	tc0059	BIANCOLELLI_ECOLEGALANTE	BIANCOLELLI	1711	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0064	tc0064	BIANCOLLELLI_ARLEQUINGENTILHOMME	BIANCOLLELLI	1712	comedie	comedie	other	other	mixte	moeurs françaises	Trois actes	1
+tc0068	tc0068	BIEVRE_SEDUCTEUR	BIEVRE	1783	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0070	tc0070	BLANC_DRUIDES	BLANC	1783	tragedie	other	tragedie	other	vers	histoire française	Cinq actes	1
+tc0072	tc0072	BOHAIRE_SIEGEDEPARIS	BOHAIRE	1780	tragedie	other	tragedie	other	vers	histoire française	Cinq actes	1
+tc0076	tc0076	BOISSY_APOLOGIEDUSIECLE	BOISSY	1732	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0080	tc0080	BOISSY_DEHORSTROMPEURS	BOISSY	1735	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0085	tc0085	BOISSY_MEDECINPAROCCASION	BOISSY	1735	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0086	tc0086	BOISSY_PLAGIAIRE	BOISSY	1732	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0091	tc0091	BOURSAULT_DEUXFRERESGEMEAUX	BOURSAULT	1665	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0094	tc0094	BOURSAULT_GERMANICUS	BOURSAULT	1673	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0096	tc0096	BOURSAULT_MARIESTUARD	BOURSAULT	1691	tragedie	other	tragedie	other	vers	histoire écossaise	Cinq actes	1
+tc0098	tc0098	BOURSAULT_MORTVIVANT	BOURSAULT	1662	comedie	comedie	other	other	vers	moeurs espagnoles	Trois actes	1
+tc0103	tc0103	BOYER_AGAMEMNON	BOYER	1648	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0105	tc0105	BOYER_ARISTODEME	BOYER	1648	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0106	tc0106	BOYER_ARTAXERCE	BOYER	1683	tragedie	other	tragedie	other	vers	histoire perse	Cinq actes	1
+tc0108	tc0108	BOYER_JUDITH	BOYER	1695	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
+tc0110	tc0110	BOYER_MORTENFANTSBRUTE	BOYER	1648	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0111	tc0111	BOYER_OROPASTE	BOYER	1663	tragedie	other	tragedie	other	vers	histoire orientale	Cinq actes	1
+tc0112	tc0112	BOYER_PORCIEROMAINE	BOYER	1646	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0113	tc0113	BOYER_PORUS	BOYER	1648	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0114	tc0114	BOYER_TIRIDATE	BOYER	1649	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0102	tc0102	BOYERA_CATON	BOYERA	1646	tragedie	other	tragedie	other	prose	histoire romaine	Cinq actes	1
+tc0116	tc0116	BROSSE_AVEUGLECLAIRVOYANT	BROSSE	1650	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0117	tc0117	BRUEYSPALAPRAT_AVOCATPATELIN	BRUEYSPALAPRAT	1706	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0118	tc0118	CAILHAVA_EGOISME	CAILHAVA	1777	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0119	tc0119	CAILLEAU_TRAGEDIESVOLTAIRE	CAILLEAU	1760	tragedie	other	tragedie	other	vers	histoire orientale	Cinq actes	1
+tc0122	tc0122	CAMPISTRON_ADRIEN	CAMPISTRON	1683	tragedie	other	tragedie	other	vers	histoire chrétienne	Cinq actes	1
+tc0123	tc0123	CAMPISTRON_ALCIBIADE	CAMPISTRON	1685	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0124	tc0124	CAMPISTRON_ANDRONIC	CAMPISTRON	1685	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0125	tc0125	CAMPISTRON_ARMINIUSC	CAMPISTRON	1685	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0126	tc0126	CAMPISTRON_PHOCION	CAMPISTRON	1688	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0127	tc0127	CAMPISTRON_VIRGINIE	CAMPISTRON	1683	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0157	tc0157	CHABANON_EUDOXIE	CHABANON	1769	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0158	tc0158	CHABANON_FAUXNOBLE	CHABANON	1788	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0161	tc0161	CHAMFORT_MUSTAPHAZEANGIR	CHAMFORT	1777	tragedie	other	tragedie	other	vers	moeurs ottomanes	Cinq actes	1
+tc0167	tc0167	CHEVALIER_AMOURSDECALOTIN	CHEVALIER	1664	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0168	tc0168	CHEVREAU_AVOCATDUPE	CHEVREAU	1637	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0169	tc0169	COLARDEAU_ASTARBE	COLARDEAU	1758	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0173	tc0173	CORNEILLEP_AGESILAS	CORNEILLEP	1666	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0175	tc0175	CORNEILLEP_ATTILA	CORNEILLEP	1667	tragedie	other	tragedie	other	vers	histoire médiévale	Cinq actes	1
+tc0176	tc0176	CORNEILLEP_CID	CORNEILLEP	1682	tragedie	other	tragedie	other	vers	histoire espagnole	Cinq actes	1
+tc0179	tc0179	CORNEILLEP_CINNA43	CORNEILLEP	1643	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0180	tc0180	CORNEILLEP_CLITANDRE	CORNEILLEP	1631	tragedie	other	tragedie	other	vers	histoire écossaise	Cinq actes	1
+tc0182	tc0182	CORNEILLEP_GALERIEDUPALAIS	CORNEILLEP	1633	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0183	tc0183	CORNEILLEP_HERACLIUS	CORNEILLEP	1647	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0184	tc0184	CORNEILLEP_HORACE	CORNEILLEP	1641	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0185	tc0185	CORNEILLEP_ILLUSIONCOMIQUE	CORNEILLEP	1636	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0186	tc0186	CORNEILLEP_MEDEE	CORNEILLEP	1634	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0188	tc0188	CORNEILLEP_MELITE	CORNEILLEP	1630	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0189	tc0189	CORNEILLEP_MENTEUR	CORNEILLEP	1644	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0190	tc0190	CORNEILLEP_MORTPOMPEE	CORNEILLEP	1643	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0191	tc0191	CORNEILLEP_NICOMEDE	CORNEILLEP	1651	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0192	tc0192	CORNEILLEP_OEDIPE	CORNEILLEP	1659	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0193	tc0193	CORNEILLEP_OTHON	CORNEILLEP	1665	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0194	tc0194	CORNEILLEP_PERTHARITE	CORNEILLEP	1653	tragedie	other	tragedie	other	vers	histoire médiévale	Cinq actes	1
+tc0195	tc0195	CORNEILLEP_PLACEROYALE	CORNEILLEP	1634	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0196	tc0196	CORNEILLEP_POLYEUCTE	CORNEILLEP	1643	tragedie	other	tragedie	other	vers	histoire chrétienne	Cinq actes	1
+tc0198	tc0198	CORNEILLEP_RODOGUNE	CORNEILLEP	1647	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0199	tc0199	CORNEILLEP_SERTORIUS	CORNEILLEP	1662	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0200	tc0200	CORNEILLEP_SOPHONISBE	CORNEILLEP	1663	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0201	tc0201	CORNEILLEP_SUITEMENTEUR	CORNEILLEP	1645	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0202	tc0202	CORNEILLEP_SUIVANTE	CORNEILLEP	1634	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0203	tc0203	CORNEILLEP_SURENA	CORNEILLEP	1674	tragedie	other	tragedie	other	vers	histoire orientale	Cinq actes	1
+tc0204	tc0204	CORNEILLEP_THEODORE	CORNEILLEP	1645	tragedie	other	tragedie	other	vers	histoire chrétienne	Cinq actes	1
+tc0208	tc0208	CORNEILLEP_VEUVE34	CORNEILLEP	1631	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0209	tc0209	CORNEILLET_AMOURALAMODE	CORNEILLET	1651	comedie	comedie	other	other	vers	moeurs espagnoles	Cinq actes	1
+tc0210	tc0210	CORNEILLET_ARIANE	CORNEILLET	1672	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0211	tc0211	CORNEILLET_BERENICE	CORNEILLET	1709	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0213	tc0213	CORNEILLET_BRADAMANTE	CORNEILLET	1695	tragedie	other	tragedie	other	vers	histoire française	Cinq actes	1
+tc0214	tc0214	CORNEILLET_CAMMA	CORNEILLET	1661	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0215	tc0215	CORNEILLET_CHARMEDELAVOIX	CORNEILLET	1658	comedie	comedie	other	other	vers	moeurs italiennes	Cinq actes	1
+tc0217	tc0217	CORNEILLET_COMTEDESSEX	CORNEILLET	1678	tragedie	other	tragedie	other	vers	histoire anglaise	Cinq actes	1
+tc0218	tc0218	CORNEILLET_COMTESSEORGUEIL	CORNEILLET	1653	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0219	tc0219	CORNEILLET_DARIUS	CORNEILLET	1659	tragedie	other	tragedie	other	vers	histoire perse	Cinq actes	1
+tc0220	tc0220	CORNEILLET_DOMBERTRANDECIGARRAL	CORNEILLET	1651	comedie	comedie	other	other	vers	moeurs espagnoles	Cinq actes	1
+tc0221	tc0221	CORNEILLET_DOMCESARDAVALOS	CORNEILLET	1661	comedie	comedie	other	other	vers	moeurs espagnoles	Cinq actes	1
+tc0222	tc0222	CORNEILLET_ENGAGEMENTSDUHASARD	CORNEILLET	1649	comedie	comedie	other	other	vers	histoire anglaise	Cinq actes	1
+tc0223	tc0223	CORNEILLET_FEINTASTROLOGUE	CORNEILLET	1636	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0224	tc0224	CORNEILLET_FESTINPIERRE	CORNEILLET	1677	comedie	comedie	other	other	vers	moeurs espagnoles	Cinq actes	1
+tc0225	tc0225	CORNEILLET_GALANTDOUBLE	CORNEILLET	1659	comedie	comedie	other	other	vers	moeurs espagnoles	Cinq actes	1
+tc0226	tc0226	CORNEILLET_GEOLIERDESOISMEME	CORNEILLET	1695	comedie	comedie	other	other	vers	moeurs italiennes	Cinq actes	1
+tc0227	tc0227	CORNEILLET_ILLUSTRESENNEMIS	CORNEILLET	1657	comedie	comedie	other	other	vers	moeurs espagnoles	Cinq actes	1
+tc0228	tc0228	CORNEILLET_INCONNU	CORNEILLET	1675	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0229	tc0229	CORNEILLET_MAXIMIAN	CORNEILLET	1662	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0231	tc0231	CORNEILLET_MORTANNIBAL	CORNEILLET	1669	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0232	tc0232	CORNEILLET_MORTDACHILLE	CORNEILLET	1673	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0233	tc0233	CORNEILLET_MORTEMPEREURCOMMODE	CORNEILLET	1657	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0234	tc0234	CORNEILLET_PERSEEDEMETRIUS	CORNEILLET	1662	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0235	tc0235	CORNEILLET_PYRRHUS	CORNEILLET	1661	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0236	tc0236	CORNEILLET_STLICON	CORNEILLET	1660	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0237	tc0237	CORNEILLET_THEODAT	CORNEILLET	1673	tragedie	other	tragedie	other	vers	histoire médiévale	Cinq actes	1
+tc0238	tc0238	CORNEILLET_TIMOCRATE	CORNEILLET	1662	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0242	tc0242	CREBILLON_ATREETHYESTE	CREBILLON	1707	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0243	tc0243	CREBILLON_CATILINA	CREBILLON	1749	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0244	tc0244	CREBILLON_ELECTRE	CREBILLON	1708	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0245	tc0245	CREBILLON_IDOMENEE	CREBILLON	1703	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0246	tc0246	CREBILLON_PYRRHUS	CREBILLON	1708	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0248	tc0248	CREBILLON_TRIUMVIRAT	CREBILLON	1754	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0249	tc0249	CREBILLON_XERXES	CREBILLON	1749	tragedie	other	tragedie	other	vers	histoire perse	Cinq actes	1
+tc0252	tc0252	CUBIERES-PALMEZEAUX_DILIGENCEDELYON	CUBIERES-PALMEZEAUX	1786	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0255	tc0255	CUBIERES-PALMEZEAUX_LACRYMANIE	CUBIERES-PALMEZEAUX	1775	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0256	tc0256	CUBIERES-PALMEZEAUX_MORTDEMOLIERE3A	CUBIERES-PALMEZEAUX	1788	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0259	tc0259	CYRANO_LAMORTDAGRIPPINE	CYRANO	1654	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0260	tc0260	CYRANO_PEDANTJOUE	CYRANO	1654	comedie	comedie	other	other	prose	moeurs françaises	Cinq actes	1
+tc0262	tc0262	DANCOURT_AGIOTEURS	DANCOURT	1710	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0265	tc0265	DANCOURT_BOURGEOISESALAMODE	DANCOURT	1692	comedie	comedie	other	other	prose	moeurs françaises	Cinq actes	1
+tc0266	tc0266	DANCOURT_CEPHALEPROCRIS	DANCOURT	1711	comedie	comedie	other	other	mixte	moeurs françaises	Cinq actes	1
+tc0270	tc0270	DANCOURT_COMEDIECOMEDIENS	DANCOURT	1710	comedie	comedie	other	other	mixte	moeurs françaises	Cinq actes	1
+tc0278	tc0278	DANCOURT_ENFANTSDEPARIS	DANCOURT	1699	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0280	tc0280	DANCOURT_FEES	DANCOURT	1699	comedie	comedie	other	other	mixte	féérie	Trois actes	1
+tc0281	tc0281	DANCOURT_FEMMEDINTRIGUES	DANCOURT	1692	comedie	comedie	other	other	prose	moeurs françaises	Cinq actes	1
+tc0282	tc0282	DANCOURT_FETEDEVILLAGE	DANCOURT	1700	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0287	tc0287	DANCOURT_FONDSPERDUS	DANCOURT	1686	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0290	tc0290	DANCOURT_IMPROMPTUDEGARNISON	DANCOURT	1692	comedie	comedie	other	other	prose	moeurs françaises	Cinq actes	1
+tc0295	tc0295	DANCOURT_MADAMEARTUS	DANCOURT	1707	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0299	tc0299	DANCOURT_MOULINDEJAVELLE	DANCOURT	1692	comedie	comedie	other	other	prose	moeurs françaises	Cinq actes	1
+tc0304	tc0304	DANCOURT_RENAUDARMIDE	DANCOURT	1692	comedie	comedie	other	other	mixte	moeurs françaises	Cinq actes	1
+tc0306	tc0306	DANCOURT_SANCHO	DANCOURT	1712	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0307	tc0307	DANCOURT_TRAHISONPUNIE	DANCOURT	1707	comedie	comedie	other	other	vers	moeurs espagnoles	Cinq actes	1
+tc0313	tc0313	DECAUX_MARIUS	DECAUX	1702	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0317	tc0317	DESFONTAINES_PERSIDE	DESFONTAINES	1644	tragedie	other	tragedie	other	vers	histoire ottomane	Cinq actes	1
+tc0318	tc0318	DESFONTAINES_SAINTGENEST	DESFONTAINES	1645	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0319	tc0319	DESFONTAINES_VERITABLESEMIRAMIS	DESFONTAINES	1647	tragedie	other	tragedie	other	vers	histoire balylonienne	Cinq actes	1
+tc0320	tc0320	DESHOULIERES_GENSERIC	DESHOULIERES	1680	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0324	tc0324	DESMARETS_VISIONNAIRES	DESMARETS	1639	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0328	tc0328	DIDEROT_PEREDEFAMILLE	DIDEROT	1758	comedie	comedie	other	other	prose	moeurs françaises	Cinq actes	1
+tc0329	tc0329	DIDEROT_PIECEPROLOGUE	DIDEROT	1771	comedie	comedie	other	other	prose	moeurs françaises	Cinq actes	1
+tc0330	tc0330	DISCRET_NOCESDEVAUGIRARD	DISCRET	1688	comedie	comedie	other	other	vers	pastorale	Cinq actes	1
+tc0335	tc0335	DORAT_CELIBATAIRE	DORAT	1776	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0336	tc0336	DORAT_REGULUS	DORAT	1765	tragedie	other	tragedie	other	vers	histoire romaine	Trois actes	1
+tc0348	tc0348	DUCHE_ABSALON	DUCHE	1702	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
+tc0356	tc0356	DUFRESNY_COQUETTEDUVILLAGE	DUFRESNY	1715	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0362	tc0362	DUFRESNY_FAUXHONNETEHOMME	DUFRESNY	1703	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0363	tc0363	DUFRESNY_FAUXINSTINCT	DUFRESNY	1707	comedie	comedie	other	other	prose	moeurs françaises	Cinq actes	1
+tc0364	tc0364	DUFRESNY_FAUXSINCERE	DUFRESNY	1731	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0365	tc0365	DUFRESNY_JALOUXHONTEUX	DUFRESNY	1699	comedie	comedie	other	other	prose	moeurs françaises	Cinq actes	1
+tc0366	tc0366	DUFRESNY_JOUEUSE	DUFRESNY	1699	comedie	comedie	other	other	prose	moeurs françaises	Cinq actes	1
+tc0367	tc0367	DUFRESNY_MALADESANSMALADIE	DUFRESNY	1699	comedie	comedie	other	other	prose	moeurs françaises	Cinq actes	1
+tc0369	tc0369	DUFRESNY_MARIAGEFAITETROMPU	DUFRESNY	1721	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0372	tc0372	DUFRESNY_RECONCILIATIONNORMANDE	DUFRESNY	1719	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0390	tc0390	DURYER_ALCIONEE	DURYER	1640	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0398	tc0398	DURYER_ESTHER	DURYER	1644	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
+tc0400	tc0400	DURYER_LUCRECE	DURYER	1638	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0402	tc0402	DURYER_SAUL	DURYER	1642	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
+tc0403	tc0403	DURYER_SCEVOLE	DURYER	1647	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0404	tc0404	DURYER_THEMISTOCLE	DURYER	1647	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0405	tc0405	DURYER_VENDANGESDESURESNES	DURYER	1636	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0419	tc0419	FENELON_ALEXANDRE	FENELON	1754	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0425	tc0425	FOLARD_THEMISTOCLE	FOLARD	1729	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0433	tc0433	GENEST_PENELOPE	GENEST	1684	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0437	tc0437	GILLET_CAMPAGNARD	GILLET	1657	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0438	tc0438	GILLET_DENIAISE	GILLET	1647	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0444	tc0444	GRESSET_EDOUARDIII	GRESSET	1673	tragedie	other	tragedie	other	vers	histoire anglaise	Cinq actes	1
+tc0445	tc0445	GUDIN_LOTHAIRE	GUDIN	1759	tragedie	other	tragedie	other	vers	histoire française	Cinq actes	1
+tc0451	tc0451	GUEULLETTE_ARLEQUINPLUTON	GUEULLETTE	1719	comedie	comedie	other	other	prose	mythe grec	Trois actes	1
+tc0464	tc0464	HAREN_AGON	HAREN	1770	tragedie	other	tragedie	other	vers	Histoire hollandaise	Cinq actes	1
+tc0468	tc0468	HENAULT_MARIUSACIRTE	HENAULT	1677	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0480	tc0480	LACALPRENEDE_COMTEDESSEX	LACALPRENEDE	1732	tragedie	other	tragedie	other	vers	histoire anglaise	Cinq actes	1
+tc0482	tc0482	LACALPRENEDE_ENFANTSDHERODE	LACALPRENEDE	1639	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0483	tc0483	LACALPRENEDE_HERMENEGILDE	LACALPRENEDE	1732	tragedie	other	tragedie	other	prose	histoire chrétienne	Cinq actes	1
+tc0484	tc0484	LACALPRENEDE_JEANNE	LACALPRENEDE	1638	tragedie	other	tragedie	other	vers	histoire anglaise	Cinq actes	1
+tc0485	tc0485	LACALPRENEDE_MORTMITRHIDATE	LACALPRENEDE	1637	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0486	tc0486	LACALPRENEDE_PHALANTE	LACALPRENEDE	1642	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0487	tc0487	LACHAPELLE_ZAIDE	LACHAPELLE	1681	tragedie	other	tragedie	other	vers	fiction mauresque	Cinq actes	1
+tc0496	tc0496	LAFONTAINE_RAGOTIN	LAFONTAINE	1684	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0502	tc0502	LAFOSSE_MANLIUS	LAFOSSE	1698	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0503	tc0503	LAGRANGECHANCEL_AMASIS	LAGRANGECHANCEL	1677	tragedie	other	tragedie	other	vers	histoire égyptienne	Cinq actes	1
+tc0504	tc0504	LAGRANGECHANCEL_MELEAGRE	LAGRANGECHANCEL	1677	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0505	tc0505	LAHARPE_COMTEDEWARWICK	LAHARPE	1733	tragedie	other	tragedie	other	vers	histoire anglaise	Cinq actes	1
+tc0509	tc0509	LAHARPE_PHILOCTETE	LAHARPE	1733	tragedie	other	tragedie	other	vers	moeurs françaises	Trois actes	1
+tc0510	tc0510	LAIGNELOT_AGIS	LAIGNELOT	1782	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0511	tc0511	LAMOTTE_INESDECASTRO	LAMOTTE	1723	tragedie	other	tragedie	other	vers	histoire portugaise	Cinq actes	1
+tc0512	tc0512	LAMOTTE_MACHABEES	LAMOTTE	1722	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
+tc0518	tc0518	LEBOULANGERCHALUSSAY_ELOMIREHYPOCONDRE	LEBOULANGERCHALUSSAY	1670	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0519	tc0519	LECLERC_IPHIGENIE	LECLERC	1675	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0520	tc0520	LEFRANC_DIDON	LEFRANC	1734	tragedie	other	tragedie	other	vers	mythe romain	Cinq actes	1
+tc0521	tc0521	LEGOUVE_ATTILIE	LEGOUVE	1776	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0523	tc0523	LEGOUVE_LAURENCEORZANO	LEGOUVE	1784	tragedie	other	tragedie	other	vers	histoire italienne	Cinq actes	1
+tc0524	tc0524	LEGOUVE_POLIXENE	LEGOUVE	1784	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0528	tc0528	LEMIERRE_ARTAXERCE	LEMIERRE	1768	tragedie	other	tragedie	other	vers	histoire perse	Cinq actes	1
+tc0529	tc0529	LEMIERRE_GUILLAUMETELL	LEMIERRE	1766	tragedie	other	tragedie	other	vers	histoire suisse	Cinq actes	1
+tc0530	tc0530	LEMIERRE_VEUVEMALABAR	LEMIERRE	1770	tragedie	other	tragedie	other	vers	moeurs françaises	Cinq actes	1
+tc0535	tc0535	LEVAYER_GRANDSELIM	LEVAYER	1645	tragedie	other	tragedie	other	vers	histoire ottomane	Cinq actes	1
+tc0536	tc0536	LINANT_ALZAIDE	LINANT	1746	tragedie	other	tragedie	other	vers	histoire française	Cinq actes	1
+tc0537	tc0537	LONGEPIERRE_MEDEE	LONGEPIERRE	1694	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0538	tc0538	MAGNON_ARTAXERXE	MAGNON	1645	tragedie	other	tragedie	other	vers	histoire perse	Cinq actes	1
+tc0541	tc0541	MAGNON_SEJANUS	MAGNON	1645	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0542	tc0542	MAGNON_TAMERLAN	MAGNON	1645	tragedie	other	tragedie	other	vers	histoire perse	Cinq actes	1
+tc0544	tc0544	MAIRET_SOPHONISBE	MAIRET	1635	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0548	tc0548	MARECHALA_RAILLEUR	MARECHALA	1638	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0553	tc0553	MARIVAUX_ANNIBAL	MARIVAUX	1720	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0559	tc0559	MARIVAUX_DOUBLEINCONSTANCE	MARIVAUX	1724	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0562	tc0562	MARIVAUX_FAUSSESCONFIDENCES	MARIVAUX	1737	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0563	tc0563	MARIVAUX_FAUSSESUIVANTE	MARIVAUX	1729	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0567	tc0567	MARIVAUX_HEUREUXSTRATAGEME	MARIVAUX	1733	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0570	tc0570	MARIVAUX_JEUDELAMOURETDUHASARD	MARIVAUX	1730	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0571	tc0571	MARIVAUX_JOIEIMPREVUE	MARIVAUX	1738	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0574	tc0574	MARIVAUX_MERECONFIDENTE	MARIVAUX	1735	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0576	tc0576	MARIVAUX_PETITMAITRECORRIGE	MARIVAUX	1734	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0578	tc0578	MARIVAUX_PRINCETRAVESTI	MARIVAUX	1727	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0581	tc0581	MARIVAUX_SECONDESURPRISEDELAMOUR	MARIVAUX	1728	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0582	tc0582	MARIVAUX_SERMENTSINDISCRETS	MARIVAUX	1732	comedie	comedie	other	other	prose	moeurs françaises	Cinq actes	1
+tc0584	tc0584	MARIVAUX_SURPRISEDELAMOUR	MARIVAUX	1723	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0585	tc0585	MARIVAUX_TRIOMPHEDELAMOUR	MARIVAUX	1732	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0595	tc0595	MOLIERE_AMANTSMAGNIFIQUES	MOLIERE	1670	comedie	comedie	other	other	mixte	moeurs françaises	Cinq actes	1
+tc0596	tc0596	MOLIERE_AMOURMEDECIN	MOLIERE	1665	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0598	tc0598	MOLIERE_AVARE	MOLIERE	1669	comedie	comedie	other	other	prose	moeurs françaises	Cinq actes	1
+tc0602	tc0602	MOLIERE_DEPITAMOUREUX	MOLIERE	1656	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0604	tc0604	MOLIERE_DOMGARCIEDENAVARRE	MOLIERE	1682	comedie	comedie	other	other	vers	moeurs espagnoles	Cinq actes	1
+tc0605	tc0605	MOLIERE_DOMJUAN	MOLIERE	1682	comedie	comedie	other	other	prose	moeurs italiennes	Cinq actes	1
+tc0606	tc0606	MOLIERE_ECOLEDESFEMMES	MOLIERE	1662	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0607	tc0607	MOLIERE_ECOLEDESMARIS	MOLIERE	1661	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0608	tc0608	MOLIERE_ETOURDI	MOLIERE	1655	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0610	tc0610	MOLIERE_FEMMESSAVANTES	MOLIERE	1672	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0611	tc0611	MOLIERE_FESTINDEPIERRE	MOLIERE	1665	comedie	comedie	other	other	prose	moeurs italiennes	Cinq actes	1
+tc0612	tc0612	MOLIERE_FOURBERIESDESCAPIN	MOLIERE	1671	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0613	tc0613	MOLIERE_GEORGEDANDIN	MOLIERE	1669	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0621	tc0621	MOLIERE_MISANTHROPE	MOLIERE	1666	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0628	tc0628	MOLIERE_TARTUFFE	MOLIERE	1669	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0636	tc0636	NADAL_ANTIOCHUS	NADAL	1723	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
+tc0637	tc0637	NADAL_HERODE	NADAL	1709	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
+tc0638	tc0638	NADAL_MARIAMNE	NADAL	1725	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
+tc0639	tc0639	NADAL_OSARPHISMOISE	NADAL	1738	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
+tc0641	tc0641	NADAL_SAUL	NADAL	1731	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
+tc0642	tc0642	NERICAULT_GLORIEUX	NERICAULT	1732	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0643	tc0643	NIVELLE_ECOLEDESAMIS	NIVELLE	1747	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0644	tc0644	NIVELLE_ECOLEMERES	NIVELLE	1745	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0646	tc0646	NIVELLE_GOUVERNANTE	NIVELLE	1747	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0647	tc0647	NIVELLE_PREJUGEALAMODE	NIVELLE	1735	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0648	tc0648	OUVILLE_ABSENTCHEZSOI	OUVILLE	1643	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0649	tc0649	OUVILLE_FAUSSESVERITES	OUVILLE	1643	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0650	tc0650	OUVILLE_SOUPCONS	OUVILLE	1650	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0657	tc0657	PALISSOT_NINUS	PALISSOT	1751	tragedie	other	tragedie	other	vers	histoire orientale	Cinq actes	1
+tc0658	tc0658	PALISSOT_PHILOSOPHES	PALISSOT	1760	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0662	tc0662	PELLEGRIN_TIBERE	PELLEGRIN	1727	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0664	tc0664	PESSELIER_ESOPEAUPARNASSE	PESSELIER	1740	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0665	tc0665	PIRON_ARLEQUINDECALION	PIRON	1722	comedie	comedie	other	other	mixte	mythe grec	Trois actes	1
+tc0666	tc0666	PIRON_ECOLEPERES	PIRON	1728	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0668	tc0668	PIRON_GUSTAVEWASA	PIRON	1733	tragedie	other	tragedie	other	vers	histoire suédoise	Cinq actes	1
+tc0669	tc0669	PIRON_METROMANIE	PIRON	1738	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0675	tc0675	POINSINET_AJAX	POINSINET	1755	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0684	tc0684	PRADE_ARSACE	PRADE	1666	tragedie	other	tragedie	other	vers	histoire antique	Cinq actes	1
+tc0685	tc0685	PRADON_MORTDEBAJAZET	PRADON	1676	tragedie	other	tragedie	other	vers	histoire ottomane	Cinq actes	1
+tc0686	tc0686	PRADON_PHEDRE	PRADON	1677	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0687	tc0687	PRADON_REGULUS	PRADON	1687	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0688	tc0688	PRADON_SCIPION	PRADON	1697	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0689	tc0689	PRADON_STATIRA	PRADON	1677	tragedie	other	tragedie	other	vers	histoire antique	Cinq actes	1
+tc0690	tc0690	PUGETDELASERRE_SACDECARTHAGE	PUGETDELASERRE	1642	tragedie	other	tragedie	other	prose	histoire romaine	Cinq actes	1
+tc0694	tc0694	QUINAULT_BELLEROPHON	QUINAULT	1671	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0700	tc0700	QUINAULT_MERECOQUETTE	QUINAULT	1665	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0707	tc0707	RACINE_ALEXANDRE66	RACINE	1665	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0708	tc0708	RACINE_ANDROMAQUE	RACINE	1697	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0710	tc0710	RACINE_ATHALIE	RACINE	1691	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
+tc0711	tc0711	RACINE_BAJAZET	RACINE	1672	tragedie	other	tragedie	other	vers	histoire orientale	Cinq actes	1
+tc0712	tc0712	RACINE_BERENICE	RACINE	1671	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0713	tc0713	RACINE_BRITANNICUS	RACINE	1670	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0715	tc0715	RACINE_IPHIGENIE	RACINE	1674	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0716	tc0716	RACINE_MITHRIDATE	RACINE	1673	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0718	tc0718	RACINE_PHEDRE77	RACINE	1677	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0720	tc0720	RACINE_PLAIDEURS69	RACINE	1669	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0722	tc0722	RACINE_THEBAIDE64	RACINE	1664	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0723	tc0723	REGNARD_ARLEQUINAUXENFERS	REGNARD	1689	comedie	comedie	other	other	prose	mythe grec	Trois actes	1
+tc0724	tc0724	REGNARD_ARLEQUINBONNESFORTUNES	REGNARD	1690	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0728	tc0728	REGNARD_COQUETTE	REGNARD	1692	comedie	comedie	other	other	mixte	moeurs françaises	Cinq actes	1
+tc0729	tc0729	REGNARD_DEMOCRITE	REGNARD	1692	comedie	comedie	other	other	vers	moeurs antiques	Cinq actes	1
+tc0730	tc0730	REGNARD_DISTRAIT	REGNARD	1697	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0731	tc0731	REGNARD_DIVORCE	REGNARD	1697	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0732	tc0732	REGNARD_FILLESERRANTES	REGNARD	1692	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0735	tc0735	REGNARD_JOUEUR	REGNARD	1692	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0736	tc0736	REGNARD_LEGATAIRE	REGNARD	1697	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0738	tc0738	REGNARD_MENECHMES	REGNARD	1692	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0740	tc0740	REGNARD_SAPOR	REGNARD	1697	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0755	tc0755	ROTROU_ANTIGONE	ROTROU	1638	tragedie	other	tragedie	other	vers	pastorale	Cinq actes	1
+tc0757	tc0757	ROTROU_COSROES	ROTROU	1649	tragedie	other	tragedie	other	vers	histoire orientale	Cinq actes	1
+tc0759	tc0759	ROTROU_HERCULEMOURANT	ROTROU	1636	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0760	tc0760	ROTROU_SAINTGENEST	ROTROU	1648	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0761	tc0761	ROTROU_SOSIES	ROTROU	1648	comedie	comedie	other	other	vers	mythe grec	Cinq actes	1
+tc0779	tc0779	SAINTEVREMOND_COMEDIEDESACADEMICIENS	SAINTEVREMOND	1650	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0782	tc0782	SAURIN_BLANCHEETGUISCARD	SAURIN	1763	tragedie	other	tragedie	other	vers	histoire italienne	Cinq actes	1
+tc0784	tc0784	SAURIN_SPARTACUS	SAURIN	1760	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0786	tc0786	SCARRON_DOMJAPHETDARMENIE	SCARRON	1653	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+												
+tc0789	tc0789	SCARRON_GARDIENDESOIMEME	SCARRON	1654	comedie	comedie	other	other	vers	moeurs italiennes	Cinq actes	1
+tc0790	tc0790	SCARRON_HERITIERRIDICULE	SCARRON	1650	comedie	comedie	other	other	vers	moeurs espagnoles	Cinq actes	1
+tc0791	tc0791	SCARRON_JODELET	SCARRON	1648	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0792	tc0792	SCARRON_JODELETDUELISTE	SCARRON	1646	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0793	tc0793	SCARRON_PRINCECORSAIRE	SCARRON	1650	comedie	comedie	other	other	vers	moeurs chypriotes	Cinq actes	1
+												
+tc0795	tc0795	SCUDERY_ARMINIUS	SCUDERY	1644	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0796	tc0796	SCUDERY_COMEDIEDESCOMEDIENS	SCUDERY	1635	comedie	comedie	other	other	mixte	moeurs françaises	Trois actes	1
+												
+tc0798	tc0798	SCUDERY_FILSSUPPOSE	SCUDERY	1636	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+												
+												
+												
+												
+tc0805	tc0805	SEDAINE_RICHARD	SEDAINE	1784	comedie	comedie	other	other	mixte	histoire mediévale	Trois actes	1
+tc0812	tc0812	SOMMERIVE_BAJAZET	SOMMERIVE	1741	tragedie	other	tragedie	other	vers	histoire ottomane	Cinq actes	1
+tc0823	tc0823	TANEVOT_ADAMETEVE	TANEVOT	1752	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
+tc0824	tc0824	THIBOUVILLE_THELAMIRE	THIBOUVILLE	1677	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0825	tc0825	TRISTAN_MARIANE	TRISTAN	1644	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
+tc0826	tc0826	TRISTAN_MORTDECHRISPE	TRISTAN	1644	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
+tc0827	tc0827	TRISTAN_MORTSENEQUE	TRISTAN	1645	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0828	tc0828	TRISTAN_OSMAN	TRISTAN	1656	tragedie	other	tragedie	other	vers	histoire ottomane	Cinq actes	1
+tc0829	tc0829	TRISTAN_PARASITE	TRISTAN	1654	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+												
+tc0838	tc0838	VOLTAIRE_ADELAIDE	VOLTAIRE	1734	tragedie	other	tragedie	other	vers	histoire française	Cinq actes	1
+tc0839	tc0839	VOLTAIRE_AGATHOCLE	VOLTAIRE	1779	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0840	tc0840	VOLTAIRE_ALZIRE	VOLTAIRE	1732	tragedie	other	tragedie	other	vers	histoire espagnole	Cinq actes	1
+tc0842	tc0842	VOLTAIRE_BRUTUS	VOLTAIRE	1730	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0844	tc0844	VOLTAIRE_DEPOSITAIRE	VOLTAIRE	1738	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0846	tc0846	VOLTAIRE_DROITDUSEIGNEUR	VOLTAIRE	1763	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0847	tc0847	VOLTAIRE_DUCDALENCON	VOLTAIRE	1751	tragedie	other	tragedie	other	vers	histoire française	Trois actes	1
+tc0848	tc0848	VOLTAIRE_ENFANTPRODIGUE	VOLTAIRE	1738	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
+tc0849	tc0849	VOLTAIRE_ENVIEUX	VOLTAIRE	1738	comedie	comedie	other	other	vers	histoire romaine	Trois actes	1
+tc0850	tc0850	VOLTAIRE_FANATISME	VOLTAIRE	1753	tragedie	other	tragedie	other	vers	histoire arabe	Cinq actes	1
+tc0851	tc0851	VOLTAIRE_FEMMEQUIARAISON	VOLTAIRE	1759	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0852	tc0852	VOLTAIRE_GUEBRES	VOLTAIRE	1769	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0854	tc0854	VOLTAIRE_IRENE	VOLTAIRE	1778	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0855	tc0855	VOLTAIRE_LOISDEMINOS	VOLTAIRE	1773	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0856	tc0856	VOLTAIRE_MARIAMNE	VOLTAIRE	1751	tragedie	other	tragedie	other	vers	histoire juive	Cinq actes	1
+tc0857	tc0857	VOLTAIRE_MEROPE	VOLTAIRE	1744	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0858	tc0858	VOLTAIRE_MORTDECESAR	VOLTAIRE	1743	tragedie	other	tragedie	other	vers	histoire romaine	Trois actes	1
+tc0859	tc0859	VOLTAIRE_NANINE	VOLTAIRE	1749	comedie	comedie	other	other	vers	moeurs françaises	Trois actes	1
+tc0860	tc0860	VOLTAIRE_OEDIPE_V	VOLTAIRE	1718	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0861	tc0861	VOLTAIRE_OLYMPIE	VOLTAIRE	1751	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
+tc0863	tc0863	VOLTAIRE_ORIGINAUX	VOLTAIRE	1732	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
+tc0864	tc0864	VOLTAIRE_ORPHELINDELACHINE	VOLTAIRE	1755	tragedie	other	tragedie	other	vers	histoire chinoise	Cinq actes	1
+tc0866	tc0866	VOLTAIRE_PELOPIDES	VOLTAIRE	1743	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
+tc0867	tc0867	VOLTAIRE_ROMESAUVEE	VOLTAIRE	1750	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0870	tc0870	VOLTAIRE_SCYTHES	VOLTAIRE	1757	tragedie	other	tragedie	other	vers	histoire orientale	Cinq actes	1
+tc0871	tc0871	VOLTAIRE_SEMIRAMIS	VOLTAIRE	1749	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0872	tc0872	VOLTAIRE_SOCRATE	VOLTAIRE	1759	tragedie	other	tragedie	other	prose	histoire grecque	Cinq actes	1
+tc0873	tc0873	VOLTAIRE_SOPHONISBE	VOLTAIRE	1774	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
+tc0874	tc0874	VOLTAIRE_TANCREDE	VOLTAIRE	1771	tragedie	other	tragedie	other	vers	histoire médiévale	Cinq actes	1
+tc0876	tc0876	VOLTAIRE_ZAIRE	VOLTAIRE	1718	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
