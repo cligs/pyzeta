@@ -118,6 +118,6 @@ cutoff = 0.3
 "comparisonplot" is a plot showing the top n features with the highest zeta scores for two measures in comparison.
 """
 
-comparison = ["docprops1", "docprops2", "origzeta", "log2zeta", "log10zeta", "divzeta", "meanrelfreqs", "relfreqs1", "relfreqs2", "ratiorelfreqs", "subrelfreqs", "logrelfreqs"]
+comparison = ["origzeta", "log2zeta"]
 numfeatures = 25
 #experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)

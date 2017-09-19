@@ -18,9 +18,6 @@ import numpy as np
 from sklearn import preprocessing as prp
 import random
 
-import sklearn
-print(sklearn.__version__)
-
 
 # =================================
 # Functions: calculate
@@ -40,8 +37,8 @@ def make_idlists(metadatafile, contrast):
         elif contrast[0] == "random":
             allidnos = list(metadata.loc[:, "idno"])
             allidnos = random.sample(allidnos, len(allidnos))
-            list1 = allidnos[:int(len(allidnos) / 2)]
-            list2 = allidnos[int(len(allidnos) / 2):]
+            list1 = allidnos[:int(len(allidnos)/2)]
+            list2 = allidnos[int(len(allidnos)/2):]
             print(list1[0:5])
             print(list2[0:5])
         idlists = [list1, list2]
@@ -54,14 +51,14 @@ def filter_dtm(datafolder, parameterstring, idlists):
     Each part consists of the segments corresponding to one partition.
     Each segment is chosen based on the file id it corresponds to.
     """
-    dtmfile = datafolder + "dtm_" + parameterstring + "_binaryfreqs.csv"
-    ids1 = "|".join([id + ".*" for id in idlists[0]])
-    ids2 = "|".join([id + ".*" for id in idlists[1]])
+    dtmfile = datafolder + "dtm_"+parameterstring+"_binaryfreqs.csv"
+    ids1 = "|".join([id+".*" for id in idlists[0]])
+    ids2 = "|".join([id+".*" for id in idlists[1]])
     with open(dtmfile, "r") as infile:
         binary = pd.DataFrame.from_csv(infile, sep="\t")
         binary1 = binary.filter(regex=ids1, axis=1)
         binary2 = binary.filter(regex=ids2, axis=1)
-    dtmfile = datafolder + "dtm_" + parameterstring + "_relativefreqs.csv"
+    dtmfile = datafolder + "dtm_"+parameterstring+"_relativefreqs.csv"
     with open(dtmfile, "r") as infile:
         relative = pd.DataFrame.from_csv(infile, sep="\t")
         relative1 = relative.filter(regex=ids1, axis=1)
@@ -78,9 +75,9 @@ def get_indicators(binary1, binary2, relative1, relative2):
     docprops1 = pd.Series(docprops1, name="docprops2")
     docprops2 = np.mean(binary2, axis=1)
     docprops2 = pd.Series(docprops2, name="docprops2")
-    relfreqs1 = np.mean(relative1, axis=1) * 1000
+    relfreqs1 = np.mean(relative1, axis=1)*1000
     relfreqs1 = pd.Series(relfreqs1, name="relfreqs1")
-    relfreqs2 = np.mean(relative2, axis=1) * 1000
+    relfreqs2 = np.mean(relative2, axis=1)*1000
     relfreqs2 = pd.Series(relfreqs2, name="relfreqs2")
     return docprops1, docprops2, relfreqs1, relfreqs2
 
@@ -100,7 +97,7 @@ def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition):
     # Prepare scaler to rescale variants to range of origzeta
     lowest = min(origzeta)
     highest = max(origzeta)
-    scaler = prp.MinMaxScaler(feature_range=(lowest, highest))
+    scaler = prp.MinMaxScaler(feature_range=(lowest,highest))
     # Zeta with division instead of subtraction
     divzeta = (docprops1 + 0.00000000001) / (docprops2 + 0.00000000001)
     divzeta = pd.Series(divzeta, name="divzeta")
@@ -131,33 +128,29 @@ def get_meanrelfreqs(datafolder, parameterstring):
     dtmfile = datafolder + "dtm_"+parameterstring+"_relativefreqs.csv"
     with open(dtmfile, "r") as infile:
         meanrelfreqs = pd.DataFrame.from_csv(infile, sep="\t")
-        meanrelfreqs = np.mean(meanrelfreqs, axis=1) * 1000
-        # print(meanrelfreqs.head(100))
+        meanrelfreqs = np.mean(meanrelfreqs, axis=1)*1000
+        #print(meanrelfreqs.head(100))
         return meanrelfreqs
 
 
-
-def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs,
-                    subrelfreqs, logrelfreqs, meanrelfreqs):
+def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs, subrelfreqs, logrelfreqs, meanrelfreqs):
     results = pd.DataFrame({
-        "docprops1": docprops1,
-        "docprops2": docprops2,
-        "relfreqs1": relfreqs1,
-        "relfreqs2": relfreqs2,
-        "meanrelfreqs": meanrelfreqs,
-        "origzeta": origzeta,
-        "divzeta": divzeta,
-        "log2zeta": log2zeta,
-        "log10zeta": log10zeta,
-        "ratiorelfreqs": ratiorelfreqs,
-        "subrelfreqs": subrelfreqs,
-        "logrelfreqs": logrelfreqs})
-    # print(results.columns.tolist())
-    results = results[
-        ["docprops1", "docprops2", "origzeta", "log2zeta", "log10zeta", "divzeta", "meanrelfreqs", "relfreqs1",
-         "relfreqs2", "ratiorelfreqs", "subrelfreqs", "logrelfreqs"]]
+    "docprops1":docprops1,
+    "docprops2":docprops2,
+    "relfreqs1":relfreqs1,
+    "relfreqs2":relfreqs2,
+    "meanrelfreqs":meanrelfreqs,
+    "origzeta":origzeta,
+    "divzeta":divzeta,
+    "log2zeta":log2zeta,
+    "log10zeta":log10zeta,
+    "ratiorelfreqs":ratiorelfreqs,
+    "subrelfreqs":subrelfreqs,
+    "logrelfreqs":logrelfreqs})
+    #print(results.columns.tolist())
+    results = results[["docprops1", "docprops2", "origzeta", "log2zeta", "log10zeta", "divzeta", "meanrelfreqs", "relfreqs1", "relfreqs2", "ratiorelfreqs", "subrelfreqs", "logrelfreqs"]]
     results.sort_values(by="origzeta", ascending=False, inplace=True)
-    # print(results.head(10), "\n", results.tail(10))
+    #print(results.head(10), "\n", results.tail(10))
     return results
 
 
@@ -175,20 +168,15 @@ def main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segment
     print("--calculate")
     if not os.path.exists(resultsfolder):
         os.makedirs(resultsfolder)
-    parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])
-    contraststring = str(contrast[0]) + "_" + str(contrast[2]) + "-" + str(contrast[1])
-    resultsfile = resultsfolder + "results_" + parameterstring + "_" + contraststring + ".csv"
+    parameterstring = str(segmentlength) +"-"+ str(featuretype[0]) +"-"+ str(featuretype[1])
+    contraststring = str(contrast[0]) +"_"+ str(contrast[2]) +"-"+ str(contrast[1])
+    resultsfile = resultsfolder + "results_" + parameterstring +"_"+ contraststring +".csv"
     idlists = make_idlists(metadatafile, contrast)
     binary1, binary2, relative1, relative2 = filter_dtm(datafolder, parameterstring, idlists)
     docprops1, docprops2, relfreqs1, relfreqs2 = get_indicators(binary1, binary2, relative1, relative2)
-    origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs, subrelfreqs, logrelfreqs = calculate_scores(docprops1,
-                                                                                                       docprops2,
-                                                                                                       relfreqs1,
-                                                                                                       relfreqs2,
-                                                                                                       logaddition)
+    origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs, subrelfreqs, logrelfreqs = calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition)
     meanrelfreqs = get_meanrelfreqs(datafolder, parameterstring)
-    results = combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta,
-                              ratiorelfreqs, subrelfreqs, logrelfreqs, meanrelfreqs)
+    results = combine_results(docprops1, docprops2, relfreqs1, relfreqs2, origzeta, divzeta, log2zeta, log10zeta, ratiorelfreqs, subrelfreqs, logrelfreqs, meanrelfreqs)
     save_results(results, resultsfile)
 
 
