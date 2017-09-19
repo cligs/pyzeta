@@ -24,6 +24,7 @@ import experimental
 
 from os.path import join
 
+
 # =================================
 # Parameters: files and folders
 # =================================
@@ -44,6 +45,7 @@ datafolder = join(datadir, "data", "")
 resultsfolder = join(datadir, "results", "")
 plotfolder = join(datadir, "plots", "")
 
+
 # =================================
 # Preprocess
 # =================================
@@ -55,7 +57,7 @@ Currently, this module uses TreeTagger and treetaggerwrapper.
 """
 
 language = "en"
-# preprocess.main(plaintextfolder, taggedfolder, language)
+#preprocess.main(plaintextfolder, taggedfolder, language)
 
 
 # =================================
@@ -71,8 +73,9 @@ This function needs to be run again when a parameter is changed.
 """
 
 segmentlength = 2000
-featuretype = ["lemmata", "NN"]  # forms, pos
-prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype, max_num_segments=-1)
+featuretype = ["lemmata", "NN"] # forms, pos
+#prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype)
+
 
 # =================================
 # Calculate
@@ -84,9 +87,12 @@ The calculation can be based on relative or binary features.
 The calculation can work in several ways: by division, subtraction as well as with or without applying some log transformation.
 """
 
-contrast = ["subgenre", "detective", "historical"]  # category, group1, group2; or: "random", "one", "two"
-logaddition = 0.5  # has effect on log calculation.
+contrast = ["subgenre", "detective", "historical"] # category, group1, group2
+#contrast = ["random", "two", "one"]
+logaddition= 0.5 # has effect on log calculation.
 calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
+
+
 
 # =================================
 # Visualize
@@ -100,15 +106,17 @@ This module provides several plotting functionalities.
 
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
 numfeatures = 20
-measure = "origzeta"  # origzeta|logzeta|ratiorelfreqs|etc.
+measure = "origzeta" # origzeta|logzeta|ratiorelfreqs|etc.
 droplist = ["anything", "everything", "anyone", "nothing"]
-visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
+#visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
 numfeatures = 500
-measure = "origzeta"  # origzeta|logzeta|ratiorelfreqs|etc.
+measure = "origzeta" # origzeta|logzeta|ratiorelfreqs|etc.
 cutoff = 0.3
 #visualize.typescatterplot(numfeatures, cutoff, contrast, segmentlength, featuretype, measure, resultsfolder, plotfolder)
+
+
 
 # =================================
 # Experimental
@@ -118,6 +126,28 @@ cutoff = 0.3
 "comparisonplot" is a plot showing the top n features with the highest zeta scores for two measures in comparison.
 """
 
-comparison = ["origzeta", "log2zeta"]
+comparison = ["docprops1", "docprops2", "origzeta", "log2zeta", "log10zeta", "divzeta", "meanrelfreqs", "relfreqs1", "relfreqs2", "ratiorelfreqs", "subrelfreqs", "logrelfreqs"]
 numfeatures = 25
 #experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
+
+"""
+"get_correlation" calculates several correlation scores between the results of using different Zeta variants.
+"""
+
+#experimental.get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
+
+
+"""
+comparison = ['origzeta', 'log2zeta', 'log10zeta', 'divzeta', "ratiorelfreqs", "subrelfreqs", "logrelfreqs"]
+
+for numfeatures in [10, 50, 100, 500, 1000, 2000]:
+    
+    make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+    
+    make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+    
+    make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+
+# TODO: The next step doesn't work in Spyder, it works in Jupyter... I don't understand why
+#clustering_kmeans(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder, n=4)
+"""
