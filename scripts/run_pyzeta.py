@@ -76,9 +76,9 @@ This function needs to be run again when a parameter is changed.
 """
 
 segmentlength = 1000
-max_num_segments = 5
+max_num_segments = -1
 featuretype = ["lemmata", "Nc"] # forms, pos
-#prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, max_num_segments, stoplistfile, featuretype)
+prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, max_num_segments, stoplistfile, featuretype)
 
 
 # =================================
@@ -92,10 +92,10 @@ The calculation can work in several ways: by division, subtraction as well as wi
 """
 
 separator = "\t"
-contrast = ["subgenre", "comedie", "tragedie"] # category, group1, group2
+contrast = ["subgenre", "tragedie", "comedie"] # category, group1, group2
 #contrast = ["random", "two", "one"]
 logaddition= 0.1 # has effect on log calculation.
-#calculate.main(datafolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype)
+calculate.main(datafolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype)
 
 
 
@@ -113,7 +113,7 @@ This module provides several plotting functionalities.
 numfeatures = 20
 measure = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"] #droplist = ["anything", "everything", "anyone", "nothing"]
 droplist = []
-#visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
+visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
 numfeatures = 500
@@ -131,7 +131,8 @@ cutoff = 0.3
 "comparisonplot" is a plot showing the top n features with the highest zeta scores for two measures in comparison.
 """
 
-comparison = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"]
+comparison = ["sd0", "dd0"]
+# "sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"
 numfeatures = 25
 experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 

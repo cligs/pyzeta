@@ -28,6 +28,7 @@ import random
 def read_csvfile(file):
     with open(file, "r", newline="\n") as csvfile:
         filename, ext = os.path.basename(file).split(".")
+        print(filename)
         content = csv.reader(csvfile, delimiter='\t')
         stops = ["SENT", "''", ",", "``", ":"]
         alllines = [line for line in content if len(line) == 3 and line[1] not in stops]
