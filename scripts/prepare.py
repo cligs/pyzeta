@@ -92,16 +92,17 @@ def perform_selection(segment, stoplist, featuretype):
     elif pos != "all":
         if forms == "words":
             selected = [line[0].lower() for line in segment if
-                        len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[
-                            2] not in stoplist]
-        elif forms == "lemmata":
-            selected = [line[2].lower() for line in segment if
-                        len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[
-                            2] not in stoplist]
+                        len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[2] not in stoplist]
         elif forms == "pos":
             features = [line[1].lower() for line in segment if
-                        len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[
-                            2] not in stoplist]
+                        len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[2] not in stoplist]
+        elif forms == "lemmata":
+            selected = []
+            for line in segment:
+                if len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[2] not in stoplist and line[2] != "<unknown>":
+                    selected.append(line[2])
+                elif len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[2] not in stoplist and line[2] == "<unknown>":
+                    selected.append(line[0])
     else:
         selected = []
     selected = list(selected)
@@ -145,13 +146,13 @@ def count_features(features, filename):
     return featurecount
 
 
-def save_dataframe(allfeaturecounts, datafolder, parameterstring):
-    dtmfile = datafolder + "dtm_" + parameterstring + "_absolutefreqs.csv"
+def save_dataframe(allfeaturecounts, dtmfolder, parameterstring):
+    dtmfile = dtmfolder + "dtm_" + parameterstring + "_absolutefreqs.csv"
     with open(dtmfile, "w") as outfile:
         allfeaturecounts.to_csv(outfile, sep="\t")
 
 
-def make_dtm(segmentfolder, datafolder, parameterstring):
+def make_dtm(segmentfolder, dtmfolder, parameterstring):
     allfeaturecounts = []
     for file in glob.glob(segmentfolder + "*.txt"):
         features = read_plaintext(file)
@@ -160,7 +161,7 @@ def make_dtm(segmentfolder, datafolder, parameterstring):
         allfeaturecounts.append(featurecount)
     allfeaturecounts = pd.concat(allfeaturecounts, axis=1)
     allfeaturecounts = allfeaturecounts.fillna(0).astype(int)
-    save_dataframe(allfeaturecounts, datafolder, parameterstring)
+    save_dataframe(allfeaturecounts, dtmfolder, parameterstring)
 
 
 # =================================
@@ -195,9 +196,11 @@ def save_transformed(relativefreqs, binaryfreqs, dtmfolder, parameterstring):
 # =================================
 
 
-def main(taggedfolder, segmentfolder, datafolder, segmentlength, max_num_segments, stoplistfile, featuretype):
+def main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_num_segments, stoplistfile, featuretype):
     if not os.path.exists(datafolder):
         os.makedirs(datafolder)
+    if not os.path.exists(dtmfolder):
+        os.makedirs(dtmfolder)
     parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])
     print("--prepare")
     import shutil
@@ -206,7 +209,7 @@ def main(taggedfolder, segmentfolder, datafolder, segmentlength, max_num_segment
     for file in glob.glob(taggedfolder + "*.csv"):
         segmentids, segments = make_segments(file, segmentfolder, segmentlength, max_num_segments)
         select_features(segmentfolder, segmentids, segments, stoplistfile, featuretype)
-        make_dtm(segmentfolder, datafolder, parameterstring)
+        make_dtm(segmentfolder, dtmfolder, parameterstring)
     absolutefreqs = read_freqsfile(dtmfolder + "dtm_" + parameterstring + "_absolutefreqs.csv")
     relativefreqs, binaryfreqs = transform_dtm(absolutefreqs, segmentlength)
     save_transformed(relativefreqs, binaryfreqs, dtmfolder, parameterstring)

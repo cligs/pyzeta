@@ -30,7 +30,7 @@ from os.path import join
 # =================================
 
 # You need to adapt these
-corpus = "theatre"
+corpus = "novelas"
 workdir = "/home/christof/repos/cligs/pyzeta/"
 dtmfolder = join("/home/christof/Desktop/pyzeta-dtms/", corpus, "")
 
@@ -76,9 +76,9 @@ Fourth, it creates document-term matrixes with absolute, relative and binary fea
 This function needs to be run again when a parameter is changed.
 """
 
-segmentlength = 1000
+segmentlength = 2000
 max_num_segments = -1
-featuretype = ["lemmata", "Nc"] # forms, pos
+featuretype = ["lemmata", "NC"] # forms, pos
 #prepare.main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_num_segments, stoplistfile, featuretype)
 
 
@@ -90,12 +90,14 @@ featuretype = ["lemmata", "Nc"] # forms, pos
 This module performs the actual distinctiveness measure for each feature.
 The calculation can be based on relative or binary features.
 The calculation can work in several ways: by division, subtraction as well as with or without applying some log transformation.
+The contrast parameter takes ["category", "group1", "group2"] as in the metadata table.
 """
 
 separator = "\t"
-contrast = ["subgenre", "tragedie", "comedie"] # category, group1, group2
-#contrast = ["subgenre", "detective", "historical"] # category, group1, group2
-#contrast = ["random", "two", "one"]
+contrast = ["continent", "Europe", "America"] # example for novelas
+#contrast = ["subgenre", "tragedie", "comedie"] # example for theatre
+#contrast = ["subgenre", "detective", "historical"] # example for doyle
+#contrast = ["random", "two", "one"] # for splitting groups randomly
 logaddition= 0.1 # has effect on log calculation.
 #calculate.main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype)
 
@@ -113,14 +115,14 @@ This module provides several plotting functionalities.
 
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
 numfeatures = 20
-measure = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"] #droplist = ["anything", "everything", "anyone", "nothing"]
+measures = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"] #droplist = ["anything", "everything", "anyone", "nothing"]
 droplist = []
-#visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
+#visualize.zetabarchart(segmentlength, featuretype, contrast, measures, numfeatures, droplist, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
 numfeatures = 500
 measure = "sd0" # origzeta|logzeta|ratiorelfreqs|etc.
-cutoff = 0.3
+cutoff = 0.2
 #visualize.typescatterplot(numfeatures, cutoff, contrast, segmentlength, featuretype, measure, resultsfolder, plotfolder)
 
 
@@ -136,7 +138,7 @@ The function "comparisonplot" is a plot showing the top n features with the high
 comparison = ["sd0", "dd0"]
 # "sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"
 numfeatures = 25
-experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
+#experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 
 """
 The function "get_correlation" calculates several correlation scores between the results of using different Zeta variants.

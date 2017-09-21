@@ -57,6 +57,7 @@ def filter_dtm(dtmfolder, parameterstring, idlists):
     ids2 = "|".join([id+".*" for id in idlists[1]])
     with open(dtmfile, "r") as infile:
         binary = pd.DataFrame.from_csv(infile, sep="\t")
+        #print(binary.head())
         binary1 = binary.filter(regex=ids1, axis=1)
         binary2 = binary.filter(regex=ids2, axis=1)
     dtmfile = dtmfolder + "dtm_"+parameterstring+"_relativefreqs.csv"
