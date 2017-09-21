@@ -34,7 +34,7 @@ def read_csvfile(file):
         return filename, alllines
 
 
-def segment_files(filename, alllines, segmentlength, max_num_segments=-1):
+def segment_files(filename, alllines, segmentlength, max_num_segments):
     numsegments = int(len(alllines) / segmentlength)
     segments = []
     segmentids = []
@@ -46,7 +46,7 @@ def segment_files(filename, alllines, segmentlength, max_num_segments=-1):
     if max_num_segments != -1 and numsegments > max_num_segments:
         #chosen_ids = sorted(np.random.randint(0, numsegments, max_num_segments))
         chosen_ids = sorted(random.sample(range(0, numsegments), max_num_segments))
-        print(chosen_ids)
+        #print(chosen_ids)
         segments = [segments[i] for i in chosen_ids]
         segmentids = [segmentids[i] for i in chosen_ids]
     return segmentids, segments
@@ -194,7 +194,7 @@ def save_transformed(relativefreqs, binaryfreqs, datafolder, parameterstring):
 # =================================
 
 
-def main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype, max_num_segments=-1):
+def main(taggedfolder, segmentfolder, datafolder, segmentlength, max_num_segments, stoplistfile, featuretype):
     if not os.path.exists(datafolder):
         os.makedirs(datafolder)
     parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])

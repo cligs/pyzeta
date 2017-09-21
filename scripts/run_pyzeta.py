@@ -31,7 +31,8 @@ from os.path import join
 
 # You need to adapt these
 workdir = "/home/christof/repos/cligs/pyzeta/"
-datadir = join(workdir, "sampledata")
+datadir = join(workdir, "data", "doyle")
+corpus = "doyle"
 
 # It is recommended to name your files and folders accordingly
 plaintextfolder = join(datadir, "corpus", "")
@@ -39,11 +40,12 @@ metadatafile = join(datadir, "metadata.csv")
 stoplistfile = join(datadir, "stoplist.txt")
 
 # It is recommended not to change these
-taggedfolder = join(datadir, "data", "tagged", "")
-segmentfolder = join(datadir, "data", "segments", "")
-datafolder = join(datadir, "data", "")
-resultsfolder = join(datadir, "results", "")
-plotfolder = join(datadir, "plots", "")
+outputdir = join(workdir, "output", corpus)
+taggedfolder = join(outputdir, "tagged", "")
+segmentfolder = join(outputdir, "segments", "")
+datafolder = join(outputdir, "results", "")
+resultsfolder = join(outputdir, "results", "")
+plotfolder = join(outputdir, "plots", "")
 
 
 # =================================
@@ -67,14 +69,16 @@ language = "en"
 """
 This module performs several steps in preparing the data for analysis.
 First, it splits each text into segments of a given length.
-Second, it selects the desired features from each segment (form and pos)
-Third, it creates document-term matrixes with absolute, relative and binary feature counts.
+Second, it either takes all segments or samples an equal number of segments per text.
+Third, it selects the desired features from each segment (form and pos)
+Fourth, it creates document-term matrixes with absolute, relative and binary feature counts.
 This function needs to be run again when a parameter is changed.
 """
 
 segmentlength = 2000
+max_num_segments = -1
 featuretype = ["lemmata", "NN"] # forms, pos
-#prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, stoplistfile, featuretype)
+prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, max_num_segments, stoplistfile, featuretype)
 
 
 # =================================
@@ -87,10 +91,11 @@ The calculation can be based on relative or binary features.
 The calculation can work in several ways: by division, subtraction as well as with or without applying some log transformation.
 """
 
+separator = "\t"
 contrast = ["subgenre", "detective", "historical"] # category, group1, group2
 #contrast = ["random", "two", "one"]
-logaddition= 0.5 # has effect on log calculation.
-calculate.main(datafolder, metadatafile, contrast, logaddition, resultsfolder, segmentlength, featuretype)
+logaddition= 0.1 # has effect on log calculation.
+calculate.main(datafolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype)
 
 
 
@@ -106,9 +111,9 @@ This module provides several plotting functionalities.
 
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
 numfeatures = 20
-measure = "origzeta" # origzeta|logzeta|ratiorelfreqs|etc.
+measure = "sd0" # sd0, sd2, sdX, sr0, sr2, srX, dd0, dd2, ddX, dr0, dr2, drX
 droplist = ["anything", "everything", "anyone", "nothing"]
-#visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
+visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
 numfeatures = 500
@@ -141,11 +146,11 @@ numfeatures = 25
 comparison = ['origzeta', 'log2zeta', 'log10zeta', 'divzeta', "ratiorelfreqs", "subrelfreqs", "logrelfreqs"]
 
 for numfeatures in [10, 50, 100, 500, 1000, 2000]:
-    
+
     make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
-    
+
     make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
-    
+
     make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
 
 # TODO: The next step doesn't work in Spyder, it works in Jupyter... I don't understand why

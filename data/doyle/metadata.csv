@@ -1,4 +1,4 @@
-	idno	$author-name	$author-gender	$title	$pubyear	$genre	$subgenre	$detective	$horror	$historical	$adventure	$narration	$availability	$decade
+	idno	author-name	author-gender	title	pubyear	genre	subgenre	detective	horror	historical	adventure	narration	availability	decade
 acd001	acd001	Doyle	male	StudyScarlet	1887	novel	detective	yes	no	no	no	homodiegetic	publicdomain	1880s
 acd003	acd003	Doyle	male	SignFour	1890	novel	detective	yes	no	no	no	homodiegetic	publicdomain	1890s
 acd011	acd011	Doyle	male	ValleyFear	1915	novel	detective	yes	no	no	no	homodiegetic	publicdomain	1910s
