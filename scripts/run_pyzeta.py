@@ -30,12 +30,12 @@ from os.path import join
 # =================================
 
 # You need to adapt these
-workdir = "/home/christof/repos/cligs/pyzeta/"
-datadir = join(workdir, "data", "theatre")
 corpus = "theatre"
+workdir = "/home/christof/repos/cligs/pyzeta/"
 dtmfolder = join("/home/christof/Desktop/pyzeta-dtms/", corpus, "")
 
 # It is recommended to name your files and folders accordingly
+datadir = join(workdir, "data", corpus, "")
 plaintextfolder = join(datadir, "corpus", "")
 metadatafile = join(datadir, "metadata.csv")
 stoplistfile = join(datadir, "stoplist.txt")
@@ -94,9 +94,10 @@ The calculation can work in several ways: by division, subtraction as well as wi
 
 separator = "\t"
 contrast = ["subgenre", "tragedie", "comedie"] # category, group1, group2
+#contrast = ["subgenre", "detective", "historical"] # category, group1, group2
 #contrast = ["random", "two", "one"]
 logaddition= 0.1 # has effect on log calculation.
-calculate.main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype)
+#calculate.main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype)
 
 
 
@@ -114,11 +115,11 @@ This module provides several plotting functionalities.
 numfeatures = 20
 measure = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"] #droplist = ["anything", "everything", "anyone", "nothing"]
 droplist = []
-visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
+#visualize.zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
 numfeatures = 500
-measure = "origzeta" # origzeta|logzeta|ratiorelfreqs|etc.
+measure = "sd0" # origzeta|logzeta|ratiorelfreqs|etc.
 cutoff = 0.3
 #visualize.typescatterplot(numfeatures, cutoff, contrast, segmentlength, featuretype, measure, resultsfolder, plotfolder)
 
@@ -129,7 +130,7 @@ cutoff = 0.3
 # =================================
 
 """
-"comparisonplot" is a plot showing the top n features with the highest zeta scores for two measures in comparison.
+The function "comparisonplot" is a plot showing the top n features with the highest zeta scores for two measures in comparison.
 """
 
 comparison = ["sd0", "dd0"]
@@ -138,21 +139,18 @@ numfeatures = 25
 experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 
 """
-"get_correlation" calculates several correlation scores between the results of using different Zeta variants.
+The function "get_correlation" calculates several correlation scores between the results of using different Zeta variants.
 """
 
-#experimental.get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
+comparison = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"]
+experimental.get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 
 
 """
-comparison = ['origzeta', 'log2zeta', 'log10zeta', 'divzeta', "ratiorelfreqs", "subrelfreqs", "logrelfreqs"]
-
+comparison = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"]
 for numfeatures in [10, 50, 100, 500, 1000, 2000]:
-
     make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
-
     make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
-
     make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
 
 # TODO: The next step doesn't work in Spyder, it works in Jupyter... I don't understand why

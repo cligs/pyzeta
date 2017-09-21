@@ -161,7 +161,7 @@ def make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype,
     """
     This function creates a PCA from the file with the results.
     """
-    # Prepare parameters    
+    # Prepare parameters
     parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])
     contraststring = str(contrast[0]) + "_" + str(contrast[2]) + "-" + str(contrast[1])
     resultsfile = resultsfolder + "results_" + parameterstring + "_" + contraststring + ".csv"
@@ -169,7 +169,7 @@ def make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype,
     zetadata = get_zetadata_multiple(resultsfile, comparison, numfeatures)
     zetadata = add_ranks_multiple(zetadata, comparison)
     zetadata = zetadata[comparison].T
-    
+
     # Calculate PCA
     pca = PCA(n_components=2)
     pca.fit(zetadata)
@@ -195,7 +195,7 @@ def make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featu
     """
     This function creates a dendrogram from the results of the Zeta versions
     """
-    # Prepare parameters    
+    # Prepare parameters
     parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])
     contraststring = str(contrast[0]) + "_" + str(contrast[2]) + "-" + str(contrast[1])
     resultsfile = resultsfolder + "results_" + parameterstring + "_" + contraststring + ".csv"
@@ -207,16 +207,16 @@ def make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featu
     linkage_array = ward(zetadata)
     # Now we plot the dendrogram for the linkage_array containing the distances
     # between clusters
-    
+
     plt.figure(figsize=(8, len(comparison)-2))
-    
+
     dendrogram(linkage_array, labels=comparison, orientation="right")
 
     # Mark the cuts in the tree that signify two or three clusters
     plt.xlabel("Sample index")
     plt.ylabel("Cluster distance")
     plt.title("Hierarchical Cluster (Ward) (" + str(numfeatures) + " words)")
-    
+
     zetaplotfile = plotfolder + "Dendrogram_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +".svg"
     plt.savefig(zetaplotfile)
 
@@ -225,8 +225,8 @@ def make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype
     """
     This function creates a t-SNE from the file with the results.
     """
-    
-    # Prepare parameters    
+
+    # Prepare parameters
     parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])
     contraststring = str(contrast[0]) + "_" + str(contrast[2]) + "-" + str(contrast[1])
     resultsfile = resultsfolder + "results_" + parameterstring + "_" + contraststring + ".csv"
@@ -240,13 +240,13 @@ def make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype
 
     x = zeta_tsne[:, 0]
     y = zeta_tsne[:, 1]
-    
+
     fig, ax = plt.subplots()
     ax.scatter(x, y)
-    
+
     plt.xlim(zeta_tsne[:, 0].min(), zeta_tsne[:, 0].max())
     plt.ylim(zeta_tsne[:, 1].min(), zeta_tsne[:, 1].max())
-    
+
     for i, txt in enumerate(comparison):
         ax.annotate(txt, (x[i],y[i]))
     ax.grid(True)
@@ -263,7 +263,7 @@ def clustering_kmeans(resultsfolder, comparison, numfeatures, segmentlength, fea
     """
     This function creates the clusters from the file with the results.
     """
-    # Prepare parameters    
+    # Prepare parameters
     parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])
     contraststring = str(contrast[0]) + "_" + str(contrast[2]) + "-" + str(contrast[1])
     resultsfile = resultsfolder + "results_" + parameterstring + "_" + contraststring + ".csv"
