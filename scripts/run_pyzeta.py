@@ -31,8 +31,9 @@ from os.path import join
 
 # You need to adapt these
 workdir = "/home/christof/repos/cligs/pyzeta/"
-datadir = join(workdir, "data", "theatre-classique")
-corpus = "theatre-classique"
+datadir = join(workdir, "data", "theatre")
+corpus = "theatre"
+dtmfolder = join("/home/christof/Desktop/pyzeta-dtms/", corpus, "")
 
 # It is recommended to name your files and folders accordingly
 plaintextfolder = join(datadir, "corpus", "")
@@ -78,7 +79,7 @@ This function needs to be run again when a parameter is changed.
 segmentlength = 1000
 max_num_segments = -1
 featuretype = ["lemmata", "Nc"] # forms, pos
-prepare.main(taggedfolder, segmentfolder, datafolder, segmentlength, max_num_segments, stoplistfile, featuretype)
+#prepare.main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_num_segments, stoplistfile, featuretype)
 
 
 # =================================
@@ -95,7 +96,7 @@ separator = "\t"
 contrast = ["subgenre", "tragedie", "comedie"] # category, group1, group2
 #contrast = ["random", "two", "one"]
 logaddition= 0.1 # has effect on log calculation.
-calculate.main(datafolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype)
+calculate.main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype)
 
 
 

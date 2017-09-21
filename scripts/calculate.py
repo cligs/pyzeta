@@ -46,20 +46,20 @@ def make_idlists(metadatafile, separator, contrast):
         return idlists
 
 
-def filter_dtm(datafolder, parameterstring, idlists):
+def filter_dtm(dtmfolder, parameterstring, idlists):
     """
     This function splits the DTM in two parts.
     Each part consists of the segments corresponding to one partition.
     Each segment is chosen based on the file id it corresponds to.
     """
-    dtmfile = datafolder + "dtm_"+parameterstring+"_binaryfreqs.csv"
+    dtmfile = dtmfolder + "dtm_"+parameterstring+"_binaryfreqs.csv"
     ids1 = "|".join([id+".*" for id in idlists[0]])
     ids2 = "|".join([id+".*" for id in idlists[1]])
     with open(dtmfile, "r") as infile:
         binary = pd.DataFrame.from_csv(infile, sep="\t")
         binary1 = binary.filter(regex=ids1, axis=1)
         binary2 = binary.filter(regex=ids2, axis=1)
-    dtmfile = datafolder + "dtm_"+parameterstring+"_relativefreqs.csv"
+    dtmfile = dtmfolder + "dtm_"+parameterstring+"_relativefreqs.csv"
     with open(dtmfile, "r") as infile:
         relative = pd.DataFrame.from_csv(infile, sep="\t")
         relative1 = relative.filter(regex=ids1, axis=1)
@@ -153,8 +153,8 @@ def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition):
     return sd0, sd2.flatten(), sdX.flatten(), sr0.flatten(), sr2.flatten(), srX.flatten(), dd0.flatten(), dd2.flatten(), ddX.flatten(), dr0.flatten(), dr2.flatten(), drX.flatten()
 
 
-def get_meanrelfreqs(datafolder, parameterstring):
-    dtmfile = datafolder + "dtm_"+parameterstring+"_relativefreqs.csv"
+def get_meanrelfreqs(dtmfolder, parameterstring):
+    dtmfile = dtmfolder + "dtm_"+parameterstring+"_relativefreqs.csv"
     with open(dtmfile, "r") as infile:
         meanrelfreqs = pd.DataFrame.from_csv(infile, sep="\t")
         meanrelfreqs = np.mean(meanrelfreqs, axis=1)*1000
@@ -216,7 +216,7 @@ def save_results(results, resultsfile):
 # =================================
 
 
-def main(datafolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype):
+def main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype):
     print("--calculate")
     if not os.path.exists(resultsfolder):
         os.makedirs(resultsfolder)
@@ -224,10 +224,10 @@ def main(datafolder, metadatafile, separator, contrast, logaddition, resultsfold
     contraststring = str(contrast[0]) +"_"+ str(contrast[2]) +"-"+ str(contrast[1])
     resultsfile = resultsfolder + "results_" + parameterstring +"_"+ contraststring +".csv"
     idlists = make_idlists(metadatafile, separator, contrast)
-    binary1, binary2, relative1, relative2 = filter_dtm(datafolder, parameterstring, idlists)
+    binary1, binary2, relative1, relative2 = filter_dtm(dtmfolder, parameterstring, idlists)
     docprops1, docprops2, relfreqs1, relfreqs2 = get_indicators(binary1, binary2, relative1, relative2)
     sd0, sd2, sdX, sr0, sr2, srX, dd0, dd2, ddX, dr0, dr2, drX = calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition)
-    meanrelfreqs = get_meanrelfreqs(datafolder, parameterstring)
+    meanrelfreqs = get_meanrelfreqs(dtmfolder, parameterstring)
     results = combine_results(docprops1, docprops2, relfreqs1, relfreqs2, meanrelfreqs,
     sd0, sd2, sdX, sr0, sr2, srX, dd0, dd2, ddX, dr0, dr2, drX)
     save_results(results, resultsfile)

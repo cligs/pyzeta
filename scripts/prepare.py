@@ -181,11 +181,11 @@ def transform_dtm(absolutefreqs, segmentlength):
     return relativefreqs, binaryfreqs
 
 
-def save_transformed(relativefreqs, binaryfreqs, datafolder, parameterstring):
-    transformedfile = datafolder + "dtm_" + parameterstring + "_relativefreqs.csv"
+def save_transformed(relativefreqs, binaryfreqs, dtmfolder, parameterstring):
+    transformedfile = dtmfolder + "dtm_" + parameterstring + "_relativefreqs.csv"
     with open(transformedfile, "w") as outfile:
         relativefreqs.to_csv(outfile, sep="\t")
-    transformedfile = datafolder + "dtm_" + parameterstring + "_binaryfreqs.csv"
+    transformedfile = dtmfolder + "dtm_" + parameterstring + "_binaryfreqs.csv"
     with open(transformedfile, "w") as outfile:
         binaryfreqs.to_csv(outfile, sep="\t")
 
@@ -207,6 +207,6 @@ def main(taggedfolder, segmentfolder, datafolder, segmentlength, max_num_segment
         segmentids, segments = make_segments(file, segmentfolder, segmentlength, max_num_segments)
         select_features(segmentfolder, segmentids, segments, stoplistfile, featuretype)
         make_dtm(segmentfolder, datafolder, parameterstring)
-    absolutefreqs = read_freqsfile(datafolder + "dtm_" + parameterstring + "_absolutefreqs.csv")
+    absolutefreqs = read_freqsfile(dtmfolder + "dtm_" + parameterstring + "_absolutefreqs.csv")
     relativefreqs, binaryfreqs = transform_dtm(absolutefreqs, segmentlength)
-    save_transformed(relativefreqs, binaryfreqs, datafolder, parameterstring)
+    save_transformed(relativefreqs, binaryfreqs, dtmfolder, parameterstring)
