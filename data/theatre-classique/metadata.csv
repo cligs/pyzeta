@@ -4,8 +4,8 @@ tc0007	tc0007	ALLAINVAL_ECOLEDESBOURGEOIS	ALLAINVAL	1728	comedie	comedie	other	o
 tc0034	tc0034	AURE_DIPNE	AURE	1668	tragedie	other	tragedie	other	vers	histoire chrétienne	Cinq actes	1
 tc0036	tc0036	AURE_GENEVIEVE70	AURE	1670	tragedie	other	tragedie	other	vers	histoire chrétienne	Cinq actes	1
 tc0037	tc0037	BACULARD_COLIGNI	BACULARD	1744	tragedie	other	tragedie	other	prose	histoire française	Trois actes	1
-tc0041	tc0041	BARANTE_ARLEQUINMISANTHROPE	BARANTE	1697	comedie	comedie	other	other	mixte	moeurs françaises	Trois actes	1
 tc0040	tc0040	BARANTEDUFRESNY_PASQUINMARFORIO	BARANTEDUFRESNY	1697	comedie	comedie	other	other	mixte	moeurs françaises	Trois actes	1
+tc0041	tc0041	BARANTE_ARLEQUINMISANTHROPE	BARANTE	1697	comedie	comedie	other	other	mixte	moeurs françaises	Trois actes	1
 tc0053	tc0053	BENSERADE_CLEOPATRE	BENSERADE	1636	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
 tc0054	tc0054	BENSERADE_MORTACHILLE	BENSERADE	1636	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
 tc0056	tc0056	BERNARD_BRUTUS	BERNARD	1691	tragedie	other	tragedie	other	vers	moeurs françaises	Trois actes	1
@@ -22,6 +22,7 @@ tc0091	tc0091	BOURSAULT_DEUXFRERESGEMEAUX	BOURSAULT	1665	comedie	comedie	other	o
 tc0094	tc0094	BOURSAULT_GERMANICUS	BOURSAULT	1673	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
 tc0096	tc0096	BOURSAULT_MARIESTUARD	BOURSAULT	1691	tragedie	other	tragedie	other	vers	histoire écossaise	Cinq actes	1
 tc0098	tc0098	BOURSAULT_MORTVIVANT	BOURSAULT	1662	comedie	comedie	other	other	vers	moeurs espagnoles	Trois actes	1
+tc0102	tc0102	BOYERA_CATON	BOYERA	1646	tragedie	other	tragedie	other	prose	histoire romaine	Cinq actes	1
 tc0103	tc0103	BOYER_AGAMEMNON	BOYER	1648	tragedie	other	tragedie	other	vers	mythe grec	Cinq actes	1
 tc0105	tc0105	BOYER_ARISTODEME	BOYER	1648	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
 tc0106	tc0106	BOYER_ARTAXERCE	BOYER	1683	tragedie	other	tragedie	other	vers	histoire perse	Cinq actes	1
@@ -31,7 +32,6 @@ tc0111	tc0111	BOYER_OROPASTE	BOYER	1663	tragedie	other	tragedie	other	vers	histo
 tc0112	tc0112	BOYER_PORCIEROMAINE	BOYER	1646	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
 tc0113	tc0113	BOYER_PORUS	BOYER	1648	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
 tc0114	tc0114	BOYER_TIRIDATE	BOYER	1649	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
-tc0102	tc0102	BOYERA_CATON	BOYERA	1646	tragedie	other	tragedie	other	prose	histoire romaine	Cinq actes	1
 tc0116	tc0116	BROSSE_AVEUGLECLAIRVOYANT	BROSSE	1650	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
 tc0117	tc0117	BRUEYSPALAPRAT_AVOCATPATELIN	BRUEYSPALAPRAT	1706	comedie	comedie	other	other	prose	moeurs françaises	Trois actes	1
 tc0118	tc0118	CAILHAVA_EGOISME	CAILHAVA	1777	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
@@ -291,65 +291,14 @@ tc0779	tc0779	SAINTEVREMOND_COMEDIEDESACADEMICIENS	SAINTEVREMOND	1650	comedie	co
 tc0782	tc0782	SAURIN_BLANCHEETGUISCARD	SAURIN	1763	tragedie	other	tragedie	other	vers	histoire italienne	Cinq actes	1
 tc0784	tc0784	SAURIN_SPARTACUS	SAURIN	1760	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
 tc0786	tc0786	SCARRON_DOMJAPHETDARMENIE	SCARRON	1653	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
 tc0789	tc0789	SCARRON_GARDIENDESOIMEME	SCARRON	1654	comedie	comedie	other	other	vers	moeurs italiennes	Cinq actes	1
 tc0790	tc0790	SCARRON_HERITIERRIDICULE	SCARRON	1650	comedie	comedie	other	other	vers	moeurs espagnoles	Cinq actes	1
 tc0791	tc0791	SCARRON_JODELET	SCARRON	1648	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
 tc0792	tc0792	SCARRON_JODELETDUELISTE	SCARRON	1646	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
 tc0793	tc0793	SCARRON_PRINCECORSAIRE	SCARRON	1650	comedie	comedie	other	other	vers	moeurs chypriotes	Cinq actes	1
-												
 tc0795	tc0795	SCUDERY_ARMINIUS	SCUDERY	1644	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
 tc0796	tc0796	SCUDERY_COMEDIEDESCOMEDIENS	SCUDERY	1635	comedie	comedie	other	other	mixte	moeurs françaises	Trois actes	1
-												
 tc0798	tc0798	SCUDERY_FILSSUPPOSE	SCUDERY	1636	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
-												
-												
-												
-												
 tc0805	tc0805	SEDAINE_RICHARD	SEDAINE	1784	comedie	comedie	other	other	mixte	histoire mediévale	Trois actes	1
 tc0812	tc0812	SOMMERIVE_BAJAZET	SOMMERIVE	1741	tragedie	other	tragedie	other	vers	histoire ottomane	Cinq actes	1
 tc0823	tc0823	TANEVOT_ADAMETEVE	TANEVOT	1752	tragedie	other	tragedie	other	vers	bible	Cinq actes	1
@@ -359,7 +308,6 @@ tc0826	tc0826	TRISTAN_MORTDECHRISPE	TRISTAN	1644	tragedie	other	tragedie	other	v
 tc0827	tc0827	TRISTAN_MORTSENEQUE	TRISTAN	1645	tragedie	other	tragedie	other	vers	histoire romaine	Cinq actes	1
 tc0828	tc0828	TRISTAN_OSMAN	TRISTAN	1656	tragedie	other	tragedie	other	vers	histoire ottomane	Cinq actes	1
 tc0829	tc0829	TRISTAN_PARASITE	TRISTAN	1654	comedie	comedie	other	other	vers	moeurs françaises	Cinq actes	1
-												
 tc0838	tc0838	VOLTAIRE_ADELAIDE	VOLTAIRE	1734	tragedie	other	tragedie	other	vers	histoire française	Cinq actes	1
 tc0839	tc0839	VOLTAIRE_AGATHOCLE	VOLTAIRE	1779	tragedie	other	tragedie	other	vers	histoire grecque	Cinq actes	1
 tc0840	tc0840	VOLTAIRE_ALZIRE	VOLTAIRE	1732	tragedie	other	tragedie	other	vers	histoire espagnole	Cinq actes	1

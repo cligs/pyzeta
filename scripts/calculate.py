@@ -73,7 +73,7 @@ def get_indicators(binary1, binary2, relative1, relative2):
     depending on the method chosen.
     """
     docprops1 = np.mean(binary1, axis=1)
-    docprops1 = pd.Series(docprops1, name="docprops2")
+    docprops1 = pd.Series(docprops1, name="docprops1")
     docprops2 = np.mean(binary2, axis=1)
     docprops2 = pd.Series(docprops2, name="docprops2")
     relfreqs1 = np.mean(relative1, axis=1)*1000

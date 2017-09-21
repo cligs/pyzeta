@@ -62,7 +62,7 @@ def get_zetadata(resultsfile, measure, numfeatures, droplist):
         zetadata = alldata.loc[:, [measure, "docprops1"]]
         zetadata.sort_values(measure, ascending=False, inplace=True)
         zetadata.drop("docprops1", axis=1, inplace=True)
-        for item in droplist: 
+        for item in droplist:
             zetadata.drop(item, axis=0, inplace=True)
         zetadata = zetadata.head(numfeatures).append(zetadata.tail(numfeatures))
         zetadata = zetadata.reset_index(drop=False)
@@ -105,18 +105,19 @@ def make_barchart(zetadata, zetaplotfile, parameterstring, contraststring, measu
     plot.render_to_file(zetaplotfile)
 
 
-def zetabarchart(segmentlength, featuretype, contrast, measure, numfeatures, droplist, resultsfolder, plotfolder):
+def zetabarchart(segmentlength, featuretype, contrast, measures, numfeatures, droplist, resultsfolder, plotfolder):
     print("--barchart (zetascores)")
-    # Define some strings and filenames
     parameterstring = str(segmentlength) +"-"+ str(featuretype[0]) +"-"+ str(featuretype[1])
     contraststring = str(contrast[0]) +"_"+ str(contrast[2]) +"-"+ str(contrast[1])
     resultsfile = resultsfolder + "results_" + parameterstring +"_"+ contraststring +".csv"
-    zetaplotfile = plotfolder + "zetabarchart_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +"-"+str(measure) + ".svg"
-    if not os.path.exists(plotfolder):
-        os.makedirs(plotfolder)
-    # Get the data and plot it
-    zetadata = get_zetadata(resultsfile, measure, numfeatures, droplist)
-    make_barchart(zetadata, zetaplotfile, parameterstring, contraststring, measure, numfeatures)
+    for measure in measures:
+        # Define some strings and filenames
+        zetaplotfile = plotfolder + "zetabarchart_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +"-"+str(measure) + ".svg"
+        if not os.path.exists(plotfolder):
+            os.makedirs(plotfolder)
+        # Get the data and plot it
+        zetadata = get_zetadata(resultsfile, measure, numfeatures, droplist)
+        make_barchart(zetadata, zetaplotfile, parameterstring, contraststring, measure, numfeatures)
 
 
 
