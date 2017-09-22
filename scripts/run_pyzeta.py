@@ -30,8 +30,8 @@ from os.path import join
 # =================================
 
 # You need to adapt these
-corpus = "novelas"
-workdir = "/home/christof/repos/cligs/pyzeta/"
+corpus = "doyle"
+workdir = "/home/jose/cligs/pyzeta/"
 dtmfolder = join("/home/christof/Desktop/pyzeta-dtms/", corpus, "")
 
 # It is recommended to name your files and folders accordingly
@@ -78,7 +78,7 @@ This function needs to be run again when a parameter is changed.
 
 segmentlength = 2000
 max_num_segments = -1
-featuretype = ["lemmata", "NC"] # forms, pos
+featuretype = ["lemmata", "NN"] # forms, pos
 #prepare.main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_num_segments, stoplistfile, featuretype)
 
 
@@ -94,9 +94,9 @@ The contrast parameter takes ["category", "group1", "group2"] as in the metadata
 """
 
 separator = "\t"
-contrast = ["continent", "Europe", "America"] # example for novelas
+#contrast = ["continent", "Europe", "America"] # example for novelas
 #contrast = ["subgenre", "tragedie", "comedie"] # example for theatre
-#contrast = ["subgenre", "detective", "historical"] # example for doyle
+contrast = ["subgenre", "detective", "historical"] # example for doyle
 #contrast = ["random", "two", "one"] # for splitting groups randomly
 logaddition= 0.1 # has effect on log calculation.
 #calculate.main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype)
@@ -145,16 +145,17 @@ The function "get_correlation" calculates several correlation scores between the
 """
 
 comparison = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"]
-experimental.get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
+#experimental.get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 
 
-"""
+numfeatures = 2000
 comparison = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"]
-for numfeatures in [10, 50, 100, 500, 1000, 2000]:
-    make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
-    make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
-    make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+
+experimental.make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+experimental.make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+experimental.make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
 
 # TODO: The next step doesn't work in Spyder, it works in Jupyter... I don't understand why
 #clustering_kmeans(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder, n=4)
-"""
+
+experimental.cluster_correlation(resultsfolder, segmentlength, featuretype, contrast, plotfolder, comparison)
