@@ -1,0 +1,91 @@
+Using 40 most distintice words according to measure sd0 to classify theatre
+['-là', 'affaire|affairé', 'bon', 'car', 'cela', 'chez', 'chose', 'comment', 'crime', 'destin', 'diable', 'dieu|dieux', 'empire', 'ennemi', 'fort', 'funeste', 'fureur', 'gens|gent', 'gloire', 'haine', 'homme', 'horreur', 'loi', 'mariage', 'monsieur', 'mort', 'oh', 'petit', 'peuple', 'prier', 'prince', 'rire', 'roi', 'sang', 'seigneur', 'sort', 'très', 'trône', 'vertu', 'voilà']
+[ 0.95575221  0.98230088  0.96460177]; Mean: 0.967551622419
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure sd2 to classify theatre
+['affaire|affairé', 'argent', 'attentat', 'auguste', 'autel', 'barbare', 'cela', 'couronne', 'diable', 'forfait', 'gens|gent', 'haine', 'honnête', 'horreur', 'héros', 'immoler', 'joli', 'jouer', 'mariage', 'marier', 'monsieur', 'oh', 'pauvre', 'petit', 'peuple', 'prince', 'périr', 'rire', 'roi', 'romain', 'sang', 'sceptre', 'sot', 'très', 'trône', 'tyran', 'valet', 'victime', 'vite', 'vraiment']
+[ 0.98230088  0.98230088  0.96460177]; Mean: 0.976401179941
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure sdX to classify theatre
+['affaire|affairé', 'argent', 'attentat', 'auguste', 'autel', 'barbare', 'cela', 'couronne', 'diable', 'forfait', 'gens|gent', 'haine', 'honnête', 'horreur', 'héros', 'immoler', 'joli', 'jouer', 'mariage', 'marier', 'monsieur', 'oh', 'pauvre', 'petit', 'peuple', 'prince', 'périr', 'rire', 'roi', 'romain', 'sang', 'sceptre', 'sot', 'très', 'trône', 'tyran', 'valet', 'victime', 'vite', 'vraiment']
+[ 0.98230088  0.98230088  0.96460177]; Mean: 0.976401179941
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure sr0 to classify theatre
+['...', 'avoir', 'bien', 'bon', 'cela', 'comme', 'c\x8cur', 'dans', 'de', 'de+le|de+les', 'devoir', 'dieu|dieux', 'dire', 'donc', 'en', 'et', 'faire', 'homme', 'il', 'je', 'le', 'leur', 'mon', 'monsieur', 'mort', 'ne', 'notre', 'on', 'par', 'pas', 'pouvoir', 'que', 'roi', 'sang', 'seigneur', 'son', 'ton', 'votre', 'vous', 'être']
+[ 0.9380531   0.95575221  0.91150442]; Mean: 0.935103244838
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure sr2 to classify theatre
+['-là', 'affaire|affairé', 'argent', 'bon', 'car', 'cela', 'chose', 'crime', 'c’est', 'diable', 'dieu|dieux', 'empire', 'fureur', 'gens|gent', 'gloire', 'haine', 'horreur', 'immoler', 'lisette', 'mariage', 'marquis', 'monsieur', 'mort', 'oh', 'petit', 'peuple', 'reine|roi', 'rire', 'roi', 'romain', 'rome', 'régner', 'sang', 'seigneur', 'sot', 'sénat', 'très', 'trône', 'tyran', 'voilà']
+[ 0.96460177  0.98230088  0.97345133]; Mean: 0.973451327434
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure srX to classify theatre
+['-là', 'affaire|affairé', 'argent', 'bon', 'car', 'cela', 'chose', 'crime', 'c’est', 'diable', 'dieu|dieux', 'empire', 'fureur', 'gens|gent', 'gloire', 'haine', 'horreur', 'immoler', 'lisette', 'mariage', 'marquis', 'monsieur', 'mort', 'oh', 'petit', 'peuple', 'reine|roi', 'rire', 'roi', 'romain', 'rome', 'régner', 'sang', 'seigneur', 'sot', 'sénat', 'très', 'trône', 'tyran', 'voilà']
+[ 0.96460177  0.98230088  0.97345133]; Mean: 0.973451327434
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure dd0 to classify theatre
+['agamemnon', 'arcas', 'bajazet', 'capitole', 'carre|carré', 'cartron', 'centupliquoque', 'ceour', 'crète', 'darius', 'destructeur', 'disperser', 'détrôner', 'estoumaque', 'factieux', 'inceste', 'invité', 'invocation', 'israël', 'janos', 'jantio', 'japet', 'japhets', 'jargonet', 'jaspe|jaspé', 'jaspiller', 'jauge', 'persan', 'pison', 'pontife', 'proverbes', 'reste-', 'reste-t-elle', 'régnez', 'scythe', 'sonit', 'sparte', 'syphax', 'tibre', 'venet']
+[ 0.91150442  0.95575221  0.92920354]; Mean: 0.93215339233
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure dd2 to classify theatre
+['-vous', 'affaire|affairé', 'aussi', 'autre', 'beau', 'bon', 'cela', 'chose', 'comme', 'de+le|de+les', 'deux', 'donc', 'donner', 'dont', 'fort', 'grand', 'homme', 'ici', 'là', 'main', 'mettre', 'monsieur', 'non', 'oeil|yeux', 'oui', 'parler', 'petit', 'peu', 'prendre', 'quand', 'quelque', 'que|quoi', 'rendre', 'rien', 'se', 'tenir', 'trop', 'trouver', 'voilà', 'à+les']
+[ 0.98230088  0.97345133  0.95575221]; Mean: 0.970501474926
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure ddX to classify theatre
+['-vous', 'affaire|affairé', 'aussi', 'autre', 'beau', 'bon', 'cela', 'chose', 'comme', 'de+le|de+les', 'deux', 'donc', 'donner', 'dont', 'fort', 'grand', 'homme', 'ici', 'là', 'main', 'mettre', 'monsieur', 'non', 'oeil|yeux', 'oui', 'parler', 'petit', 'peu', 'prendre', 'quand', 'quelque', 'que|quoi', 'rendre', 'rien', 'se', 'tenir', 'trop', 'trouver', 'voilà', 'à+les']
+[ 0.98230088  0.97345133  0.95575221]; Mean: 0.970501474926
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure dr0 to classify theatre
+['arsace', 'astérie', 'bajazet', 'casi', 'cassable', 'centellas', 'centenaire', 'centrique', 'cents', 'darius', 'estramaçonne', 'fatime', 'israël', 'j7espère', 'jacinthe', 'jacobin', 'jacqueleine', 'jambage', 'judith', 'marius', 'persan', 'philoxène', 'phèdre', 'pison', 'polixène', 'porus', 'proverbes', 'restera-t-elle', 'restisse', 'restringente', 'roxane', 'régulus', 'sophiste', 'syphax', 'tancrède', 'thyeste', 'tiens-ici', 'velître', 'vendan', 'zopire']
+[ 0.60176991  0.78761062  0.71681416]; Mean: 0.702064896755
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure dr2 to classify theatre
+['-ce', '-là', '-moi', 'affaire|affairé', 'aussi', 'car', 'cela', 'celui', 'chez', 'chose', 'comment', 'croire', 'dont', 'eh', 'encore', 'enfin', 'entendre', 'esprit', 'faire|ferrer', 'femme', 'fille', 'fort', 'gens|gent', 'homme', 'leur', 'là', 'main', 'mettre', 'mieux', 'même', 'oeil|yeux', 'oh', 'petit', 'plaire', "qu'", 'seul', 'tenir', 'voilà', 'à+les', 'âme']
+[ 0.95575221  0.98230088  0.95575221]; Mean: 0.964601769912
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure drX to classify theatre
+['-ce', '-là', '-moi', 'affaire|affairé', 'aussi', 'car', 'cela', 'celui', 'chez', 'chose', 'comment', 'croire', 'dont', 'eh', 'encore', 'enfin', 'entendre', 'esprit', 'faire|ferrer', 'femme', 'fille', 'fort', 'gens|gent', 'homme', 'leur', 'là', 'main', 'mettre', 'mieux', 'même', 'oeil|yeux', 'oh', 'petit', 'plaire', "qu'", 'seul', 'tenir', 'voilà', 'à+les', 'âme']
+[ 0.95575221  0.98230088  0.95575221]; Mean: 0.964601769912
+--------------------
+--------------------
+--------------------
+
+Using 40 most frequent words to classify theatre
+['ah', 'aimer', 'aller', 'amour', 'bien', 'ciel', 'croire', 'dieu', 'dire', 'donner', 'dont', 'faillir', 'falloir', 'foi', 'grand', 'jour', 'madame', 'main', 'monsieur', 'non', 'oeil', 'parler', 'plus', 'point', 'pouvoir', 'prendre', 'père', 'quelque', 'quoi', 'rendre', 'rien', 'roi', 'savoir', 'seigneur', 'seul', 'ur', 'venir', 'voir', 'vouloir', 'yeux']
+[ 0.9380531   0.97345133  0.94690265]; Mean: 0.952802359882
+--------------------
+--------------------
+--------------------
+

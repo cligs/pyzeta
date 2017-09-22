@@ -1,0 +1,91 @@
+Using 80 most distintice words according to measure sd0 to classify doyle
+['alleyne', 'always', 'anything', 'archer', 'arm', 'aylward', 'bow', 'case', 'castle', 'catinat', 'certainly', 'church', 'crime', 'de', 'death', 'detective', 'dr.', 'english', 'ere', 'exactly', 'expect', 'fact', 'fair', 'fellow', 'flash', 'forest', 'forth', 'france', 'french', 'get', 'god', 'green', 'guess', 'hardly', 'high', 'holmes', 'idea', 'imagine', 'inside', 'just', 'king', 'knight', 'la', 'lady', 'london', 'lord', 'mr.', 'mrs.', 'murder', 'mystery', "n't", 'nay', 'nigel', 'night', 'noble', 'nothing', 'paper', 'police', 'put', 'quite', 'quoth', 'really', 'ride', 'room', 'scarce', 'sherlock', 'shout', 'soldier', 'squire', 'st.', 'street', 'suppose', 'sure', 'sword', 'thrust', 'tongue', 'want', 'war', 'watson', 'wood']
+[ 0.25  1.    0.75]; Mean: 0.666666666667
+--------------------
+--------------------
+--------------------
+
+Using 80 most distintice words according to measure sd2 to classify doyle
+['alleyne', 'amos', 'anyone', 'anything', 'archer', 'aylward', 'baker', 'baskerville', 'bowman', 'cab', 'case', 'castle', 'catinat', 'church', 'crime', 'criminal', 'de', 'detective', 'difficulty', 'dr.', 'du', 'edricson', 'ere', 'evidence', 'exactly', 'fact', 'forest', 'france', 'french', 'guess', 'hilt', 'holmes', 'honor', 'hordle', 'idea', 'imagine', 'information', 'inside', 'king', 'knight', 'la', 'lodge', 'london', 'loring', 'man-at-arms', 'mon', 'monsieur', 'mr.', 'mrs.', 'murder', 'mystery', "n't", 'nay', 'nigel', 'noble', 'particular', 'police', 'prince', 'problem', 'quoth', 'report', 'result', 'saint', 'scarce', 'sherlock', 'sire', 'soldier', 'someone', 'sooth', 'squire', 'st.', 'stapleton', 'street', 'suppose', 'sword', 'thee', 'theory', 'war', 'watson', 'wo']
+[ 0.25  0.75  0.5 ]; Mean: 0.5
+--------------------
+--------------------
+--------------------
+
+Using 80 most distintice words according to measure sdX to classify doyle
+['alleyne', 'amos', 'anyone', 'anything', 'archer', 'aylward', 'baker', 'baskerville', 'bowman', 'cab', 'case', 'castle', 'catinat', 'church', 'crime', 'criminal', 'de', 'detective', 'difficulty', 'dr.', 'du', 'edricson', 'ere', 'evidence', 'exactly', 'fact', 'forest', 'france', 'french', 'guess', 'hilt', 'holmes', 'honor', 'hordle', 'idea', 'imagine', 'information', 'inside', 'king', 'knight', 'la', 'lodge', 'london', 'loring', 'man-at-arms', 'mon', 'monsieur', 'mr.', 'mrs.', 'murder', 'mystery', "n't", 'nay', 'nigel', 'noble', 'particular', 'police', 'prince', 'problem', 'quoth', 'report', 'result', 'saint', 'scarce', 'sherlock', 'sire', 'soldier', 'someone', 'sooth', 'squire', 'st.', 'stapleton', 'street', 'suppose', 'sword', 'thee', 'theory', 'war', 'watson', 'wo']
+[ 0.25  0.75  0.5 ]; Mean: 0.5
+--------------------
+--------------------
+--------------------
+
+Using 80 most distintice words according to measure sr0 to classify doyle
+["'s", 'about', 'alleyne', 'amos', 'an', 'and', 'archer', 'as', 'aylward', 'be', 'by', 'case', 'catinat', 'could', 'cry', 'de', 'do', 'eye', 'find', 'france', 'from', 'get', 'great', 'have', 'he', 'her', 'him', 'his', 'holmes', 'horse', 'house', 'if', 'in', 'it', 'king', 'knight', 'know', 'lady', 'lord', 'make', 'mcmurdo', 'me', 'mr.', 'my', "n't", 'nay', 'nigel', 'night', 'no', 'of', 'our', 'ride', 'say', 'she', 'side', 'sir', 'sire', 'some', 'tell', 'that', 'the', 'their', 'them', 'there', 'they', 'this', 'to', 'upon', 'us', 'watson', 'we', 'well', 'what', 'while', 'who', 'will', 'with', 'yet', 'you', 'your']
+[ 0.    0.    0.25]; Mean: 0.0833333333333
+--------------------
+--------------------
+--------------------
+
+Using 80 most distintice words according to measure sr2 to classify doyle
+['adele', 'alleyne', 'amos', 'anything', 'archer', 'aylward', 'barker', 'barrymore', 'baskerville', 'bowman', 'cab', 'case', 'castle', 'catinat', 'charles', 'church', 'crime', 'de', 'detective', 'douglas', 'dr.', 'drebber', 'du', 'ephraim', 'ere', 'fact', 'fair', 'ferrier', 'forest', 'france', 'french', 'guess', 'henry', 'holmes', 'idea', 'inspector', 'king', 'knight', 'la', 'lestrade', 'lhut', 'lodge', 'london', 'lord', 'madame', 'mcginty', 'mcmurdo', 'miss', 'monsieur', 'moor', 'morstan', 'mortimer', 'mr.', 'mrs.', 'murder', "n't", 'nay', 'nigel', 'noble', 'oliver', 'paper', 'police', 'prince', 'quoth', 'ride', 'saint', 'scarce', 'sherlock', 'sholto', 'simon', 'sire', 'soldier', 'squire', 'st.', 'stapleton', 'street', 'suppose', 'sword', 'watson', 'wood']
+[ 0.5   0.75  0.75]; Mean: 0.666666666667
+--------------------
+--------------------
+--------------------
+
+Using 80 most distintice words according to measure srX to classify doyle
+['adele', 'alleyne', 'amos', 'anything', 'archer', 'aylward', 'barker', 'barrymore', 'baskerville', 'bowman', 'cab', 'case', 'castle', 'catinat', 'charles', 'church', 'crime', 'de', 'detective', 'douglas', 'dr.', 'drebber', 'du', 'ephraim', 'ere', 'fact', 'fair', 'ferrier', 'forest', 'france', 'french', 'guess', 'henry', 'holmes', 'idea', 'inspector', 'king', 'knight', 'la', 'lestrade', 'lhut', 'lodge', 'london', 'lord', 'madame', 'mcginty', 'mcmurdo', 'miss', 'monsieur', 'moor', 'morstan', 'mortimer', 'mr.', 'mrs.', 'murder', "n't", 'nay', 'nigel', 'noble', 'oliver', 'paper', 'police', 'prince', 'quoth', 'ride', 'saint', 'scarce', 'sherlock', 'sholto', 'simon', 'sire', 'soldier', 'squire', 'st.', 'stapleton', 'street', 'suppose', 'sword', 'watson', 'wood']
+[ 0.5   0.75  0.75]; Mean: 0.666666666667
+--------------------
+--------------------
+--------------------
+
+Using 80 most distintice words according to measure dd0 to classify doyle
+['asia', 'astrolabe', 'astrologer', 'asturias', 'baker', 'baronet', 'barrymore', 'baskerville', 'boss', 'butler', 'cab', 'captivity', 'capuchins', 'caracci', 'carlisle', 'caron', 'casketful', 'casmeal', 'castillon', 'casting-bottle', 'castlewick', 'castlewicks', 'castro', 'casuist', 'catapult', 'cigar', 'clue', 'considerable', 'convict', 'criminal', 'detective', 'dr.', 'drebber', 'evidence', 'explanation', 'grimpen', 'holmes', 'information', 'inspector', 'lestrade', 'mcginty', 'mcmurdo', 'morstan', 'mortimer', 'mrs.', 'mysterious', 'narrative', 'naturally', 'plop', 'police', 'practical', 'revolver', 'sherlock', 'sholto', 'someone', 'stapleton', 'steel-cap', 'steersman', 'stefano', 'step-mother', 'stock-fish', 'stockade-gate', 'stormers', 'stormings', 'stormy', 'stour', 'stourbridge', 'stourtons', 'stoutness', 'straggler', 'telegram', 'theory', 'unwounded', 'up-country', 'upa', 'updrawn', 'upside', 'urgently', 'ursuline', 'watson']
+[ 0.    0.75  0.25]; Mean: 0.333333333333
+--------------------
+--------------------
+--------------------
+
+Using 80 most distintice words according to measure dd2 to classify doyle
+['about', 'alleyne', 'any', 'anything', 'archer', 'arm', 'ask', 'back', 'before', 'case', 'cry', 'day', 'de', 'ere', 'eye', 'fair', 'find', 'forest', 'france', 'french', 'get', 'give', 'great', 'head', 'high', 'holmes', 'how', 'just', 'king', 'knight', 'know', 'la', 'lady', 'leave', 'long', 'lord', 'make', 'might', 'mr.', "n't", 'nay', 'nigel', 'night', 'nothing', 'only', 'our', 'own', 'pass', 'put', 'quoth', 'replaced-dns', 'room', 'scarce', 'seem', 'shall', 'sherlock', 'side', 'soldier', 'some', 'st.', 'stand', 'such', 'sword', 'than', 'their', 'think', 'those', 'time', 'tongue', 'turn', 'two', 'us', 'war', 'watson', 'way', 'well', 'where', 'while', 'yet', 'young']
+[ 0.25  0.25  0.75]; Mean: 0.416666666667
+--------------------
+--------------------
+--------------------
+
+Using 80 most distintice words according to measure ddX to classify doyle
+['about', 'alleyne', 'any', 'anything', 'archer', 'arm', 'ask', 'back', 'before', 'case', 'cry', 'day', 'de', 'ere', 'eye', 'fair', 'find', 'forest', 'france', 'french', 'get', 'give', 'great', 'head', 'high', 'holmes', 'how', 'just', 'king', 'knight', 'know', 'la', 'lady', 'leave', 'long', 'lord', 'make', 'might', 'mr.', "n't", 'nay', 'nigel', 'night', 'nothing', 'only', 'our', 'own', 'pass', 'put', 'quoth', 'replaced-dns', 'room', 'scarce', 'seem', 'shall', 'sherlock', 'side', 'soldier', 'some', 'st.', 'stand', 'such', 'sword', 'than', 'their', 'think', 'those', 'time', 'tongue', 'turn', 'two', 'us', 'war', 'watson', 'way', 'well', 'where', 'while', 'yet', 'young']
+[ 0.25  0.25  0.75]; Mean: 0.416666666667
+--------------------
+--------------------
+--------------------
+
+Using 80 most distintice words according to measure dr0 to classify doyle
+['ames', 'ashurst', 'asia', 'asking', 'astrolabe', 'astrologer', 'asturias', 'baker', 'barker', 'baronet', 'barrymore', 'baskerville', 'birlstone', 'bodymaster', 'boss', 'cab', 'captivity', 'capuchins', 'cara', 'caracci', 'casketful', 'casmeal', 'castillon', 'casting-bottle', 'castlewick', 'castlewicks', 'castro', 'casuist', 'cat-bird', 'catapult', 'chicago', 'criminal', 'detective', 'dr.', 'drebber', 'ettie', 'evidence', 'ferrier', 'gregson', 'holmes', 'inspector', 'jones', 'lestrade', 'macdonald', 'mcginty', 'mcmurdo', 'morris', 'morstan', 'mortimer', 'mrs.', 'mysticism', 'police', 'sherlock', 'sholto', 'someone', 'stangerson', 'stapleton', 'steel-cap', 'stefano', 'step-mother', 'stock-fish', 'stockade-gate', 'storm-blast', 'stormers', 'stormings', 'stormy', 'stour', 'stourbridge', 'stourtons', 'stoutness', 'straggler', 'thaddeus', 'theory', 'unwounded', 'up-country', 'upa', 'updrawn', 'urgently', 'vermissa', 'watson']
+[ 0.    0.75  0.25]; Mean: 0.333333333333
+--------------------
+--------------------
+--------------------
+
+Using 80 most distintice words according to measure dr2 to classify doyle
+['about', 'after', 'again', 'against', 'ah', 'alleyne', 'amos', 'answer', 'any', 'archer', 'arm', 'ask', 'away', 'aylward', 'behind', 'black', 'catinat', 'de', 'du', 'ere', 'ever', 'every', 'fair', 'fall', 'father', 'find', 'foot', 'france', 'french', 'friend', 'get', 'head', 'heart', 'himself', 'hold', 'holmes', 'horse', 'house', 'indeed', 'john', 'king', 'knight', 'lady', 'last', 'lord', 'madame', 'mr.', 'much', "n't", 'nay', 'never', 'nigel', 'night', 'nothing', 'only', 'pass', 'place', 'prince', 'ride', 'room', 'round', 'seem', 'shall', 'side', 'sire', 'soldier', 'speak', 'squire', 'st.', 'still', 'sword', 'tell', 'three', 'too', 'while', 'white', 'woman', 'wood', 'yet', 'young']
+[ 0.    0.5   0.75]; Mean: 0.416666666667
+--------------------
+--------------------
+--------------------
+
+Using 80 most distintice words according to measure drX to classify doyle
+['about', 'after', 'again', 'against', 'ah', 'alleyne', 'amos', 'answer', 'any', 'archer', 'arm', 'ask', 'away', 'aylward', 'behind', 'black', 'catinat', 'de', 'du', 'ere', 'ever', 'every', 'fair', 'fall', 'father', 'find', 'foot', 'france', 'french', 'friend', 'get', 'head', 'heart', 'himself', 'hold', 'holmes', 'horse', 'house', 'indeed', 'john', 'king', 'knight', 'lady', 'last', 'lord', 'madame', 'mr.', 'much', "n't", 'nay', 'never', 'nigel', 'night', 'nothing', 'only', 'pass', 'place', 'prince', 'ride', 'room', 'round', 'seem', 'shall', 'side', 'sire', 'soldier', 'speak', 'squire', 'st.', 'still', 'sword', 'tell', 'three', 'too', 'while', 'white', 'woman', 'wood', 'yet', 'young']
+[ 0.    0.5   0.75]; Mean: 0.416666666667
+--------------------
+--------------------
+--------------------
+
+Using 80 most frequent words to classify doyle
+['answer', 'ask', 'away', 'back', 'can', 'come', 'cry', 'day', 'de', 'dns', 'door', 'ever', 'every', 'eye', 'face', 'father', 'find', 'first', 'get', 'give', 'go', 'good', 'great', 'hand', 'head', 'hear', 'house', 'however', 'john', 'know', 'last', 'leave', 'lie', 'life', 'light', 'like', 'little', 'long', 'look', 'make', 'man', 'may', 'might', 'much', 'must', 'never', 'night', 'now', 'old', 'one', 'pass', 'place', 'repdns', 'replaced', 'room', 'round', 'say', 'see', 'seem', 'shall', 'side', 'sir', 'stand', 'still', 'take', 'tell', 'text', 'thing', 'think', 'time', 'turn', 'two', 'upon', 'us', 'way', 'well', 'will', 'word', 'yet', 'young']
+[ 0.    0.    0.25]; Mean: 0.0833333333333
+--------------------
+--------------------
+--------------------
+

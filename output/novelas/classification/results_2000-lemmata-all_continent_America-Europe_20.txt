@@ -1,0 +1,91 @@
+Using 40 most distintice words according to measure sd0 to classify novelas
+['...', 'además', 'aires', 'algo', 'arma', 'buenos', 'campaña', 'caudillo', 'cierto', 'coger', 'combate', 'comenzar', 'concluir', 'cual', 'dios', 'don', 'ejército', 'entender', 'entonces', 'frente', 'jefe', 'junto', 'madrid', 'marcha', 'momento', 'mozo', 'muerto', 'necesario', 'notar', 'oficial', 'parecer', 'posible', 'profundo', 'retirar', 'señor', 'señora', 'soldado', 'subir', 'tal', 'tío']
+[ 0.875   0.75    0.8125]; Mean: 0.8125
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure sd2 to classify novelas
+['además', 'afición', 'agregar', 'aires', 'alcoba', 'arma', 'balcón', 'buenos', 'campaña', 'caudillo', 'coger', 'combate', 'concluir', 'coronel', 'criado', 'dama', 'ejército', 'enterar', 'escalera', 'federal', 'fermín', 'jefe', 'madrid', 'marqués', 'mozo', 'nacional', 'notar', 'oficial', 'paco', 'pelear', 'peseta', 'prisionero', 'procurar', 'sangriento', 'señorito', 'soldado', 'tropa', 'tío', 'violento', 'víctor']
+[ 1.      0.9375  1.    ]; Mean: 0.979166666667
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure sdX to classify novelas
+['además', 'afición', 'agregar', 'aires', 'alcoba', 'arma', 'balcón', 'buenos', 'campaña', 'caudillo', 'coger', 'combate', 'concluir', 'coronel', 'criado', 'dama', 'ejército', 'enterar', 'escalera', 'federal', 'fermín', 'jefe', 'madrid', 'marqués', 'mozo', 'nacional', 'notar', 'oficial', 'paco', 'pelear', 'peseta', 'prisionero', 'procurar', 'sangriento', 'señorito', 'soldado', 'tropa', 'tío', 'violento', 'víctor']
+[ 1.      0.9375  1.    ]; Mean: 0.979166666667
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure sr0 to classify novelas
+['...', '<unknown>', 'con', 'de', 'don', 'ejército', 'el', 'entonces', 'ese', 'este', 'general', 'haber', 'hacer', 'la', 'momento', 'muy', 'ni', 'no', 'otro', 'parecer', 'poder', 'por', 'porque', 'que', 'quiroga', 'se', 'ser', 'si', 'sobre', 'soldado', 'suyo', 'tan', 'tener', 'todo', 'tú', 'un', 'usted', 'yo', 'él', 'él|le']
+[ 0.625   0.4375  0.375 ]; Mean: 0.479166666667
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure sr2 to classify novelas
+['además', 'aires', 'ana', 'arma', 'balcón', 'bodega', 'buenos', 'caudillo', 'coger', 'combate', 'coronel', 'dama', 'don', 'ejército', 'fermín', 'genaro', 'general', 'gobierno', 'indio', 'inés', 'jefe', 'juan', 'juana', 'la', 'marqués', 'mozo', 'méndez', 'oficial', 'paco', 'paisano', 'prisionero', 'procurar', 'quiroga', 'rafael', 'rey', 'señorito', 'soldado', 'tropa', 'tío', 'víctor']
+[ 1.      0.6875  0.8125]; Mean: 0.833333333333
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure srX to classify novelas
+['además', 'aires', 'ana', 'arma', 'balcón', 'bodega', 'buenos', 'caudillo', 'coger', 'combate', 'coronel', 'dama', 'don', 'ejército', 'fermín', 'genaro', 'general', 'gobierno', 'indio', 'inés', 'jefe', 'juan', 'juana', 'la', 'marqués', 'mozo', 'méndez', 'oficial', 'paco', 'paisano', 'prisionero', 'procurar', 'quiroga', 'rafael', 'rey', 'señorito', 'soldado', 'tropa', 'tío', 'víctor']
+[ 1.      0.6875  0.8125]; Mean: 0.833333333333
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure dd0 to classify novelas
+['bonifacio', 'calórico', 'camaleón', 'camarón', 'celso', 'cliché', 'cáustico', 'discurrir', 'espátula', 'esquivel', 'estacionario', 'estampida', 'estampilla', 'gorro', 'huerto', 'inspirador', 'instructor', 'integral', 'intercalarse', 'intercambio', 'intercostal', 'joaquín', 'marcia', 'medicamentoso', 'mencionado', 'paco', 'paula', 'rita', 'santander', 'san~pedro', 'sebastián', 'toar', 'toxina', 'valencia', 'valenzuela', 'vega', 'visitación', 'viña', 'wolf', 'zapatilla']
+[ 0.9375  0.625   0.8125]; Mean: 0.791666666667
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure dd2 to classify novelas
+['...', 'aires', 'algo', 'alguno', 'aquel', 'arma', 'así', 'bien', 'buenos', 'casa', 'combate', 'concluir', 'cual', 'dejar', 'dos', 'ejército', 'entonces', 'entre', 'ese', 'esperar', 'hablar', 'hasta', 'hombre', 'llegar', 'mismo', 'momento', 'mucho', 'muy', 'ni', 'oficial', 'ojo', 'parecer', 'porque', 'qué', 'seguir', 'sobre', 'soldado', 'tan', 'uno', 'yo']
+[ 0.875   0.875   0.8125]; Mean: 0.854166666667
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure ddX to classify novelas
+['...', 'aires', 'algo', 'alguno', 'aquel', 'arma', 'así', 'bien', 'buenos', 'casa', 'combate', 'concluir', 'cual', 'dejar', 'dos', 'ejército', 'entonces', 'entre', 'ese', 'esperar', 'hablar', 'hasta', 'hombre', 'llegar', 'mismo', 'momento', 'mucho', 'muy', 'ni', 'oficial', 'ojo', 'parecer', 'porque', 'qué', 'seguir', 'sobre', 'soldado', 'tan', 'uno', 'yo']
+[ 0.875   0.875   0.8125]; Mean: 0.854166666667
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure dr0 to classify novelas
+['agravarse', 'bonifacio', 'bosch', 'brocha', 'camote', 'canoa', 'carola', 'celso', 'cette', 'ciudadela', 'comandancia', 'discurrir', 'escrutinio', 'esfenoides', 'espadar', 'especulador', 'especular', 'huerto', 'joaquín', 'mochi', 'nina', 'olimpia', 'paco', 'paula', 'prioridad', 'radicado', 'reabrir', 'realisto', 'reborde', 'rita', 'sebastián', 'serafín', 'solís', 'trincar', 'valencia', 'valenzuela', 'vega', 'ventar', 'visitación', 'viña']
+[ 0.8125  0.625   0.8125]; Mean: 0.75
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure dr2 to classify novelas
+['amigo', 'así', 'bien', 'cosa', 'deber', 'don', 'donde', 'ejército', 'entonces', 'esperar', 'general', 'hablar', 'la', 'llevar', 'manera', 'mientras', 'momento', 'mujer', 'muy', 'nada', 'noche', 'nosotros', 'nuestro', 'paisano', 'parecer', 'parte', 'pensar', 'pues', 'quedar', 'quien', 'quiroga', 'salir', 'seguir', 'señor', 'siempre', 'soldado', 'tiempo', 'tomar', 'uno', 'venir']
+[ 0.8125  0.625   0.9375]; Mean: 0.791666666667
+--------------------
+--------------------
+--------------------
+
+Using 40 most distintice words according to measure drX to classify novelas
+['amigo', 'así', 'bien', 'cosa', 'deber', 'don', 'donde', 'ejército', 'entonces', 'esperar', 'general', 'hablar', 'la', 'llevar', 'manera', 'mientras', 'momento', 'mujer', 'muy', 'nada', 'noche', 'nosotros', 'nuestro', 'paisano', 'parecer', 'parte', 'pensar', 'pues', 'quedar', 'quien', 'quiroga', 'salir', 'seguir', 'señor', 'siempre', 'soldado', 'tiempo', 'tomar', 'uno', 'venir']
+[ 0.8125  0.625   0.9375]; Mean: 0.791666666667
+--------------------
+--------------------
+--------------------
+
+Using 40 most frequent words to classify novelas
+['alguno', 'aquel', 'bien', 'bueno', 'casa', 'cosa', 'creer', 'dar', 'decir', 'dejar', 'después', 'don', 'dos', 'día', 'grande', 'haber', 'hablar', 'hacer', 'hombre', 'ir', 'llegar', 'mano', 'mismo', 'mujer', 'parecer', 'pasar', 'poder', 'poner', 'querer', 'saber', 'salir', 'ser', 'si', 'tan', 'tener', 'unknown', 'usted', 'ver', 'vez', 'volver']
+[ 0.5625  0.4375  0.375 ]; Mean: 0.458333333333
+--------------------
+--------------------
+--------------------
+

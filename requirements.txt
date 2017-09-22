@@ -5,3 +5,4 @@ pygal
 scikit-learn
 scipy
 matplotlib
+stop-words
