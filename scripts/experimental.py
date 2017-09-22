@@ -14,8 +14,15 @@ import pandas as pd
 import pygal
 from pygal import style
 from scipy.stats import kendalltau, spearmanr
+from os.path import join
 
 from correlation import calc_rbo as rbo_score
+
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import dendrogram, ward
+from sklearn.manifold import TSNE
+from sklearn.cluster import KMeans
 
 # =================================
 # Pygal style
@@ -286,4 +293,50 @@ def clustering_kmeans(resultsfolder, comparison, numfeatures, segmentlength, fea
     with open(resultsfile, "w") as file:
         file.write(list(kmeans_results))
 
+def cluster_correlation(resultsfolder, segmentlength, featuretype, contrast, plotfolder, comparison):
+    parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])
+    contraststring = str(contrast[0]) + "_" + str(contrast[2]) + "-" + str(contrast[1])
+    file = resultsfolder + "correlation_" + parameterstring + "_" + contraststring + ".csv"
+    correlation = pd.read_csv(file, encoding="utf-8", sep="\t")
+    
+    tests = {
+    "RBO": 1,
+    "Kendall's Tau": 1,
+    "p-value": 0,
+    "Spearman Rho": 1,
+    "p-value.1": 0,
+    }
 
+    matrixfolder = join(resultsfolder, "matrix")
+    if not os.path.exists(matrixfolder):
+        os.makedirs(matrixfolder)
+    for test, perfect_corr in tests.items():
+        print(test)
+        df_symmetrical = pd.DataFrame(columns=comparison, index = comparison)
+        #print(df_symmetrical)
+        for measure1 in comparison:
+            for measure2 in comparison:
+                if measure1 == measure2:
+                    df_symmetrical.loc[measure1, measure2] = perfect_corr
+                else:
+                    try: 
+                        value = correlation.loc[(correlation['Measure 1'] == measure1+"-ranks") & (correlation['Measure 2'] == measure2+"-ranks")][test].tolist()[0]
+                    except:
+                        value = correlation.loc[(correlation['Measure 1'] == measure2+"-ranks") & (correlation['Measure 2'] == measure1+"-ranks")][test].tolist()[0]
+                    df_symmetrical.loc[measure1, measure2] = value
+        file = resultsfolder +"/matrix/"+ test+"_matrix_" + parameterstring + "_" + contraststring + ".csv"
+        df_symmetrical.to_csv(file, sep='\t', encoding='utf-8', index=True)
+        
+        linkage_array = ward(df_symmetrical)
+        
+        plt.figure(figsize=(8, 6))
+    
+        dendrogram(linkage_array, labels=df_symmetrical.columns, orientation="right")
+    
+        # Mark the cuts in the tree that signify two or three clusters
+        plt.xlabel("Sample index")
+        plt.ylabel("Cluster distance")
+        plt.title("Hierarchical Cluster of "+test+" correlation (Ward) (" + str(segmentlength) + " words)")
+    
+        zetaplotfile = plotfolder + "Dendrogram_correlation_"+test+"_"+parameterstring +"_"+ contraststring +"_" + str(segmentlength) +".svg"
+        plt.savefig(zetaplotfile)
