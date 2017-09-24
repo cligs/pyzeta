@@ -65,7 +65,12 @@ def filter_dtm(dtmfolder, parameterstring, idlists):
         relative = pd.DataFrame.from_csv(infile, sep="\t")
         relative1 = relative.filter(regex=ids1, axis=1)
         relative2 = relative.filter(regex=ids2, axis=1)
-    return binary1, binary2, relative1, relative2
+    dtmfile = dtmfolder + "dtm_"+parameterstring+"_absolutefreqs.csv"
+    with open(dtmfile, "r") as infile:
+        absolute = pd.DataFrame.from_csv(infile, sep="\t")
+        absolute1 = absolute.filter(regex=ids1, axis=1)
+        absolute2 = absolute.filter(regex=ids2, axis=1)
+    return binary1, binary2, relative1, relative2, absolute1, absolute2
 
 
 def get_indicators(binary1, binary2, relative1, relative2):
@@ -84,7 +89,7 @@ def get_indicators(binary1, binary2, relative1, relative2):
     return docprops1, docprops2, relfreqs1, relfreqs2
 
 
-def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition):
+def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, absolute1, absolute2, logaddition, segmentlength, idlists):
     """
     This function implements several variants of Zeta by modifying some key parameters.
     Scores can be document proportions (binary features) or relative frequencies.
@@ -150,8 +155,47 @@ def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition):
     drX = pd.Series(drX, name="drX")
     drX = scaler.fit_transform(drX.values.reshape(-1, 1))
 
+    # Calculate Gries "deviation of proportions" (DP)
+    segnum1 = len(absolute1.columns.values)
+    segnum2 = len(absolute2.columns.values)
+    seglens1 = [segmentlength] * segnum1 
+    seglens2 = [segmentlength] * segnum2
+    crpsize1 = sum(seglens1)
+    crpsize2 = sum(seglens2)
+    #print("segments", segnum1, segnum2)
+    totalfreqs1 = np.sum(absolute1, axis=1)
+    totalfreqs2 = np.sum(absolute2, axis=1)
+    #print("totalfreqs", totalfreqs1, totalfreqs2)
+    expprops1 = np.array(seglens1) / crpsize1
+    expprops2 = np.array(seglens2) / crpsize2
+    #print("exprops", expprops1, expprops2)
+    #print(absolute1.head())
+    #print(totalfreqs1)
+    obsprops1 = absolute1.div(totalfreqs1, axis=0)
+    obsprops1 = obsprops1.fillna(expprops1[0]) # was: expprops1[0]
+    obsprops2 = absolute2.div(totalfreqs2, axis=0)
+    obsprops2 = obsprops2.fillna(expprops2[0]) # was: expprops2[0]
+    devprops1 = (np.sum(abs(expprops1 - obsprops1), axis=1) /2 )
+    devprops2 = (np.sum(abs(expprops2 - obsprops2), axis=1) /2 )
+    #print(devprops1.head())
+    #print(devprops2.head())
+
+    # Calculate DP variants ("g" for Gries)
+    sg0 = devprops1 - devprops2
+    sg0 = pd.Series(sg0, name="sg0")
+    sg0 = scaler.fit_transform(sg0.values.reshape(-1, 1))
+    sg2 = np.log2(devprops1 + logaddition) - np.log2(devprops2 + logaddition)
+    sg2 = pd.Series(sg2, name="sg2")
+    sg2 = scaler.fit_transform(sg2.values.reshape(-1, 1))
+    dg0 = (devprops1 + divaddition) / (devprops2 + divaddition)
+    dg0 = pd.Series(dg0, name="dg0")
+    dg0 = scaler.fit_transform(dg0.values.reshape(-1, 1))
+    dg2 = np.log2(devprops1 + logaddition) / np.log2(devprops2 + logaddition)
+    dg2 = pd.Series(dg2, name="dg2")
+    dg2 = scaler.fit_transform(dg2.values.reshape(-1, 1))
+
     # Return all zeta variant scores
-    return sd0, sd2.flatten(), sdX.flatten(), sr0.flatten(), sr2.flatten(), srX.flatten(), dd0.flatten(), dd2.flatten(), ddX.flatten(), dr0.flatten(), dr2.flatten(), drX.flatten()
+    return sd0, sd2.flatten(), sr0.flatten(), sr2.flatten(), sg0.flatten(), sg2.flatten(), dd0.flatten(), dd2.flatten(), dr0.flatten(), dr2.flatten(), dg0.flatten(), dg2.flatten(), devprops1, devprops2
 
 
 def get_meanrelfreqs(dtmfolder, parameterstring):
@@ -163,46 +207,49 @@ def get_meanrelfreqs(dtmfolder, parameterstring):
         return meanrelfreqs
 
 
-def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, meanrelfreqs,
-    sd0, sd2, sdX, sr0, sr2, srX, dd0, dd2, ddX, dr0, dr2, drX):
+def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, devprops1, devprops2, meanrelfreqs, sd0, sd2, sr0, sr2, sg0, sg2, dd0, dd2, dr0, dr2, dg0, dg2):
     results = pd.DataFrame({
     "docprops1" : docprops1,
     "docprops2" : docprops2,
     "relfreqs1" : relfreqs1,
     "relfreqs2" : relfreqs2,
+    "devprops1" : devprops1,
+    "devprops2" : devprops2,
     "meanrelfreqs" :meanrelfreqs,
     "sd0" : sd0,
     "sd2" : sd2,
-    "sdX" : sdX,
     "sr0" : sr0,
     "sr2" : sr2,
-    "srX" : srX,
+    "sg0" : sg0,
+    "sg2" : sg2,
     "dd0" : dd0,
     "dd2" : dd2,
-    "ddX" : ddX,
     "dr0" : dr0,
     "dr2" : dr2,
-    "drX" : drX})
+    "dg0" : dg0,
+    "dg2" : dg2})
     #print(results.columns.tolist())
     results = results[[
     "docprops1",
     "docprops2",
     "relfreqs1",
     "relfreqs2",
+    "devprops1",
+    "devprops2",
     "meanrelfreqs",
     "sd0",
     "sd2",
-    "sdX",
     "sr0",
     "sr2",
-    "srX",
+    "sg0",
+    "sg2",
     "dd0",
     "dd2",
-    "ddX",
     "dr0",
     "dr2",
-    "drX"]]
-    results.sort_values(by="sd0", ascending=False, inplace=True)
+    "dg0",
+    "dg2"]]
+    results.sort_values(by="sg0", ascending=False, inplace=True)
     #print(results.head(10), "\n", results.tail(10))
     return results
 
@@ -225,12 +272,12 @@ def main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, 
     contraststring = str(contrast[0]) +"_"+ str(contrast[2]) +"-"+ str(contrast[1])
     resultsfile = resultsfolder + "results_" + parameterstring +"_"+ contraststring +".csv"
     idlists = make_idlists(metadatafile, separator, contrast)
-    binary1, binary2, relative1, relative2 = filter_dtm(dtmfolder, parameterstring, idlists)
+    binary1, binary2, relative1, relative2, absolute1, absolute2 = filter_dtm(dtmfolder, parameterstring, idlists)
     docprops1, docprops2, relfreqs1, relfreqs2 = get_indicators(binary1, binary2, relative1, relative2)
-    sd0, sd2, sdX, sr0, sr2, srX, dd0, dd2, ddX, dr0, dr2, drX = calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, logaddition)
+    sd0, sd2, sr0, sr2, sg0, sg2, dd0, dd2, dr0, dr2, dg0, dg2, devprops1, devprops2 = calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, absolute1, absolute2, logaddition, segmentlength, idlists)
     meanrelfreqs = get_meanrelfreqs(dtmfolder, parameterstring)
-    results = combine_results(docprops1, docprops2, relfreqs1, relfreqs2, meanrelfreqs,
-    sd0, sd2, sdX, sr0, sr2, srX, dd0, dd2, ddX, dr0, dr2, drX)
+    results = combine_results(docprops1, docprops2, relfreqs1, relfreqs2, devprops1, devprops2, meanrelfreqs,
+    sd0, sd2, sr0, sr2, sg0, sg2, dd0, dd2, dr0, dr2, dg0, dg2)
     save_results(results, resultsfile)
 
 

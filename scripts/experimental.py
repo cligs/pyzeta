@@ -164,6 +164,14 @@ def get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featu
 
         file.write(df.to_csv(index=False, sep="\t"))
 
+
+
+# =================================
+# Functions: Compare Zeta variants
+# =================================
+
+
+
 def make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder):
     """
     This function creates a PCA from the file with the results.
@@ -192,8 +200,8 @@ def make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype,
     for i, txt in enumerate(comparison):
         ax.annotate(txt, (x[i],y[i]))
     ax.grid(True)
-    ax.set(xlabel='First Component', ylabel='Second Component',
-       title='PCA of Zeta Versions (' + str(numfeatures) + " words)");
+    ax.set(xlabel='PC 1', ylabel='PC 2',
+       title='PCA der Zeta-Varianten (' + str(numfeatures) + " words)");
     zetaplotfile = plotfolder + "PCA_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +".svg"
     fig.savefig(zetaplotfile)
 
@@ -217,12 +225,12 @@ def make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featu
 
     plt.figure(figsize=(8, len(comparison)-2))
 
-    dendrogram(linkage_array, labels=comparison, orientation="right")
+    dendrogram(linkage_array, labels=comparison, orientation="left")
 
     # Mark the cuts in the tree that signify two or three clusters
-    plt.xlabel("Sample index")
-    plt.ylabel("Cluster distance")
-    plt.title("Hierarchical Cluster (Ward) (" + str(numfeatures) + " words)")
+    plt.xlabel("Cluster distance")
+    plt.ylabel("Zeta variants (short labels)")
+    plt.title("Hierarchical Cluster (Ward, " + str(numfeatures) + " words)")
 
     zetaplotfile = plotfolder + "Dendrogram_" + parameterstring +"_"+ contraststring +"_" + str(numfeatures) +".svg"
     plt.savefig(zetaplotfile)
@@ -331,12 +339,12 @@ def cluster_correlation(resultsfolder, segmentlength, featuretype, contrast, plo
         
         plt.figure(figsize=(8, 6))
     
-        dendrogram(linkage_array, labels=df_symmetrical.columns, orientation="right")
+        dendrogram(linkage_array, labels=df_symmetrical.columns, orientation="left")
     
         # Mark the cuts in the tree that signify two or three clusters
-        plt.xlabel("Sample index")
-        plt.ylabel("Cluster distance")
-        plt.title("Hierarchical Cluster of "+test+" correlation (Ward) (" + str(segmentlength) + " words)")
+        plt.xlabel("Cluster distance")
+        plt.ylabel("Zeta variants")
+        plt.title("Clustering based on "+test+" correlations")# (" + str(segmentlength) + " words)")
     
         zetaplotfile = plotfolder + "Dendrogram_correlation_"+test+"_"+parameterstring +"_"+ contraststring +"_" + str(segmentlength) +".svg"
         plt.savefig(zetaplotfile)

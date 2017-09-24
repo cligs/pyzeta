@@ -30,8 +30,8 @@ from os.path import join
 # =================================
 
 # You need to adapt these
-corpus = "doyle"
-workdir = "/home/jose/cligs/pyzeta/"
+corpus = "theatre"
+workdir = "/media/christof/data/repos/cligs/pyzeta/"
 dtmfolder = join("/home/christof/Desktop/pyzeta-dtms/", corpus, "")
 
 # It is recommended to name your files and folders accordingly
@@ -78,7 +78,7 @@ This function needs to be run again when a parameter is changed.
 
 segmentlength = 2000
 max_num_segments = -1
-featuretype = ["lemmata", "NN"] # forms, pos
+featuretype = ["lemmata", "Nc"] # forms, pos
 #prepare.main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_num_segments, stoplistfile, featuretype)
 
 
@@ -95,8 +95,8 @@ The contrast parameter takes ["category", "group1", "group2"] as in the metadata
 
 separator = "\t"
 #contrast = ["continent", "Europe", "America"] # example for novelas
-#contrast = ["subgenre", "tragedie", "comedie"] # example for theatre
-contrast = ["subgenre", "detective", "historical"] # example for doyle
+contrast = ["subgenre", "tragedie", "comedie"] # example for theatre
+#contrast = ["subgenre", "detective", "historical"] # example for doyle
 #contrast = ["random", "two", "one"] # for splitting groups randomly
 logaddition= 0.1 # has effect on log calculation.
 #calculate.main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype)
@@ -115,7 +115,8 @@ This module provides several plotting functionalities.
 
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
 numfeatures = 20
-measures = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"] #droplist = ["anything", "everything", "anyone", "nothing"]
+measures = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "sg0", "dd0", "dd2", "ddX", "dr0", "dr2", "drX", "dg0"]
+#droplist = ["anything", "everything", "anyone", "nothing"]
 droplist = []
 #visualize.zetabarchart(segmentlength, featuretype, contrast, measures, numfeatures, droplist, resultsfolder, plotfolder)
 
@@ -135,21 +136,21 @@ cutoff = 0.2
 The function "comparisonplot" is a plot showing the top n features with the highest zeta scores for two measures in comparison.
 """
 
-comparison = ["sd0", "dd0"]
+comparison = ["sd0", "dr0"]
 # "sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"
-numfeatures = 25
+numfeatures = 10
 #experimental.comparisonplot(resultsfolder, plotfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 
 """
 The function "get_correlation" calculates several correlation scores between the results of using different Zeta variants.
 """
 
-comparison = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"]
+comparison = ["sd0", "sd2", "sr0", "sr2", "dd0", "dd2", "dr0", "dr2"]
 #experimental.get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 
 
-numfeatures = 2000
-comparison = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "dd0", "dd2", "ddX", "dr0", "dr2", "drX"]
+numfeatures = 500
+comparison = ["sd0", "sd2", "sr0", "sr2", "dd0", "dd2", "dr0", "dr2"]
 
 experimental.make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
 experimental.make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
@@ -158,4 +159,4 @@ experimental.make_tsne(resultsfolder, comparison, numfeatures, segmentlength, fe
 # TODO: The next step doesn't work in Spyder, it works in Jupyter... I don't understand why
 #clustering_kmeans(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder, n=4)
 
-experimental.cluster_correlation(resultsfolder, segmentlength, featuretype, contrast, plotfolder, comparison)
+#experimental.cluster_correlation(resultsfolder, segmentlength, featuretype, contrast, plotfolder, comparison)
