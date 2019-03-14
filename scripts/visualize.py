@@ -74,10 +74,10 @@ def make_barchart(zetadata, zetaplotfile, parameterstring, contraststring, measu
                                print_values = False,
                                print_labels = True,
                                show_legend = False,
-                               range = (-1, 1),
-                               title = ("Kontrastive Analyse\n("+contraststring+")"),
-                               y_title = str(numfeatures) + " distinktive Merkmale",
-                               x_title = "Parameter: "+ measure +"-"+ parameterstring)
+                               range = (-0.5, 0.5),
+                               title = ("Contrastive Analysis with Zeta\n("+contraststring+")"),
+                               y_title = str(numfeatures) + " distinctive features",
+                               x_title = "Parameters: "+ measure +"-"+ parameterstring)
     for i in range(len(zetadata)):
         if zetadata.iloc[i, 1] > 0.8:
             color = "#00cc00"
@@ -85,9 +85,9 @@ def make_barchart(zetadata, zetaplotfile, parameterstring, contraststring, measu
             color = "#14b814"
         if zetadata.iloc[i, 1] > 0.6:
             color = "#29a329"
-        elif zetadata.iloc[i, 1] > 0.5:
-            color = "#3d8f3d"
         elif zetadata.iloc[i, 1] > 0.3:
+            color = "#3d8f3d"
+        elif zetadata.iloc[i, 1] > 0.2:
             color = "#4d804d"
         elif zetadata.iloc[i, 1] < -0.8:
             color = "#0066ff"
@@ -95,9 +95,9 @@ def make_barchart(zetadata, zetaplotfile, parameterstring, contraststring, measu
             color = "#196be6"
         elif zetadata.iloc[i, 1] < -0.6:
             color = "#3370cc"
-        elif zetadata.iloc[i, 1] < -0.5:
-            color = "#4d75b3"
         elif zetadata.iloc[i, 1] < -0.3:
+            color = "#4d75b3"
+        elif zetadata.iloc[i, 1] < -0.2:
             color = "#60799f"
         else:
             color = "#585858"

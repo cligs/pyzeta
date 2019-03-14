@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # file: run_pyzeta.py
 # author: #cf
-# version: 0.3.0
+# version: 0.3.1
 
 
 """
@@ -30,9 +30,9 @@ from os.path import join
 # =================================
 
 # You need to adapt these
-corpus = "theatre"
-workdir = "/media/christof/data/repos/cligs/pyzeta/"
-dtmfolder = join("/home/christof/Desktop/pyzeta-dtms/", corpus, "")
+corpus = ""
+workdir = ""
+dtmfolder = join(workdir, "output", corpus, "dtms", "")
 
 # It is recommended to name your files and folders accordingly
 datadir = join(workdir, "data", corpus, "")
@@ -43,7 +43,7 @@ stoplistfile = join(datadir, "stoplist.txt")
 # It is recommended not to change these
 outputdir = join(workdir, "output", corpus)
 taggedfolder = join(outputdir, "tagged", "")
-segmentfolder = join(outputdir, "segments", "")
+segmentfolder = join(outputdir, "segments1000", "")
 datafolder = join(outputdir, "results", "")
 resultsfolder = join(outputdir, "results", "")
 plotfolder = join(outputdir, "plots", "")
@@ -60,7 +60,8 @@ Currently, this module uses TreeTagger and treetaggerwrapper.
 """
 
 language = "en"
-#preprocess.main(plaintextfolder, taggedfolder, language)
+sanitycheck = "no" # yes|no
+preprocess.main(plaintextfolder, taggedfolder, language, sanitycheck)
 
 
 # =================================
@@ -76,10 +77,10 @@ Fourth, it creates document-term matrixes with absolute, relative and binary fea
 This function needs to be run again when a parameter is changed.
 """
 
-segmentlength = 2000
+segmentlength = 3000
 max_num_segments = -1
-featuretype = ["lemmata", "Nc"] # forms, pos
-#prepare.main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_num_segments, stoplistfile, featuretype)
+featuretype = ["lemmata", "all"] # forms, pos
+prepare.main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_num_segments, stoplistfile, featuretype)
 
 
 # =================================
@@ -93,13 +94,10 @@ The calculation can work in several ways: by division, subtraction as well as wi
 The contrast parameter takes ["category", "group1", "group2"] as in the metadata table.
 """
 
-separator = "\t"
-#contrast = ["continent", "Europe", "America"] # example for novelas
-contrast = ["subgenre", "tragedie", "comedie"] # example for theatre
-#contrast = ["subgenre", "detective", "historical"] # example for doyle
-#contrast = ["random", "two", "one"] # for splitting groups randomly
+separator = ","
+#contrast = ["continent", "Europe", "America"] # example #contrast = ["random", "two", "one"] # for splitting groups randomly
 logaddition= 0.1 # has effect on log calculation.
-#calculate.main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype)
+calculate.main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype)
 
 
 
@@ -114,11 +112,10 @@ This module provides several plotting functionalities.
 """
 
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
-numfeatures = 20
-measures = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "sg0", "dd0", "dd2", "ddX", "dr0", "dr2", "drX", "dg0"]
-#droplist = ["anything", "everything", "anyone", "nothing"]
-droplist = []
-#visualize.zetabarchart(segmentlength, featuretype, contrast, measures, numfeatures, droplist, resultsfolder, plotfolder)
+numfeatures = 16
+measures = ["sd0", "sd2"]
+droplist = ["anyone", "nothing"]
+visualize.zetabarchart(segmentlength, featuretype, contrast, measures, numfeatures, droplist, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
 numfeatures = 500
@@ -129,7 +126,7 @@ cutoff = 0.2
 
 
 # =================================
-# Experimental
+# Experimental (not supported!)
 # =================================
 
 """
@@ -152,9 +149,9 @@ comparison = ["sd0", "sd2", "sr0", "sr2", "dd0", "dd2", "dr0", "dr2"]
 numfeatures = 500
 comparison = ["sd0", "sd2", "sr0", "sr2", "dd0", "dd2", "dr0", "dr2"]
 
-experimental.make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
-experimental.make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
-experimental.make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+#experimental.make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+#experimental.make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
+#experimental.make_tsne(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
 
 # TODO: The next step doesn't work in Spyder, it works in Jupyter... I don't understand why
 #clustering_kmeans(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder, n=4)

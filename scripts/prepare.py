@@ -5,6 +5,10 @@
 # version: 0.3.0
 
 
+"""
+The functions contained in this script prepare a set of plain text files for contrastive analysis. 
+"""
+
 # =================================
 # Import statements
 # =================================
@@ -28,7 +32,6 @@ import random
 def read_csvfile(file):
     with open(file, "r", newline="\n") as csvfile:
         filename, ext = os.path.basename(file).split(".")
-        print(filename)
         content = csv.reader(csvfile, delimiter='\t')
         stops = ["SENT", "''", ",", "``", ":"]
         alllines = [line for line in content if len(line) == 3 and line[1] not in stops]
@@ -142,12 +145,13 @@ def count_features(features, filename):
     featurecount = Counter(features)
     featurecount = dict(featurecount)
     featurecount = pd.Series(featurecount, name=filename)
-    # print(featurecount.loc["man"])
+    #print(featurecount.loc["man"])
     return featurecount
 
 
 def save_dataframe(allfeaturecounts, dtmfolder, parameterstring):
     dtmfile = dtmfolder + "dtm_" + parameterstring + "_absolutefreqs.csv"
+    #print("\nallfeaturecounts\n", allfeaturecounts.head()) 
     with open(dtmfile, "w") as outfile:
         allfeaturecounts.to_csv(outfile, sep="\t")
 
@@ -159,8 +163,9 @@ def make_dtm(segmentfolder, dtmfolder, parameterstring):
         filename, ext = os.path.basename(file).split(".")
         featurecount = count_features(features, filename)
         allfeaturecounts.append(featurecount)
-    allfeaturecounts = pd.concat(allfeaturecounts, axis=1)
+    allfeaturecounts = pd.concat(allfeaturecounts, axis=1, sort=True)
     allfeaturecounts = allfeaturecounts.fillna(0).astype(int)
+    #print("allfeaturecounts", allfeaturecounts.head())
     save_dataframe(allfeaturecounts, dtmfolder, parameterstring)
 
 
@@ -171,11 +176,14 @@ def make_dtm(segmentfolder, dtmfolder, parameterstring):
 
 def read_freqsfile(filepath):
     with open(filepath, "r", newline="\n") as csvfile:
-        absolutefreqs = pd.DataFrame.from_csv(csvfile, sep='\t')
+        absolutefreqs = pd.read_csv(csvfile, sep='\t', index_col=0)
+        print("\nabsolutefreqs\n", absolutefreqs.head())
         return absolutefreqs
 
 
 def transform_dtm(absolutefreqs, segmentlength):
+    #absolutefreqs.set_index("Unnamed: 0", inplace=True)
+    #print("\nabsolutefreqs\n", absolutefreqs.head(), segmentlength)
     relativefreqs = absolutefreqs / segmentlength
     absolutefreqs[absolutefreqs > 0] = 1
     binaryfreqs = absolutefreqs
@@ -202,14 +210,18 @@ def main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_
     if not os.path.exists(dtmfolder):
         os.makedirs(dtmfolder)
     parameterstring = str(segmentlength) + "-" + str(featuretype[0]) + "-" + str(featuretype[1])
-    print("--prepare")
+    print("\n--prepare")
     import shutil
     if os.path.exists(segmentfolder):
         shutil.rmtree(segmentfolder)
+    counter = 0
     for file in glob.glob(taggedfolder + "*.csv"):
+        filename, ext = os.path.basename(file).split(".")
+        counter +=1
+        print("next: file", counter, ":", filename)        
         segmentids, segments = make_segments(file, segmentfolder, segmentlength, max_num_segments)
         select_features(segmentfolder, segmentids, segments, stoplistfile, featuretype)
-        make_dtm(segmentfolder, dtmfolder, parameterstring)
-    absolutefreqs = read_freqsfile(dtmfolder + "dtm_" + parameterstring + "_absolutefreqs.csv")
-    relativefreqs, binaryfreqs = transform_dtm(absolutefreqs, segmentlength)
-    save_transformed(relativefreqs, binaryfreqs, dtmfolder, parameterstring)
+        #make_dtm(segmentfolder, dtmfolder, parameterstring)
+    #absolutefreqs = read_freqsfile(dtmfolder + "dtm_" + parameterstring + "_absolutefreqs.csv")
+    #relativefreqs, binaryfreqs = transform_dtm(absolutefreqs, segmentlength)
+    #save_transformed(relativefreqs, binaryfreqs, dtmfolder, parameterstring)
