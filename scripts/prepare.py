@@ -15,6 +15,7 @@ The functions contained in this script prepare a set of plain text files for con
 
 import os
 import re
+import glob
 import csv
 import glob
 import pandas as pd
@@ -22,6 +23,8 @@ import numpy as np
 from collections import Counter
 import itertools
 import random
+
+from sklearn.feature_extraction.text import CountVectorizer
 
 
 # =================================
@@ -93,6 +96,7 @@ def perform_selection(segment, stoplist, featuretype):
             selected = [line[1].lower() for line in segment if
                         len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and line[2] not in stoplist]
     elif pos != "all":
+        ## TODO: Turn the test "pos in line[1]" around to allow for more than one POS tag to be defined as the filter.
         if forms == "words":
             selected = [line[0].lower() for line in segment if
                         len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[2] not in stoplist]
@@ -141,32 +145,36 @@ def read_plaintext(file):
         return features
 
 
-def count_features(features, filename):
-    featurecount = Counter(features)
-    featurecount = dict(featurecount)
-    featurecount = pd.Series(featurecount, name=filename)
-    #print(featurecount.loc["man"])
-    return featurecount
+#def count_features(features, filename):
+#    featurecount = Counter(features)
+#    featurecount = dict(featurecount)
+#    featurecount = pd.Series(featurecount, name=filename)
+#    #print(featurecount.loc["man"])
+#    return featurecount
 
 
 def save_dataframe(allfeaturecounts, dtmfolder, parameterstring):
-    dtmfile = dtmfolder + "dtm_" + parameterstring + "_absolutefreqs.csv"
+    dtmfile = dtmfolder + "dtm_" + parameterstring + "_absolutefreqs.hd5"
     #print("\nallfeaturecounts\n", allfeaturecounts.head()) 
-    with open(dtmfile, "w") as outfile:
-        allfeaturecounts.to_csv(outfile, sep="\t")
+    #with open(dtmfile, "w") as outfile:
+    #    allfeaturecounts.to_csv(outfile, sep="\t")
+    allfeaturecounts.to_hdf(dtmfile, key="df")
 
 
 def make_dtm(segmentfolder, dtmfolder, parameterstring):
-    allfeaturecounts = []
-    for file in glob.glob(segmentfolder + "*.txt"):
-        features = read_plaintext(file)
-        filename, ext = os.path.basename(file).split(".")
-        featurecount = count_features(features, filename)
-        allfeaturecounts.append(featurecount)
-    allfeaturecounts = pd.concat(allfeaturecounts, axis=1, sort=True)
+    filenames = glob.glob(os.path.join(segmentfolder, "*.txt"))
+    idnos = [os.path.basename(idno).split(".")[0] for idno in filenames]
+    vectorizer = CountVectorizer(input='filename')
+    dtm = vectorizer.fit_transform(filenames)  # a sparse matrix#
+    vocab = vectorizer.get_feature_names()  # a list
+    allfeaturecounts = pd.DataFrame(dtm.toarray(), columns=vocab)
+    allfeaturecounts["idno"] = idnos
+    allfeaturecounts.set_index("idno", inplace=True)
+    #allfeaturecounts.drop("idno", inplace=True)
     allfeaturecounts = allfeaturecounts.fillna(0).astype(int)
-    #print("allfeaturecounts", allfeaturecounts.head())
-    save_dataframe(allfeaturecounts, dtmfolder, parameterstring)
+    print("\nallfeaturecounts\n", allfeaturecounts.head())
+    #save_dataframe(allfeaturecounts, dtmfolder, parameterstring)
+    return allfeaturecounts
 
 
 # =================================
@@ -183,20 +191,25 @@ def read_freqsfile(filepath):
 
 def transform_dtm(absolutefreqs, segmentlength):
     #absolutefreqs.set_index("Unnamed: 0", inplace=True)
-    #print("\nabsolutefreqs\n", absolutefreqs.head(), segmentlength)
+    print("Next: transforming to relative frequencies...")
     relativefreqs = absolutefreqs / segmentlength
+    print("\nrelfreqs\n", relativefreqs.head(), segmentlength)
+    print("Next: transforming to binary frequencies...")
     absolutefreqs[absolutefreqs > 0] = 1
     binaryfreqs = absolutefreqs
+    print("\nbinaryfreqs\n", binaryfreqs.head(), segmentlength)
     return relativefreqs, binaryfreqs
 
 
 def save_transformed(relativefreqs, binaryfreqs, dtmfolder, parameterstring):
-    transformedfile = dtmfolder + "dtm_" + parameterstring + "_relativefreqs.csv"
-    with open(transformedfile, "w") as outfile:
-        relativefreqs.to_csv(outfile, sep="\t")
-    transformedfile = dtmfolder + "dtm_" + parameterstring + "_binaryfreqs.csv"
-    with open(transformedfile, "w") as outfile:
-        binaryfreqs.to_csv(outfile, sep="\t")
+    transformedfile = dtmfolder + "dtm_" + parameterstring + "_relativefreqs.hd5"
+    #with open(transformedfile, "w") as outfile:
+    #    relativefreqs.to_csv(outfile, sep="\t")
+    relativefreqs.to_hdf(transformedfile, key="df")
+    transformedfile = dtmfolder + "dtm_" + parameterstring + "_binaryfreqs.hd5"
+    #with open(transformedfile, "w") as outfile:
+    #    binaryfreqs.to_csv(outfile, sep="\t")
+    relativefreqs.to_hdf(transformedfile, key="df")
 
 
 # =================================
@@ -218,10 +231,12 @@ def main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_
     for file in glob.glob(taggedfolder + "*.csv"):
         filename, ext = os.path.basename(file).split(".")
         counter +=1
-        print("next: file", counter, ":", filename)        
+        print("next: file no", counter, "- file", filename)        
         segmentids, segments = make_segments(file, segmentfolder, segmentlength, max_num_segments)
         select_features(segmentfolder, segmentids, segments, stoplistfile, featuretype)
-        #make_dtm(segmentfolder, dtmfolder, parameterstring)
+    allfeaturecounts = make_dtm(segmentfolder, dtmfolder, parameterstring)
+    absolutefreqs = allfeaturecounts
     #absolutefreqs = read_freqsfile(dtmfolder + "dtm_" + parameterstring + "_absolutefreqs.csv")
-    #relativefreqs, binaryfreqs = transform_dtm(absolutefreqs, segmentlength)
+    relativefreqs, binaryfreqs = transform_dtm(absolutefreqs, segmentlength)
     #save_transformed(relativefreqs, binaryfreqs, dtmfolder, parameterstring)
+    return absolutefreqs, relativefreqs, binaryfreqs

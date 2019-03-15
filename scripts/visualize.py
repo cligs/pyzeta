@@ -57,8 +57,11 @@ zeta_style = pygal.style.Style(
 
 
 def get_zetadata(resultsfile, measure, numfeatures, droplist):
-    with open(resultsfile, "r") as infile:
-        alldata = pd.DataFrame.from_csv(infile, sep="\t")
+    with open(resultsfile, "r", encoding="utf8") as infile:
+        alldata = pd.read_csv(infile, sep="\t")
+        ## TODO: This should not be "unnamed: 0": avoid this.
+        alldata = alldata.set_index("Unnamed: 0")
+        print("\nalldata\n", alldata.head())
         zetadata = alldata.loc[:, [measure, "docprops1"]]
         zetadata.sort_values(measure, ascending=False, inplace=True)
         zetadata.drop("docprops1", axis=1, inplace=True)
@@ -66,6 +69,7 @@ def get_zetadata(resultsfile, measure, numfeatures, droplist):
             zetadata.drop(item, axis=0, inplace=True)
         zetadata = zetadata.head(numfeatures).append(zetadata.tail(numfeatures))
         zetadata = zetadata.reset_index(drop=False)
+        print("\nzetadata\n", zetadata.head())
         return zetadata
 
 
@@ -85,9 +89,9 @@ def make_barchart(zetadata, zetaplotfile, parameterstring, contraststring, measu
             color = "#14b814"
         if zetadata.iloc[i, 1] > 0.6:
             color = "#29a329"
-        elif zetadata.iloc[i, 1] > 0.3:
+        elif zetadata.iloc[i, 1] > 0.1:
             color = "#3d8f3d"
-        elif zetadata.iloc[i, 1] > 0.2:
+        elif zetadata.iloc[i, 1] > 0.05:
             color = "#4d804d"
         elif zetadata.iloc[i, 1] < -0.8:
             color = "#0066ff"
@@ -95,13 +99,13 @@ def make_barchart(zetadata, zetaplotfile, parameterstring, contraststring, measu
             color = "#196be6"
         elif zetadata.iloc[i, 1] < -0.6:
             color = "#3370cc"
-        elif zetadata.iloc[i, 1] < -0.3:
+        elif zetadata.iloc[i, 1] < -0.1:
             color = "#4d75b3"
-        elif zetadata.iloc[i, 1] < -0.2:
+        elif zetadata.iloc[i, 1] < -0.05:
             color = "#60799f"
         else:
             color = "#585858"
-        plot.add(zetadata.iloc[i, 0], [{"value": zetadata.iloc[i, 1], "label": zetadata.iloc[i, 0], "color": color}])
+        plot.add(zetadata.iloc[i, 0], [{"value": float(zetadata.iloc[i, 1]), "label": zetadata.iloc[i, 0], "color": color}])
     plot.render_to_file(zetaplotfile)
 
 
@@ -130,8 +134,8 @@ def zetabarchart(segmentlength, featuretype, contrast, measures, numfeatures, dr
 
 
 def get_scores(resultsfile, numfeatures, measure):
-    with open(resultsfile, "r") as infile:
-        zetascores = pd.DataFrame.from_csv(infile, sep="\t")
+    with open(resultsfile, "r", encoding="utf8") as infile:
+        zetascores = pd.read_csv(infile, sep="\t")
         zetascores.sort_values(by=measure, ascending=False, inplace=True)
         positivescores = zetascores.head(numfeatures)
         negativescores = zetascores.tail(numfeatures)

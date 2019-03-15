@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # file: run_pyzeta.py
 # author: #cf
-# version: 0.3.1
+# version: 0.3.0
 
 
 """
@@ -77,10 +77,10 @@ Fourth, it creates document-term matrixes with absolute, relative and binary fea
 This function needs to be run again when a parameter is changed.
 """
 
-segmentlength = 3000
+segmentlength = 5000
 max_num_segments = -1
 featuretype = ["lemmata", "all"] # forms, pos
-prepare.main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_num_segments, stoplistfile, featuretype)
+absolutefreqs, relativefreqs, binaryfreqs = prepare.main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_num_segments, stoplistfile, featuretype)
 
 
 # =================================
@@ -95,9 +95,10 @@ The contrast parameter takes ["category", "group1", "group2"] as in the metadata
 """
 
 separator = ","
-#contrast = ["continent", "Europe", "America"] # example #contrast = ["random", "two", "one"] # for splitting groups randomly
+contrast = ["group", "early", "late"] # example for roman20
+#contrast = ["random", "two", "one"] # for splitting groups randomly
 logaddition= 0.1 # has effect on log calculation.
-calculate.main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype)
+calculate.main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype, absolutefreqs, relativefreqs, binaryfreqs)
 
 
 
@@ -112,9 +113,11 @@ This module provides several plotting functionalities.
 """
 
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
-numfeatures = 16
+numfeatures = 25
 measures = ["sd0", "sd2"]
-droplist = ["anyone", "nothing"]
+#measures = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "sg0", "dd0", "dd2", "ddX", "dr0", "dr2", "drX", "dg0"]
+#droplist = ["anything", "everything", "anyone", "nothing"]
+droplist = []
 visualize.zetabarchart(segmentlength, featuretype, contrast, measures, numfeatures, droplist, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
@@ -126,7 +129,7 @@ cutoff = 0.2
 
 
 # =================================
-# Experimental (not supported!)
+# Experimental
 # =================================
 
 """
