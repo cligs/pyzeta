@@ -24,6 +24,7 @@ from collections import Counter
 import itertools
 import random
 
+
 from sklearn.feature_extraction.text import CountVectorizer
 
 
@@ -33,7 +34,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 
 def read_csvfile(file):
-    with open(file, "r", newline="\n") as csvfile:
+    with open(file, "r", newline="\n", encoding="utf-8") as csvfile:
         filename, ext = os.path.basename(file).split(".")
         content = csv.reader(csvfile, delimiter='\t')
         stops = ["SENT", "''", ",", "``", ":"]
@@ -42,20 +43,27 @@ def read_csvfile(file):
 
 
 def segment_files(filename, alllines, segmentlength, max_num_segments):
-    numsegments = int(len(alllines) / segmentlength)
     segments = []
     segmentids = []
-    for i in range(0, numsegments):
-        segmentid = filename + "-" + "{:04d}".format(i)
-        segmentids.append(segmentid)
-        segment = alllines[i * segmentlength:(i + 1) * segmentlength]
+    if segmentlength == "text":
+        numsegments = 1
+        segment = alllines
+        segmentid = filename
         segments.append(segment)
-    if max_num_segments != -1 and numsegments > max_num_segments:
-        #chosen_ids = sorted(np.random.randint(0, numsegments, max_num_segments))
-        chosen_ids = sorted(random.sample(range(0, numsegments), max_num_segments))
-        #print(chosen_ids)
-        segments = [segments[i] for i in chosen_ids]
-        segmentids = [segmentids[i] for i in chosen_ids]
+        segmentids.append(segmentid)
+    else:
+        numsegments = int(len(alllines) / segmentlength)
+        for i in range(0, numsegments):
+            segmentid = filename + "-" + "{:04d}".format(i)
+            segmentids.append(segmentid)
+            segment = alllines[i * segmentlength:(i + 1) * segmentlength]
+            segments.append(segment)
+        if max_num_segments != -1 and numsegments > max_num_segments:
+            #chosen_ids = sorted(np.random.randint(0, numsegments, max_num_segments))
+            chosen_ids = sorted(random.sample(range(0, numsegments), max_num_segments))
+            #print(chosen_ids)
+            segments = [segments[i] for i in chosen_ids]
+            segmentids = [segmentids[i] for i in chosen_ids]
     return segmentids, segments
 
 
@@ -72,7 +80,7 @@ def make_segments(file, segmentfolder, segmentlength, max_num_segments=-1):
 # =================================
 
 def read_stoplistfile(stoplistfile):
-    with open(stoplistfile, "r") as infile:
+    with open(stoplistfile, "r", encoding="utf-8") as infile:
         stoplist = infile.read()
         stoplist = list(re.split("\n", stoplist))
         return stoplist
@@ -101,7 +109,7 @@ def perform_selection(segment, stoplist, featuretype):
             selected = [line[0].lower() for line in segment if
                         len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[2] not in stoplist]
         elif forms == "pos":
-            features = [line[1].lower() for line in segment if
+            selected = [line[1].lower() for line in segment if
                         len(line) == 3 and len(line[0]) > 1 and line[0] not in stoplist and pos in line[1] and line[2] not in stoplist]
         elif forms == "lemmata":
             selected = []
@@ -120,7 +128,7 @@ def save_segment(features, segmentfolder, segmentid):
     # TODO: remove this intermediate saving step, feed directly into make_dtm.
     segmentfile = segmentfolder + segmentid + ".txt"
     featuresjoined = " ".join(features)
-    with open(segmentfile, "w") as outfile:
+    with open(segmentfile, "w", encoding="utf-8") as outfile:
         outfile.write(featuresjoined)
 
 
@@ -139,7 +147,7 @@ def select_features(segmentfolder, segmentids, segments, stoplistfile, features)
 
 
 def read_plaintext(file):
-    with open(file, "r") as infile:
+    with open(file, "r", encoding="utf-8") as infile:
         text = infile.read().split(" ")
         features = [form for form in text if form]
         return features
@@ -154,11 +162,12 @@ def read_plaintext(file):
 
 
 def save_dataframe(allfeaturecounts, dtmfolder, parameterstring):
-    dtmfile = dtmfolder + "dtm_" + parameterstring + "_absolutefreqs.hd5"
+    dtmfile = dtmfolder + "dtm_" + parameterstring + "_absolutefreqs.csv"
     #print("\nallfeaturecounts\n", allfeaturecounts.head()) 
-    #with open(dtmfile, "w") as outfile:
-    #    allfeaturecounts.to_csv(outfile, sep="\t")
     allfeaturecounts.to_hdf(dtmfile, key="df")
+    with open(dtmfile, "w", encoding = "utf-8") as outfile:
+       allfeaturecounts.to_csv(outfile, sep="\t")
+
 
 
 def make_dtm(segmentfolder, dtmfolder, parameterstring):
@@ -183,33 +192,40 @@ def make_dtm(segmentfolder, dtmfolder, parameterstring):
 
 
 def read_freqsfile(filepath):
-    with open(filepath, "r", newline="\n") as csvfile:
+    with open(filepath, "r", newline="\n", encoding="utf-8") as csvfile:
         absolutefreqs = pd.read_csv(csvfile, sep='\t', index_col=0)
         print("\nabsolutefreqs\n", absolutefreqs.head())
         return absolutefreqs
 
 
 def transform_dtm(absolutefreqs, segmentlength):
-    #absolutefreqs.set_index("Unnamed: 0", inplace=True)
     print("Next: transforming to relative frequencies...")
-    relativefreqs = absolutefreqs / segmentlength
-    print("\nrelfreqs\n", relativefreqs.head(), segmentlength)
+    absolutefreqs_sum = pd.Series(absolutefreqs.sum(axis=1))
+    print("absolutfreqs_sum", absolutefreqs_sum.values)
+    if segmentlength == "text":
+        relativefreqs = absolutefreqs.div(absolutefreqs_sum, axis='rows', level=None)
+        print("\nrelfreqs\n", relativefreqs.head(20), segmentlength)
+    else:
+        relativefreqs = absolutefreqs / segmentlength
+        print("\nrelfreqs\n", relativefreqs.head(), segmentlength)
     print("Next: transforming to binary frequencies...")
-    absolutefreqs[absolutefreqs > 0] = 1
-    binaryfreqs = absolutefreqs
-    print("\nbinaryfreqs\n", binaryfreqs.head(), segmentlength)
-    return relativefreqs, binaryfreqs
+    binaryfreqs = absolutefreqs.copy()
+    binaryfreqs[binaryfreqs > 0] = 1
+    print("\nbinaryfreqs\n", binaryfreqs.head(50), segmentlength)
+    print("\nabsolutefreqs\n", absolutefreqs.head(50), segmentlength)
+    return absolutefreqs_sum, relativefreqs, binaryfreqs
 
 
 def save_transformed(relativefreqs, binaryfreqs, dtmfolder, parameterstring):
-    transformedfile = dtmfolder + "dtm_" + parameterstring + "_relativefreqs.hd5"
-    #with open(transformedfile, "w") as outfile:
-    #    relativefreqs.to_csv(outfile, sep="\t")
-    relativefreqs.to_hdf(transformedfile, key="df")
-    transformedfile = dtmfolder + "dtm_" + parameterstring + "_binaryfreqs.hd5"
-    #with open(transformedfile, "w") as outfile:
-    #    binaryfreqs.to_csv(outfile, sep="\t")
-    relativefreqs.to_hdf(transformedfile, key="df")
+    transformedfile = dtmfolder + "dtm_" + parameterstring + "_relativefreqs.csv"
+    with open(transformedfile, "w", encoding = "utf-8") as outfile:
+        relativefreqs.to_csv(outfile, sep="\t")
+    #relativefreqs.to_hdf(transformedfile, key="df")
+    transformedfile = dtmfolder + "dtm_" + parameterstring + "_binaryfreqs.csv"
+    #binaryfreqs.to_hdf(transformedfile, key="df")
+    with open(transformedfile, "w", encoding = "utf-8") as outfile:
+        binaryfreqs.to_csv(outfile, sep="\t")
+
 
 
 # =================================
@@ -237,6 +253,6 @@ def main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_
     allfeaturecounts = make_dtm(segmentfolder, dtmfolder, parameterstring)
     absolutefreqs = allfeaturecounts
     #absolutefreqs = read_freqsfile(dtmfolder + "dtm_" + parameterstring + "_absolutefreqs.csv")
-    relativefreqs, binaryfreqs = transform_dtm(absolutefreqs, segmentlength)
-    #save_transformed(relativefreqs, binaryfreqs, dtmfolder, parameterstring)
-    return absolutefreqs, relativefreqs, binaryfreqs
+    absolutefreqs_sum, relativefreqs, binaryfreqs = transform_dtm(absolutefreqs, segmentlength)
+    save_transformed(relativefreqs, binaryfreqs, dtmfolder, parameterstring)
+    return absolutefreqs, relativefreqs, binaryfreqs, absolutefreqs_sum
