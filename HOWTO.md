@@ -35,7 +35,7 @@ Requirements:
 The script expects the following as input. See the `sampledata` folder for an example. 
 
 - A folder with plain text files. They need to be in UTF-8 encoding. The files should all be in one folder (here, the `corpus`folder). 
-- A metadata file called "metadata.csv" with category information about each file, identified through the column header called "idno" and which contains the filenames (without the extension). The metadata file should be a CSV file, with the ";" used as the separator character. This metadata file should be at the same level as the `corpus` folder (here, it is in the `sampledata` folder)
+- A metadata file called "metadata.csv" with category information about each file, identified through the column header called "idno" and which contains the filenames (without the extension). The metadata file should be a CSV file, with the "\t" used as the separator character. This metadata file should be at the same level as the `corpus` folder (here, it is in the `sampledata` folder)
 - A file with stopwords, called `stoplist.txt`, with one stopword per line. (This can be empty but should be there.)
 
 
