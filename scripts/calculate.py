@@ -29,15 +29,14 @@ def make_idlists(metadatafile, separator, contrast):
     This function creates lists of document identifiers based on the metadata.
     Depending on the contrast defined, the two lists contain various identifiers.
     """
-    with open(metadatafile, "r") as infile:
-        metadata = pd.read_csv(infile, sep=separator)
-        print("\nmetadata\n", metadata.head())
+    with open(metadatafile, "r", encoding="utf-8") as infile:
+        metadata = pd.read_csv(infile, sep="\t")
+        print("\nmetadata\n", metadata)
         #metadata = metadata.drop("Unnamed: 0", axis=1)
-        metadata.set_index("idno", inplace=True)
-        print("\nmetadata\n", metadata.head())
+        #metadata.set_index("idno", inplace=True)
         if contrast[0] != "random":
-            list1 = list(metadata[metadata[contrast[0]].isin([contrast[1]])].index)
-            list2 = list(metadata[metadata[contrast[0]].isin([contrast[2]])].index)
+            list1 = list(metadata[metadata[contrast[0]].isin([contrast[1]])].idno)
+            list2 = list(metadata[metadata[contrast[0]].isin([contrast[2]])].idno)
             #print("list1", list1)
             #print("list2", list2)
         elif contrast[0] == "random":
@@ -47,37 +46,41 @@ def make_idlists(metadatafile, separator, contrast):
             list2 = allidnos[int(len(allidnos)/2):]
             #print(list1[0:5])
             #print(list2[0:5])
-        idlists = [list1, list2]
-        #print(idlists)
-        return idlists
+    idlists = [list1, list2]
+    print(idlists)
+    return idlists
 
 
-def filter_dtm(dtmfolder, parameterstring, idlists, absolutefreqs, relativefreqs, binaryfreqs):
+def filter_dtm(dtmfolder, parameterstring, idlists, absolutefreqs, relativefreqs, binaryfreqs,absolutefreqs_sum):
     """
     This function splits the DTM in two parts.
     Each part consists of the segments corresponding to one partition.
     Each segment is chosen based on the file id it corresponds to.
     """
-    dtmfile = dtmfolder + "dtm_"+parameterstring+"_binaryfreqs.csv"
+    #dtmfile = dtmfolder + "dtm_"+parameterstring+"_binaryfreqs.csv"
     #print(dtmfile)
     #print(idlists)
     ids1 = "|".join([str(idno)+".*" for idno in idlists[0]])
-    print(ids1)
     ids2 = "|".join([str(id)+".*" for id in idlists[1]])
     #print(ids2)
     binary = binaryfreqs
     relative = relativefreqs
     absolute = absolutefreqs
+    print(absolute)
     binary1 = binary.T.filter(regex=ids1, axis=1)
     binary2 = binary.T.filter(regex=ids2, axis=1)
     relative1 = relative.T.filter(regex=ids1, axis=1)
     relative2 = relative.T.filter(regex=ids2, axis=1)
     absolute1 = absolute.T.filter(regex=ids1, axis=1)
+    absolute1_sum = absolutefreqs_sum.filter(regex=ids1)
+    absolute2_sum = absolutefreqs_sum.filter(regex=ids2)
+    print(absolute1.head(20))
     absolute2 = absolute.T.filter(regex=ids2, axis=1)
-    print("\nbinary1\n", binary1.head())
-    """
-    with open(dtmfile, "r") as infile:
-        binary = pd.read_hdf(infile, sep="\t", index_col="idno")
+    print("\nbinary1\n", binary1.head(20))
+
+    '''
+    with open(dtmfile, "r", encoding="utf-8") as infile:
+        binary = pd.read_csv(infile, sep="\t", index_col="idno")
         print("\nbinary\n", binary.head())
         binary1 = binary.T.filter(regex=ids1, axis=1)
         print("\nbinary1\n", binary1.head())
@@ -94,8 +97,8 @@ def filter_dtm(dtmfolder, parameterstring, idlists, absolutefreqs, relativefreqs
         #print("\nabsolute\n", absolute.head())
         absolute1 = absolute.T.filter(regex=ids1, axis=1)
         absolute2 = absolute.T.filter(regex=ids2, axis=1)
-    """
-    return binary1, binary2, relative1, relative2, absolute1, absolute2
+    '''
+    return binary1, binary2, relative1, relative2, absolute1, absolute2, absolute1_sum,absolute2_sum
     
     
 def get_indicators(binary1, binary2, relative1, relative2):
@@ -118,7 +121,7 @@ def get_indicators(binary1, binary2, relative1, relative2):
     return docprops1, docprops2, relfreqs1, relfreqs2
 
 
-def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, absolute1, absolute2, logaddition, segmentlength, idlists):
+def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, absolute1, absolute2, logaddition, segmentlength, idlists, absolute1_sum, absolute2_sum):
     """
     This function implements several variants of Zeta by modifying some key parameters.
     Scores can be document proportions (binary features) or relative frequencies.
@@ -225,23 +228,46 @@ def calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, absolute1, abso
     # Calculate Gries "deviation of proportions" (DP)
     print("---calculate scores: 3/4")
     segnum1 = len(absolute1.columns.values)
+    print("\nsegnum1\n", segnum1)
     segnum2 = len(absolute2.columns.values)
-    seglens1 = [segmentlength] * segnum1 
-    seglens2 = [segmentlength] * segnum2
+    print("\nsegnum2\n", segnum2)
+    if segmentlength == "text":
+        seglens1 = absolute1_sum.values
+        print("\nseglens1\n", seglens1)
+        seglens2 = absolute2_sum.values
+        print("\nseglens2\n", seglens2)
+    else:
+        seglens1 = [segmentlength] * segnum1
+        print("\nseglens1\n", seglens1)
+        seglens2 = [segmentlength] * segnum2
+        print("\nseglens2\n", seglens2)
     crpsize1 = sum(seglens1)
+    print("\ncrpsize1\n", crpsize1)
     crpsize2 = sum(seglens2)
+    print("\ncrpsize2\n", crpsize2)
     #print("segments", segnum1, segnum2)
     totalfreqs1 = np.sum(absolute1, axis=1)
+    print("\totalfreqs1\n", totalfreqs1)
     totalfreqs2 = np.sum(absolute2, axis=1)
+    print("\totalfreqs2\n", totalfreqs2)
     #print("totalfreqs", totalfreqs1, totalfreqs2)
     expprops1 = np.array(seglens1) / crpsize1
+    print("\nexpprops1\n", expprops1)
     expprops2 = np.array(seglens2) / crpsize2
     #print("exprops", expprops1, expprops2)
     #print(absolute1.head())
     #print(totalfreqs1)
     obsprops1 = absolute1.div(totalfreqs1, axis=0)
+    print("\nobsprops1\n", obsprops1.shape)
+    print("\nobsprops1\n", obsprops1.head(20))
+    with open("D:/Downloads/roman20/Testset/output/obsprop1.csv", "w", encoding="utf-8") as outfile:
+        obsprops1.to_csv(outfile, sep="\t")
     obsprops1 = obsprops1.fillna(expprops1[0]) # was: expprops1[0]
+    with open("D:/Downloads/roman20/Testset/output/obsprop1_1.csv", "w", encoding="utf-8") as outfile:
+        obsprops1.to_csv(outfile, sep="\t")
     obsprops2 = absolute2.div(totalfreqs2, axis=0)
+    with open("D:/Downloads/roman20/Testset/output/obsprop2.csv", "w", encoding="utf-8") as outfile:
+        obsprops2.to_csv(outfile, sep="\t")
     obsprops2 = obsprops2.fillna(expprops2[0]) # was: expprops2[0]
     devprops1 = (np.sum(abs(expprops1 - obsprops1), axis=1) /2 )
     devprops2 = (np.sum(abs(expprops2 - obsprops2), axis=1) /2 )
@@ -293,7 +319,7 @@ def get_meanrelfreqs(dtmfolder, parameterstring, relativefreqs):
     return meanrelfreqs
     """
     dtmfile = dtmfolder + "dtm_"+parameterstring+"_relativefreqs.csv"
-    with open(dtmfile, "r") as infile:
+    with open(dtmfile, "r", encoding="utf-8") as infile:
         meanrelfreqs = pd.read_csv(infile, sep="\t", index_col="idno").T
         print("\nrelfreqs_df\n", meanrelfreqs.head())
         meanrelfreqs_index = meanrelfreqs.index
@@ -354,7 +380,7 @@ def combine_results(docprops1, docprops2, relfreqs1, relfreqs2, devprops1, devpr
 
 
 def save_results(results, resultsfile):
-    with open(resultsfile, "w") as outfile:
+    with open(resultsfile, "w", encoding="utf-8") as outfile:
         results.to_csv(outfile, sep="\t")
 
 
@@ -363,7 +389,7 @@ def save_results(results, resultsfile):
 # =================================
 
 
-def main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype, absolutefreqs, relativefreqs, binaryfreqs):
+def main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype, absolutefreqs, relativefreqs, binaryfreqs,absolutefreqs_sum):
     print("--calculate")
     if not os.path.exists(resultsfolder):
         os.makedirs(resultsfolder)
@@ -371,13 +397,12 @@ def main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, 
     #print(parameterstring)
     contraststring = str(contrast[0]) +"_"+ str(contrast[2]) +"-"+ str(contrast[1])
     #print(contraststring)
-    resultsfile = resultsfolder + "results_" + parameterstring +"_"+ contraststring +".csv"
+    resultsfile = resultsfolder + "results_" + parameterstring +"_"+ contraststring +"new.csv"
     idlists = make_idlists(metadatafile, separator, contrast)
-    #print(idlists)
-    binary1, binary2, relative1, relative2, absolute1, absolute2 = filter_dtm(dtmfolder, parameterstring, idlists, absolutefreqs, relativefreqs, binaryfreqs)
+    binary1, binary2, relative1, relative2, absolute1, absolute2, absolute1_sum, absolute2_sum = filter_dtm(dtmfolder, parameterstring, idlists, absolutefreqs, relativefreqs, binaryfreqs,absolutefreqs_sum )
     #print(binary1)
     docprops1, docprops2, relfreqs1, relfreqs2 = get_indicators(binary1, binary2, relative1, relative2)
-    sd0, sd2, sr0, sr2, sg0, sg2, dd0, dd2, dr0, dr2, dg0, dg2, devprops1, devprops2 = calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, absolute1, absolute2, logaddition, segmentlength, idlists)
+    sd0, sd2, sr0, sr2, sg0, sg2, dd0, dd2, dr0, dr2, dg0, dg2, devprops1, devprops2 = calculate_scores(docprops1, docprops2, relfreqs1, relfreqs2, absolute1, absolute2, logaddition, segmentlength, idlists, absolute1_sum, absolute2_sum)
     meanrelfreqs = get_meanrelfreqs(dtmfolder, parameterstring, relativefreqs)
     results = combine_results(docprops1, docprops2, relfreqs1, relfreqs2, devprops1, devprops2, meanrelfreqs, sd0, sd2, sr0, sr2, sg0, sg2, dd0, dd2, dr0, dr2, dg0, dg2)
     save_results(results, resultsfile)
