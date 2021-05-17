@@ -21,7 +21,6 @@ import prepare
 import calculate
 import visualize
 import experimental
-
 from os.path import join
 
 
@@ -30,21 +29,22 @@ from os.path import join
 # =================================
 
 # You need to adapt these
-corpus = ""
-workdir = ""
-dtmfolder = join(workdir, "output", corpus, "dtms", "")
+corpus = "corpus"
+workdir = "D:/Downloads/roman20/Testset/"
+dtmfolder = join(workdir, "output", "dtms", "")
 
 # It is recommended to name your files and folders accordingly
-datadir = join(workdir, "data", corpus, "")
-plaintextfolder = join(datadir, "corpus", "")
-metadatafile = join(datadir, "metadata.csv")
-stoplistfile = join(datadir, "stoplist.txt")
+#datadir = join(workdir, "data", corpus, "")
+datafolder = join(workdir)
+plaintextfolder = join(workdir, "corpus", "")
+metadatafile = join(workdir, "metadata.csv")
+stoplistfile = join(workdir, "stoplist.txt")
 
 # It is recommended not to change these
-outputdir = join(workdir, "output", corpus)
+outputdir = join(workdir, "output")
 taggedfolder = join(outputdir, "tagged", "")
 segmentfolder = join(outputdir, "segments1000", "")
-datafolder = join(outputdir, "results", "")
+#datafolder = join(outputdir, "results", "")
 resultsfolder = join(outputdir, "results", "")
 plotfolder = join(outputdir, "plots", "")
 
@@ -59,9 +59,9 @@ This module usually only needs to be called once when preparing a collection of 
 Currently, this module uses TreeTagger and treetaggerwrapper.
 """
 
-language = "en"
+language = "fr"
 sanitycheck = "no" # yes|no
-preprocess.main(plaintextfolder, taggedfolder, language, sanitycheck)
+#preprocess.main(plaintextfolder, taggedfolder, language, sanitycheck)
 
 
 # =================================
@@ -80,7 +80,7 @@ This function needs to be run again when a parameter is changed.
 segmentlength = 5000
 max_num_segments = -1
 featuretype = ["lemmata", "all"] # forms, pos
-absolutefreqs, relativefreqs, binaryfreqs = prepare.main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_num_segments, stoplistfile, featuretype)
+absolutefreqs, relativefreqs, binaryfreqs, absolutefreqs_sum, tf_frame = prepare.main(taggedfolder, segmentfolder,datafolder, dtmfolder, segmentlength, max_num_segments, stoplistfile, featuretype)
 
 
 # =================================
@@ -94,11 +94,11 @@ The calculation can work in several ways: by division, subtraction as well as wi
 The contrast parameter takes ["category", "group1", "group2"] as in the metadata table.
 """
 
-separator = ","
-contrast = ["group", "early", "late"] # example for roman20
-#contrast = ["random", "two", "one"] # for splitting groups randomly
+separator = "\t"
+#contrast = ["group", "early", "late"] # example for roman20
+contrast = ["sentimental", "ja", "nein"] # for splitting groups randomly
 logaddition= 0.1 # has effect on log calculation.
-calculate.main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype, absolutefreqs, relativefreqs, binaryfreqs)
+calculate.main(datafolder, dtmfolder, metadatafile, separator, contrast, logaddition, resultsfolder, segmentlength, featuretype, absolutefreqs, relativefreqs, binaryfreqs, absolutefreqs_sum, tf_frame)
 
 
 
@@ -114,11 +114,11 @@ This module provides several plotting functionalities.
 
 # This is for a horizontal barchart for plotting Zeta and similar scores per feature.
 numfeatures = 25
-measures = ["sd0", "sd2"]
+measures = ["sd0", "sd2", "sg0", "sg2"]
 #measures = ["sd0", "sd2", "sdX", "sr0", "sr2", "srX", "sg0", "dd0", "dd2", "ddX", "dr0", "dr2", "drX", "dg0"]
 #droplist = ["anything", "everything", "anyone", "nothing"]
 droplist = []
-visualize.zetabarchart(segmentlength, featuretype, contrast, measures, numfeatures, droplist, resultsfolder, plotfolder)
+#visualize.zetabarchart(segmentlength, featuretype, contrast, measures, numfeatures, droplist, resultsfolder, plotfolder)
 
 # This is for a scatterplot showing the relation between indicators and scores.
 numfeatures = 500
@@ -145,12 +145,12 @@ numfeatures = 10
 The function "get_correlation" calculates several correlation scores between the results of using different Zeta variants.
 """
 
-comparison = ["sd0", "sd2", "sr0", "sr2", "dd0", "dd2", "dr0", "dr2"]
+comparison = ["sd0", "sd2", "sg0", "sg2", "dd0", "dd2", "dr0", "dr2"]
 #experimental.get_correlation(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast)
 
 
 numfeatures = 500
-comparison = ["sd0", "sd2", "sr0", "sr2", "dd0", "dd2", "dr0", "dr2"]
+comparison = ["sd0", "sd2", "sg0", "sg2", "dd0", "dd2", "dr0", "dr2"]
 
 #experimental.make_pca(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
 #experimental.make_dendrogram(resultsfolder, comparison, numfeatures, segmentlength, featuretype, contrast, plotfolder)
