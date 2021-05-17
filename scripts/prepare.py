@@ -1,18 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# file: prepare.py
-# author: #cf
-# version: 0.3.0
-
-
-"""
-The functions contained in this script prepare a set of plain text files for contrastive analysis. 
-"""
-
-# =================================
-# Import statements
-# =================================
-
 import os
 import re
 import glob
@@ -25,7 +10,7 @@ import itertools
 import random
 
 
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 
 # =================================
@@ -153,17 +138,10 @@ def read_plaintext(file):
         return features
 
 
-#def count_features(features, filename):
-#    featurecount = Counter(features)
-#    featurecount = dict(featurecount)
-#    featurecount = pd.Series(featurecount, name=filename)
-#    #print(featurecount.loc["man"])
-#    return featurecount
-
 
 def save_dataframe(allfeaturecounts, dtmfolder, parameterstring):
     dtmfile = dtmfolder + "dtm_" + parameterstring + "_absolutefreqs.csv"
-    #print("\nallfeaturecounts\n", allfeaturecounts.head()) 
+    #print("\nallfeaturecounts\n", allfeaturecounts.head())
     allfeaturecounts.to_hdf(dtmfile, key="df")
     with open(dtmfile, "w", encoding = "utf-8") as outfile:
        allfeaturecounts.to_csv(outfile, sep="\t")
@@ -185,6 +163,23 @@ def make_dtm(segmentfolder, dtmfolder, parameterstring):
     #save_dataframe(allfeaturecounts, dtmfolder, parameterstring)
     return allfeaturecounts
 
+
+
+def auto_tfidf(dtmfolder, segmentfolder):
+    filenames = glob.glob(os.path.join(segmentfolder, "*.txt"))
+    idnos = [os.path.basename(idno).split(".")[0] for idno in filenames]
+    vectorizer = TfidfVectorizer(input='filename', smooth_idf=True, sublinear_tf=True)
+    vectors = vectorizer.fit_transform(filenames)
+    feature_names = vectorizer.get_feature_names()
+    #print(feature_names)
+    tf_frame = pd.DataFrame(vectors.toarray(), columns=feature_names)
+    tf_frame["idno"] = idnos
+    tf_frame.set_index("idno", inplace=True)
+    print(tf_frame.head())
+    tf_frame = tf_frame.mul(100)
+    with open(dtmfolder + "tfidf_smoothed_sublinear.csv", "w", encoding="utf-8") as outfile:
+        tf_frame.to_csv(outfile, sep=",")
+    return tf_frame
 
 # =================================
 # Functions: transform_dtm
@@ -247,7 +242,7 @@ def main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_
     for file in glob.glob(taggedfolder + "*.csv"):
         filename, ext = os.path.basename(file).split(".")
         counter +=1
-        print("next: file no", counter, "- file", filename)        
+        print("next: file no", counter, "- file", filename)
         segmentids, segments = make_segments(file, segmentfolder, segmentlength, max_num_segments)
         select_features(segmentfolder, segmentids, segments, stoplistfile, featuretype)
     allfeaturecounts = make_dtm(segmentfolder, dtmfolder, parameterstring)
@@ -255,4 +250,6 @@ def main(taggedfolder, segmentfolder, datafolder, dtmfolder, segmentlength, max_
     #absolutefreqs = read_freqsfile(dtmfolder + "dtm_" + parameterstring + "_absolutefreqs.csv")
     absolutefreqs_sum, relativefreqs, binaryfreqs = transform_dtm(absolutefreqs, segmentlength)
     save_transformed(relativefreqs, binaryfreqs, dtmfolder, parameterstring)
-    return absolutefreqs, relativefreqs, binaryfreqs, absolutefreqs_sum
+    tf_frame = auto_tfidf(dtmfolder, segmentfolder)
+    print(tf_frame.shape, absolutefreqs.shape)
+    return absolutefreqs, relativefreqs, binaryfreqs, absolutefreqs_sum, tf_frame
