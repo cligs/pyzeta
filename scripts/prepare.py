@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# file: prepare.py
+# author: #cf, jd
+# version: 0.5.0
+
+
+
 import os
 import re
 import glob
