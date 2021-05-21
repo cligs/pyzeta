@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# file: prepare_bug.py
-# author: #cf
-# version: 0.3.0
+# file: calculate.py
+# author: #cf, jd
+# version: 0.5.0
 
 
 # =================================
