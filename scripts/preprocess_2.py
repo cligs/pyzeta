@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# file: preprocess_2.py
+# author: #jd
+# version: 0.1.0
+
+
 """
 The "preprocess" module is the first step in the pyzeta pipeline.
 This module deals with linguistic annotation of the texts.
